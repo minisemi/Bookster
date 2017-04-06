@@ -27,7 +27,7 @@ We will use seperate front- and backend frameworks. For frontend we will start o
 with using React. Going on we will implement more 3rd party liberaries as needed,
 which React is great for. React suits us as we want a user friendly application
 with fast data rendering. For backend we will use Node.js with the Express
-framework. We will use SQLite for storing data, which will mostly be used for
+framework. We will use MySQL for storing data, which will mostly be used for
 storage of end-user data and organization user data. End-user data includes profile
 information and preferences, login info etc. Organization user data includes
 bookables, schedules and as well as login info for the organizations. We will use
