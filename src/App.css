@@ -7,15 +7,37 @@
   height: 80px;
 }
 
+.bg-image {
+  position:relative;
+  z-index:-1;
+  display:block;
+}
+
 .App-header {
-  background-color: #222;
-  height: 150px;
+  height: 110px;
   padding: 20px;
-  color: white;
+  color: #ff009b;
+  text-align: left;
+  background: -webkit-linear-gradient(left, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%); /* Standard syntax (must be last) */
+}
+
+h2 {
+  letter-spacing: 3px;
 }
 
 .App-intro {
   font-size: large;
+}
+.navbar-right { margin-right: 0px !important}
+.log {
+  margin: 5px 10px 0 0;
+}
+.navbar-header {
+  margin: 5px 10px 0 0;
+  padding: 0;
 }
 
 @keyframes App-logo-spin {
