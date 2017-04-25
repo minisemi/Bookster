@@ -3,17 +3,20 @@ import ReactDOM from 'react-dom';
 import logo from '../logo.svg';
 import '../App.css';
 import { getCurrentBookings } from '../utils/bookster-api';
+import {Grid, Row, Col} from 'react-bootstrap';
+import BookingsSlideBar from './BookingsSlidebar'
 
 class App extends Component {
 
      constructor() {
     super()
-    this.state = { objects: [] };
+    this.state = { objects: [],
+                    search:[]};
   }
 
   getBooking() {
     getCurrentBookings().then((objects) => {
-      this.setState({ objects });
+      this.setState({ objects:objects });
     });
   }
 
@@ -26,6 +29,17 @@ class App extends Component {
     return (
 
       <div className="App">
+
+          <Row>
+              <BookingsSlideBar title="My bookings"/>
+          </Row>
+          <Row>
+              <BookingsSlideBar title="My Favourites"/>
+          </Row>
+          <Row>
+              <BookingsSlideBar title="Recommendations"/>
+              
+          </Row>
 
         { objects.map((object )=> (
               <div className="col-sm-2" key={object.id}>

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import Nav from './Nav';
-import MyBookingsSlideBar from './MyBookingsSlideBar'
 import {Grid, Row, Col} from 'react-bootstrap';
 
 
-class LogIn extends Component {
+export default class LogIn extends Component {
 
   render() {
 
@@ -29,14 +28,9 @@ class LogIn extends Component {
           </div>
         </Col>
         </Row>
-          <Row>
-              <Col>
-          <MyBookingsSlideBar />
-          </Col>
-      </Row>
+
       </Grid>
     );
   }
 }
 
-export default LogIn;
