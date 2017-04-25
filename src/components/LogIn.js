@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from './Nav';
-import {Grid, Row, Col} from 'react-bootstrap';
+import {Grid, Row, Col, Form, FormGroup, ControlLabel, Button, FormControl} from 'react-bootstrap';
 import BookingsSlideBar from './BookingsSlidebar';
 
 
@@ -11,29 +11,41 @@ export default class LogIn extends Component {
   render() {
 
     return (
-      <Grid>
-          <Row>
-              <Col xs={12} md={12}>
-        <Nav />
+      <Row>
+          <Col xs={12} sm={12} md={6} lg={6}>
+            Heres a pretty pic
           </Col>
-          </Row>
+          <Col xs={12} sm={12} md={6} lg={6}>
+        <Form horizontal>
+          <FormGroup controlId="formHorizontalName">
+            <Col sm={6}>
+              <FormControl type="firstName" placeholder="First name" />
+            </Col>
+            <Col sm={6}>
+              <FormControl type="SurName" placeholder="Sur name" />
+            </Col>
+          </FormGroup>
+          <FormGroup controlId="formHorizontalEmail">
+            <Col sm={12}>
+              <FormControl type="email" placeholder="Email" />
+            </Col>
+          </FormGroup>
+          <FormGroup controlId="formHorizontalPassword">
+            <Col sm={12}>
+              <FormControl type="password" placeholder="Password" />
+            </Col>
+          </FormGroup>
+          <FormGroup controlId="">
 
-        <Row>
-        <Col xs={12} md={12}>
-          <div className="jumbotron text-center">
-            <h2>Welcome</h2>
-              <ul>
-
-          </ul>
-              <button className="btn btn-info log">Log In</button>
-
-          </div>
-        </Col>
+            <Col smOffset={2} sm={10}>
+              <Button type="submit">
+                Create account
+              </Button>
+            </Col>
+          </FormGroup>
+        </Form>
+          </Col>
         </Row>
-
-
-
-      </Grid>
     );
   }
 }

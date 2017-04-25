@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import logo from '../logo.svg';
-import '../App.css';
+import '../static/App.css';
 import { getCurrentBookings } from '../utils/bookster-api';
 import {Grid, Row, Col} from 'react-bootstrap';
 import BookingsSlideBar from './BookingsSlidebar';
