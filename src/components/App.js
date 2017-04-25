@@ -27,9 +27,6 @@ class App extends Component {
 
       <div className="App">
 
-
-
-
         { objects.map((object )=> (
               <div className="col-sm-2" key={object.id}>
                 <div className="panel panel-primary">

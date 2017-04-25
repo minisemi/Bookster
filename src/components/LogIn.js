@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Nav from './Nav';
+import MyBookingsSlideBar from './MyBookingsSlideBar'
+import {Grid, Row, Col} from 'react-bootstrap';
 
 
 class LogIn extends Component {
@@ -8,23 +10,31 @@ class LogIn extends Component {
   render() {
 
     return (
-      <div>
+      <Grid>
+          <Row>
+              <Col xs={12} md={12}>
         <Nav />
+          </Col>
+          </Row>
 
-
-        <div className="col-sm-12">
+        <Row>
+        <Col xs={12} md={12}>
           <div className="jumbotron text-center">
             <h2>Welcome</h2>
               <ul>
-
-
 
           </ul>
               <button className="btn btn-info log">Log In</button>
 
           </div>
-        </div>
-      </div>
+        </Col>
+        </Row>
+          <Row>
+              <Col>
+          <MyBookingsSlideBar />
+          </Col>
+      </Row>
+      </Grid>
     );
   }
 }
