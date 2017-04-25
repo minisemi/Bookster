@@ -1,26 +1,82 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import '../App.css';
+import {Grid, Row, Col, Form, FormGroup, ControlLabel, Button, FormControl} from 'react-bootstrap';
+
 
 class Nav extends Component {
 
   render() {
     return (
- <nav className="navbar navbar-default">
+
       <div className="App">
+<Row>
         <div className="App-header">
+          <Col xs={12} sm={12} md={3} lg={2}>
             <div className="navbar-header">
           <h2>BOOKSTER</h2>
-        </div>
+            </div></Col>
+          <Col xs={12} sm={12} mdOffset={2} md={7} lgOffset={3} lg={7}>
             <ul className="nav navbar-nav navbar-right">
-
-          <li><button className="btn btn-info log">Profile</button></li>
-          <li><button className="btn btn-danger log">Log out </button></li>
+              <Form inline>
+                <FormGroup controlId="formInlineEmail">
+                  <ControlLabel>Email: </ControlLabel>
+                    {' '}
+                    <FormControl type="email" placeholder="Enter your email" />
+                </FormGroup>
+                  {' '}
+                  <FormGroup controlId="formInlinePassword">
+                    <ControlLabel>Password: </ControlLabel>
+                      {' '}
+                      <FormControl type="password" />
+                  </FormGroup>
+                  {' '}
+                  <Link to="/special" className="btn btn-info log" role="button"> Log in </Link>
+              </Form>
         </ul>
+          </Col>
         </div>
 
+</Row>
+        <Row>
+          <Col xs={12} sm={12} md={6} lg={6}>
+            Heres a pretty pic
+          </Col>
+          <Col xs={12} sm={12} md={6} lg={6}>
+        <Form horizontal>
+          <FormGroup controlId="formHorizontalName">
+            <Col sm={6}>
+              <FormControl type="firstName" placeholder="First name" />
+            </Col>
+            <Col sm={6}>
+              <FormControl type="SurName" placeholder="Sur name" />
+            </Col>
+          </FormGroup>
+          <FormGroup controlId="formHorizontalEmail">
+            <Col sm={12}>
+              <FormControl type="email" placeholder="Email" />
+            </Col>
+          </FormGroup>
+          <FormGroup controlId="formHorizontalPassword">
+            <Col sm={12}>
+              <FormControl type="password" placeholder="Password" />
+            </Col>
+          </FormGroup>
+          <FormGroup controlId="">
+
+            <Col smOffset={2} sm={10}>
+              <Button type="submit">
+                Create account
+              </Button>
+            </Col>
+          </FormGroup>
+        </Form>
+          </Col>
+        </Row>
       </div>
-        </nav>
+
+
+
 
         //TODO: ANVÄND FÖLJANDE NAVBAR ISTÄLLET, EFTERSOM DET ÄR REACT-BOOTRSTRAP
         /*

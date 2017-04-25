@@ -13,10 +13,14 @@
   display:block;
 }
 
+.container {
+  width: 100%
+}
+
 .App-header {
-  height: 110px;
+
+  overflow:auto;
   padding: 20px;
-  color: #ff009b;
   text-align: left;
   background: -webkit-linear-gradient(left, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%); /* For Safari 5.1 to 6.0 */
   background: -o-linear-gradient(right, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%); /* For Opera 11.1 to 12.0 */
@@ -31,13 +35,17 @@ h2 {
 .App-intro {
   font-size: large;
 }
-.navbar-right { margin-right: 0px !important}
+.navbar-right {
+  color: #d2d1d4;
+  margin-right: 0px !important}
 .log {
   margin: 5px 10px 0 0;
+
 }
 .navbar-header {
   margin: 5px 10px 0 0;
   padding: 0;
+  color: #ff009b;
 }
 
 @keyframes App-logo-spin {
