@@ -7,7 +7,7 @@ import LogIn from './components/LogIn';
 import Booking from './components/BookingPage';
 import Layout from './components/Layout'
 import NotFoundPage from './components/NotFoundPage'
-import './index.css';
+import './static/index.css';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import AppRoutes from './components/AppRoutes'
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import '../App.css';
+import { Link } from 'react-router';
+import '../static/Nav.css';
 import {Grid, Row, Col, Form, FormGroup, ControlLabel, Button, FormControl} from 'react-bootstrap';
 
 
@@ -9,7 +9,7 @@ class Nav extends Component {
   render() {
     return (
 
-      <div className="App">
+      <div >
 <Row>
         <div className="App-header">
           <Col xs={12} sm={12} md={3} lg={2}>
