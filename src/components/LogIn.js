@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Nav from './Nav';
 import {Grid, Row, Col} from 'react-bootstrap';
+import BookingsSlideBar from './BookingsSlidebar';
+
 
 
 export default class LogIn extends Component {
@@ -28,6 +30,8 @@ export default class LogIn extends Component {
           </div>
         </Col>
         </Row>
+
+
 
       </Grid>
     );

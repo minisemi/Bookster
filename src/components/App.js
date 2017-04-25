@@ -4,7 +4,7 @@ import logo from '../logo.svg';
 import '../App.css';
 import { getCurrentBookings } from '../utils/bookster-api';
 import {Grid, Row, Col} from 'react-bootstrap';
-import BookingsSlideBar from './BookingsSlidebar'
+import BookingsSlideBar from './BookingsSlidebar';
 
 class App extends Component {
 
@@ -30,6 +30,7 @@ class App extends Component {
 
       <div className="App">
 
+          <Grid>
           <Row>
               <BookingsSlideBar title="My bookings"/>
           </Row>
@@ -38,9 +39,11 @@ class App extends Component {
           </Row>
           <Row>
               <BookingsSlideBar title="Recommendations"/>
-              
+
           </Row>
 
+
+            <Row>
         { objects.map((object )=> (
               <div className="col-sm-2" key={object.id}>
                 <div className="panel panel-primary">
@@ -54,7 +57,10 @@ class App extends Component {
                 </div>
               </div>
           ))}
+            </Row>
+          </Grid>
       </div>
+
 
     );
   }
