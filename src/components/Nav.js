@@ -9,37 +9,37 @@ class Nav extends Component {
   render() {
     return (
 
-      <div >
-<Row>
-        <div className="App-header">
-          <Col xs={12} sm={12} md={3} lg={2}>
-            <div className="navbar-header">
-          <h2>BOOKSTER</h2>
-            </div></Col>
-          <Col xs={12} sm={12} mdOffset={2} md={7} lgOffset={3} lg={7}>
-            <ul className="nav navbar-nav navbar-right">
-              <Form inline>
-                <FormGroup controlId="formInlineEmail">
-                  <ControlLabel>Email: </ControlLabel>
-                    {' '}
-                    <FormControl type="email" placeholder="Enter your email" />
-                </FormGroup>
-                  {' '}
-                  <FormGroup controlId="formInlinePassword">
-                    <ControlLabel>Password: </ControlLabel>
+        <div >
+          <Row>
+            <header>
+              <Col xs={12} sm={12} md={3} lg={2}>
+                <div className="navbar-header">
+                  <h2>BOOKSTER</h2>
+                </div></Col>
+              <Col xs={12} sm={12} mdOffset={2} md={7} lgOffset={3} lg={7}>
+                <ul className="nav navbar-nav navbar-right">
+                  <Form inline>
+                    <FormGroup controlId="formInlineEmail">
+                      <ControlLabel>Email: </ControlLabel>
+                        {' '}
+                      <FormControl type="email" placeholder="Enter your email" />
+                    </FormGroup>
                       {' '}
+                    <FormGroup controlId="formInlinePassword">
+                      <ControlLabel>Password: </ControlLabel>
+                        {' '}
                       <FormControl type="password" />
-                  </FormGroup>
-                  {' '}
-                  <Link to="/special" className="btn btn-info log" role="button"> Log in </Link>
-              </Form>
-        </ul>
-          </Col>
+                    </FormGroup>
+                      {' '}
+                    <Link to="/special" className="btn btn-info log" role="button"> Log in </Link>
+                  </Form>
+                </ul>
+              </Col>
+            </header>
+
+          </Row>
+
         </div>
-
-</Row>
-
-      </div>
 
 
 
