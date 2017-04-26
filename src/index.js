@@ -1,12 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SearchBox from './components/SearchBox';
-import App from './components/App';
-import Nav from './components/Nav';
-import LogIn from './components/LogIn';
-import Booking from './components/BookingPage';
-import Layout from './components/Layout'
-import NotFoundPage from './components/NotFoundPage'
 import './static/index.css';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import AppRoutes from './components/AppRoutes'

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import Nav from './Nav';
 import {Grid, Row, Col, Form, FormGroup, ControlLabel, Button, FormControl} from 'react-bootstrap';
-import BookingsSlideBar from './BookingsSlidebar';
-
+import  DatePicker  from 'react-bootstrap-date-picker';
+import '../../static/SignUpForm.css'
 
 
 export default class LogIn extends Component {
@@ -11,12 +9,7 @@ export default class LogIn extends Component {
   render() {
 
     return (
-      <Row>
-          <Col xs={12} sm={12} md={6} lg={6}>
-            Heres a pretty pic
-          </Col>
-          <Col xs={12} sm={12} md={6} lg={6}>
-        <Form horizontal>
+        <Form className="form" horizontal>
           <FormGroup controlId="formHorizontalName">
             <Col sm={6}>
               <FormControl type="firstName" placeholder="First name" />
@@ -35,18 +28,21 @@ export default class LogIn extends Component {
               <FormControl type="password" placeholder="Password" />
             </Col>
           </FormGroup>
+             <FormGroup controlId="">
+
+            <Col sm={10}>
+                <DatePicker  id="example-datepicker" dateFormat="YYYY/MM/DD"/>
+            </Col>
+          </FormGroup>
           <FormGroup controlId="">
 
-            <Col smOffset={2} sm={10}>
+            <Col smOffset={9} sm={3} mdOffset={9} md={3} lgOffset={9} lg={3}>
               <Button type="submit">
                 Create account
               </Button>
             </Col>
           </FormGroup>
         </Form>
-          </Col>
-        </Row>
     );
   }
 }
-

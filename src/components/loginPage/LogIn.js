@@ -1,0 +1,24 @@
+import React, { Component } from 'react';
+import CarouselShower from './CarouselShower';
+import SignUpForm from './SignUpForm'
+import {Grid, Row, Col, Form, FormGroup, ControlLabel, Button, FormControl} from 'react-bootstrap';
+
+
+
+export default class LogIn extends Component {
+
+  render() {
+
+    return (
+      <Row>
+          <Col xs={12} sm={12} md={6} lg={6}>
+            <CarouselShower/>
+          </Col>
+          <Col xs={12} sm={12} md={6} lg={6}>
+        <SignUpForm/>
+          </Col>
+        </Row>
+    );
+  }
+}
+

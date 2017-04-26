@@ -16,6 +16,7 @@
     "react-bootstrap-date-picker": "^5.0.1",
     "react-document-title": "^2.0.2",
     "react-dom": "^15.4.2",
+    "react-input-calendar": "^0.3.14",
     "react-router": "^2.8.1",
     "react-router-dom": "^4.0.0",
     "react-stormpath": "^2.0.1"
