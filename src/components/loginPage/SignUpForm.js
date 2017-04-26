@@ -15,7 +15,7 @@ export default class LogIn extends Component {
               <FormControl type="firstName" placeholder="First name" />
             </Col>
             <Col sm={6}>
-              <FormControl type="SurName" placeholder="Sur name" />
+              <FormControl type="Surname" placeholder="Surname" />
             </Col>
           </FormGroup>
           <FormGroup controlId="formHorizontalEmail">
