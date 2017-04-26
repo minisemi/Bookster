@@ -1,0 +1,28 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0 0 100px; /* bottom = footer height */
+    padding: 25px;
+}
+
+footer {
+    background-color: orange;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100px;
+    width: 100%;
+    overflow:hidden;
+    background: -webkit-linear-gradient(left, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%); /* Standard syntax (must be last) */
+}
+
+h2{
+    color: white;
+}
+
