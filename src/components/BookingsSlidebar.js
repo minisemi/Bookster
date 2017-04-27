@@ -15,7 +15,7 @@ class BookingsSlideBar extends Component {
         return (
 
             <div className="BookingsSlideBar">
-                <Panel header={this.props.title} bsStyle="primary">
+                <Panel header={this.props.title} bsStyle="default">
                     <Row>
                             {bookings.map(bookings => <Col key={bookings.id} xs={12} sm={5} md={3} lg={2}>
                                                             <BookingThumbnail {...bookings} />

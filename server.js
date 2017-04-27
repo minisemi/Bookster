@@ -8,6 +8,7 @@ const app = express();
 const jwt = require('express-jwt');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const mysql = require('mysql');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,6 +19,31 @@ app.use(cors());
   audience: 'ZN96W6dVcHVB_nw93rkRMRQt1DNHFAby'
 });*/
 
+
+ var connection = mysql.createConnection({
+   host     : 'localhost',
+   user     : 'matilda',
+   password : 'johan',
+   database : 'bookster'
+ });
+
+ connection.connect(function(err){
+ if(!err) {
+     console.log("Database is connected ... \n\n");
+ } else {
+     console.log("Error connecting database ... \n\n");
+ }
+ });
+
+ app.get("/",function(req,res){
+ connection.query('SELECT * from users LIMIT 2', function(err, rows, fields) {
+ connection.end();
+   if (!err)
+     console.log('The solution is: ', rows);
+   else
+     console.log('Error while performing Query.');
+   });
+ });
 
 
 app.get('/api/booking/current', (req, res) => {

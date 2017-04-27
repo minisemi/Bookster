@@ -1,0 +1,10 @@
+
+
+CREATE TABLE users(
+	email varchar(255),
+	firstName varchar(255),
+	familyName varchar(255),
+	password varchar (255),
+	birth varchar (255),
+	PRIMARY KEY (email)
+);
