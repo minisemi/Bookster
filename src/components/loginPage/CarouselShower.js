@@ -12,14 +12,15 @@ export default class CarouselShower extends Component{
                     <img className="carImage" src="/assets/SoccerField.png"/>
                     <Carousel.Caption>
                         <h3>Tvättstuga</h3>
+
                         <p>Här kan man tvätta</p>
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
-                    <img className="carImage" src="/assets/SoccerField.png"/>
+                    <img className="carImage" src="/assets/Laundromat.png"/>
                     <Carousel.Caption>
-                        <h3>Second slide label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <h3>Samla alla dina bokningar</h3>
+                        <p>på ett och samma ställe.</p>
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
