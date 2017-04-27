@@ -16,12 +16,16 @@ footer {
     width: 100%;
     overflow:hidden;
     background:url(../../public/assets/booksterheader.PNG) no-repeat;
-    
-}
-
-.footer-header{
-    color: white;
     font-family: Philosopher;
+    color: white;
 }
 
+footer .contactInfo{
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+footer .topRow{
+    margin-top: 10px;
+}
 
