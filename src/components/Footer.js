@@ -13,7 +13,7 @@ class Footer extends Component {
       <footer >
           <Col xs={12} sm={12} md={3} lg={2}>
             <div>
-          <h2>BOOKSTER</h2>
+          <h2 className="footer-header">BOOKSTER</h2>
             </div></Col>
         </footer>
 

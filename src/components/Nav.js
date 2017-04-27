@@ -16,7 +16,7 @@ class Nav extends Component {
                 <div className="navbar-header">
                   <h2>BOOKSTER</h2>
                 </div></Col>
-              <Col xs={12} sm={12} mdOffset={2} md={7} lgOffset={3} lg={7}>
+              <Col xs={12} sm={12} mdOffset={1} md={8} lgOffset={3} lg={7}>
                 <ul className="nav navbar-nav navbar-right">
                   <Form inline>
                     <FormGroup controlId="formInlineEmail">
