@@ -9,7 +9,7 @@ export default class CarouselShower extends Component{
         return (
             <Carousel className = "car">
                 <Carousel.Item>
-                    <img className="carImage" src="/assets/SoccerField.png"/>
+                    <img className="carImage" src="/assets/bookingThumbnails/Laundromat.png"/>
                     <Carousel.Caption>
                         <h3>Tvättstuga</h3>
 
@@ -17,14 +17,14 @@ export default class CarouselShower extends Component{
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
-                    <img className="carImage" src="/assets/Laundromat.png"/>
+                    <img className="carImage" src="/assets/bookingThumbnails/Laundromat.png"/>
                     <Carousel.Caption>
                         <h3>Samla alla dina bokningar</h3>
                         <p>på ett och samma ställe.</p>
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
-                    <img className="carImage" src="/assets/SoccerField.png"/>
+                    <img className="carImage" src="/assets/bookingThumbnails/SoccerField.png"/>
                     <Carousel.Caption>
                         <h3>Third slide label</h3>
                         <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>

@@ -16,7 +16,7 @@
 }
 
 .booking .picture-container {
-  margin: -160px 0 0 0;
+  margin: -20px 0 0 0;
   padding: 0 1em 0 1em;
 }
 
@@ -36,51 +36,8 @@
   width: auto;
 }
 
-.booking .flag .icon {
-  display: inline-block;
-  padding-bottom: .1em;
-  width: auto;
-}
 
-.booking .description,
-.booking .medals {
+.booking .description {
   font-size: 1.6em;
   padding: 1em;
-}
-
-.booking .medals p {
-  font-size: 1em;
-}
-
-.booking .medals li {
-  list-style: none;
-}
-
-.booking .medals .symbol {
-  border-radius: 50%;
-  display: inline-block;
-  font-size: .8em;
-  height: 1.6em;
-  justify-content: center;
-  margin: 5px;
-  text-align: center;
-  width: 1.6em;
-}
-
-.booking .medals .symbol.symbol-G {
-  color: #daa520;
-  background-color: #fff6de;
-  border: 2px solid #daa520;
-}
-
-.booking .medals .symbol.symbol-S {
-  color: #383738;
-  background-color: #b9b5b5;
-  border: 2px solid #383738;
-}
-
-.booking .medals .symbol.symbol-B {
-  color: #6b1919;
-  background-color: #ea96a1;
-  border: 2px solid #6E1924;
 }

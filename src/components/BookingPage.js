@@ -26,7 +26,7 @@ render() {
           </div>
           <section className="description">
             Laundromat in Sweden.
-            Find more info at <a href={booking.link} target="_blank">Wikipedia</a>).
+            Find more info at <a href={booking.link} target="_blank">Wikipedia</a>.
           </section>
         </div>
         <div className="navigateBack">
