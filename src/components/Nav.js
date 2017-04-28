@@ -13,11 +13,14 @@ class Nav extends Component {
         <div >
           <Row>
             <header>
-              <Col xs={12} sm={12} md={3} lg={2}>
+              <Link to={"/"}>
+                <Col xs={12} sm={12} md={3} lg={2}>
                 <div className="navbar-header">
                   <h1>Bookster</h1>
-                </div></Col>
-              <Col xs={12} sm={12} mdOffset={2} md={7} lgOffset={3} lg={7}>
+                </div>
+                </Col>
+              </Link>
+              <Col xs={12} sm={12} mdOffset={1} md={8} lgOffset={3} lg={7}>
                 <ul className="nav navbar-nav navbar-right">
                   <LogInForm/>
                 </ul>
