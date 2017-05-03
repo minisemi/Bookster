@@ -1,20 +1,19 @@
 
 header {
   min-height: 130px;
-  /*background: -webkit-linear-gradient(left, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%);
-  background: -o-linear-gradient(right, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%);
-  background: -moz-linear-gradient(right, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%);
-  background: linear-gradient(to right, rgba(255,0,0,0) 0%, rgb(255, 0, 155) 80%); /* Standard syntax (must be last) */
-  background:url(../../public/assets/booksterheader.PNG);
+  width: 100%;
+  overflow: auto;
+  background:url(../../public/assets/booksterheader.PNG) no-repeat;
+
 }
 
-.row {
+.noMargin {
 margin-right: 0px !important
 }
 
 .navbar-right {
   color: #d2d1d4;
-  /*padding: 10px;*/
+  padding: 10px;
    }
 .log {
   margin: 5px 10px 0 0;

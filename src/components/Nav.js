@@ -11,7 +11,7 @@ class Nav extends Component {
     return (
 
         <div >
-          <Row>
+          <Row className="noMargin">
             <header>
               <Link to={"/"}>
                 <Col xs={12} sm={12} md={3} lg={2}>
@@ -30,30 +30,6 @@ class Nav extends Component {
           </Row>
 
         </div>
-
-
-
-
-        //TODO: ANVÄND FÖLJANDE NAVBAR ISTÄLLET, EFTERSOM DET ÄR REACT-BOOTRSTRAP
-        /*
-        <Navbar>
-    <Navbar.Header>
-      <Navbar.Brand>
-        <a href="#">React-Bootstrap</a>
-      </Navbar.Brand>
-    </Navbar.Header>
-    <Nav>
-      <NavItem eventKey={1} href="#">Link</NavItem>
-      <NavItem eventKey={2} href="#">Link</NavItem>
-      <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-        <MenuItem eventKey={3.1}>Action</MenuItem>
-        <MenuItem eventKey={3.2}>Another action</MenuItem>
-        <MenuItem eventKey={3.3}>Something else here</MenuItem>
-        <MenuItem divider />
-        <MenuItem eventKey={3.4}>Separated link</MenuItem>
-      </NavDropdown>
-    </Nav>
-  </Navbar>*/
 
     );
   }

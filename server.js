@@ -20,7 +20,7 @@ app.use(cors());
 });*/
 
 
- var connection = mysql.createConnection({
+ /*var connection = mysql.createConnection({
    host     : 'localhost',
    user     : 'matilda',
    password : 'johan',
@@ -33,7 +33,7 @@ app.use(cors());
  } else {
      console.log("Error connecting database ... \n\n");
  }
- });
+ });*/
 
  app.get("/",function(req,res){
  connection.query('SELECT * from users LIMIT 2', function(err, rows, fields) {
@@ -49,23 +49,138 @@ app.use(cors());
 app.get('/api/booking/current', (req, res) => {
   let current = [
   {
-      id: 1,
-      object: "Fotbollsplan",
-      renter: "Bollkalle Corp."
+    'id': 'laundromat1',
+    'name': 'Laundromat',
+    'country': 'cu',
+    'birth': '1973',
+    'image': 'Laundromat.png',
+    'cover': 'LaundromatHeader.png',
+    'link': 'https://en.wikipedia.org/wiki/Self-service_laundry',
+    'medals': [
+      { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
+      { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
+    ],
   },
-  {
-      id: 2,
-      object: 'Tvättstuga',
-      renter: "Bollkalle Corp."
+
+    {
+    'id': 'soccerField1',
+    'name': 'Soccer Field',
+    'country': 'cu',
+    'birth': '1973',
+    'image': 'SoccerField.png',
+    'cover': 'SoccerFieldHeader.png',
+    'link': 'https://en.wikipedia.org/wiki/Association_football',
+    'medals': [
+      { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
+      { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
+    ],
   },
-  {
-      id: 3,
-      object: 'Grill',
-      renter: "Bollkalle Corp."
+      {
+    'id': 'soccerField2',
+    'name': 'Soccer Field',
+    'country': 'cu',
+    'birth': '1973',
+    'image': 'SoccerField.png',
+    'cover': 'SoccerFieldHeader.png',
+    'link': 'https://en.wikipedia.org/wiki/Association_football',
+    'medals': [
+      { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
+      { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
+    ],
+  },
+      {
+    'id': 'soccerField3',
+    'name': 'Soccer Field',
+    'country': 'cu',
+    'birth': '1973',
+    'image': 'SoccerField.png',
+    'cover': 'SoccerFieldHeader.png',
+    'link': 'https://en.wikipedia.org/wiki/Association_football',
+    'medals': [
+      { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
+      { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
+    ],
+  },
+      {
+    'id': 'soccerField4',
+    'name': 'Soccer Field',
+    'country': 'cu',
+    'birth': '1973',
+    'image': 'SoccerField.png',
+    'cover': 'SoccerFieldHeader.png',
+    'link': 'https://en.wikipedia.org/wiki/Association_football',
+    'medals': [
+      { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
+      { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
+    ],
+  },
+      {
+    'id': 'soccerField5',
+    'name': 'Soccer Field',
+    'country': 'cu',
+    'birth': '1973',
+    'image': 'SoccerField.png',
+    'cover': 'SoccerFieldHeader.png',
+    'link': 'https://en.wikipedia.org/wiki/Association_football',
+    'medals': [
+      { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
+      { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
+    ],
+  },
+      {
+    'id': 'soccerField6',
+    'name': 'Soccer Field',
+    'country': 'cu',
+    'birth': '1973',
+    'image': 'SoccerField.png',
+    'cover': 'SoccerFieldHeader.png',
+    'link': 'https://en.wikipedia.org/wiki/Association_football',
+    'medals': [
+      { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
+      { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
+    ],
   }
   ];
   res.json(current);
 })
+
+app.post('/api/companies', (req, res) => {
+  let companies = [
+  {
+      company: 'Byggvesta:',
+      city: 'Linköping',
+      id: 'byggvestaLink'
+    },
+    {
+      company: 'Byggvesta:',
+      city: 'Stockholm',
+      id: 'byggvestaSthlm'
+    },
+    {
+      company: 'Datateknologsektionen:',
+      city: 'Linköping',
+      id: 'dsektionenLiu'
+    },
+    {
+      company: 'Maskinteknologsektionen',
+      city: 'Linköping',
+      id: 'msektionenLiu'
+    }
+  ];
+
+  var escapedValue = req.body.query;
+  const regex = new RegExp('\\b' + escapedValue, 'i');
+  res.json(companies.filter(suggestion => regex.test(`${suggestion.company} ${suggestion.city}`)));
+})
+
+function getSuggestionValue(suggestion) {
+    return `${suggestion.company} ${suggestion.city}`;
+  }
+
+  // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
+  function escapeRegexCharacters(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
 
 app.listen(3333);
 console.log('Listening on localhost:3333');
