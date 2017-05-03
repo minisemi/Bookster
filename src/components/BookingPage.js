@@ -26,8 +26,8 @@ getCurrentBookings().then((objects) => {
 
 render() {
     const id = this.props.params.id;
-    /*var bookings = [];
-    getCurrentBookings().then((bookingData) => bookings=bookingData);*/
+    /*var companies = [];
+    getCurrentBookings().then((bookingData) => companies=bookingData);*/
     const { bookings }  = this.state;
     const booking = bookings.filter((booking) => booking.id===id )[0];
     if (!booking) {
@@ -43,8 +43,7 @@ render() {
             <h2 className="name">{booking.name}</h2>
           </div>
           <section className="description">
-            Laundromat in Sweden.
-            Find more info at <a href={booking.link} target="_blank">Wikipedia</a>.
+              {booking.info}
           </section>
         </div>
         <div className="navigateBack">

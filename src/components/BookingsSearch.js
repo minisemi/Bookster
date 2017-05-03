@@ -4,6 +4,8 @@ import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import { getCompanies } from '../utils/bookster-api';
+import { Link } from 'react-router';
+
 
   // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
   function escapeRegexCharacters(str) {
@@ -31,6 +33,7 @@ function getSuggestionValue(suggestion) {
     const parts = parse(suggestionText, matches);
 
     return (
+        <Link to={`/company/${suggestion.id}`}>
       <span className={'suggestion-content ' + suggestion.id}>
         <span className="name">
           {
@@ -44,6 +47,7 @@ function getSuggestionValue(suggestion) {
           }
         </span>
       </span>
+        </Link>
     );
   }
 
@@ -82,7 +86,7 @@ export default class BookingsSearch extends Component {
 
       const { value, suggestions } = this.state;
     const inputProps = {
-      placeholder: "Search for bookings",
+      placeholder: "Search for companies",
       value,
       onChange: this.onChange
     };

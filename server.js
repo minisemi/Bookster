@@ -45,6 +45,43 @@ app.use(cors());
    });
  });
 
+ app.get(`/api/companies/:id1`, (req,res)=> {
+     let companies = [
+  {
+      company: 'Byggvesta',
+      city: 'Linköping',
+      id: 'byggvestaLink',
+      image: 'byggvesta.png',
+      cover: 'ByggvestaHeader.png',
+      info: 'Rent apartments and book laundromat'
+    },
+    {
+      company: 'Byggvesta',
+      city: 'Stockholm',
+      id: 'byggvestaSthlm',
+        image: 'byggvesta.png',
+      cover: 'ByggvestaHeader.png',
+        info: 'Rent apartments and book laundromat'
+    },
+    {
+      company: 'Datateknologsektionen',
+      city: 'Linköping',
+      id: 'dsektionenLiu',
+        image: 'd-sektionen.png',
+      cover: 'd-sektionenHeader.png',
+        info: 'Rent our car etc.'
+    },
+    {
+      company: 'Maskinteknologsektionen',
+      city: 'Linköping',
+      id: 'msektionenLiu',
+        image: 'm-sektionen.png',
+      cover: 'm-sektionenHeader.png',
+        info: 'Rent our car etc.'
+    }
+  ];
+     res.json(companies.filter(company=>company.id ===req.params.id1)[0]);
+ })
 
 app.get('/api/booking/current', (req, res) => {
   let current = [
@@ -56,6 +93,7 @@ app.get('/api/booking/current', (req, res) => {
     'image': 'Laundromat.png',
     'cover': 'LaundromatHeader.png',
     'link': 'https://en.wikipedia.org/wiki/Self-service_laundry',
+      'info': 'Very nice laundromat. Please remember to clean the filters after use.',
     'medals': [
       { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
       { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
@@ -70,6 +108,7 @@ app.get('/api/booking/current', (req, res) => {
     'image': 'SoccerField.png',
     'cover': 'SoccerFieldHeader.png',
     'link': 'https://en.wikipedia.org/wiki/Association_football',
+        'info': 'Very nice soccer field.',
     'medals': [
       { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
       { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
@@ -83,6 +122,7 @@ app.get('/api/booking/current', (req, res) => {
     'image': 'SoccerField.png',
     'cover': 'SoccerFieldHeader.png',
     'link': 'https://en.wikipedia.org/wiki/Association_football',
+          'info': 'Very nice soccer field.',
     'medals': [
       { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
       { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
@@ -96,6 +136,7 @@ app.get('/api/booking/current', (req, res) => {
     'image': 'SoccerField.png',
     'cover': 'SoccerFieldHeader.png',
     'link': 'https://en.wikipedia.org/wiki/Association_football',
+          'info': 'Very nice soccer field.',
     'medals': [
       { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
       { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
@@ -109,6 +150,7 @@ app.get('/api/booking/current', (req, res) => {
     'image': 'SoccerField.png',
     'cover': 'SoccerFieldHeader.png',
     'link': 'https://en.wikipedia.org/wiki/Association_football',
+          'info': 'Very nice soccer field.',
     'medals': [
       { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
       { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
@@ -122,6 +164,7 @@ app.get('/api/booking/current', (req, res) => {
     'image': 'SoccerField.png',
     'cover': 'SoccerFieldHeader.png',
     'link': 'https://en.wikipedia.org/wiki/Association_football',
+          'info': 'Very nice soccer field.',
     'medals': [
       { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
       { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
@@ -135,6 +178,7 @@ app.get('/api/booking/current', (req, res) => {
     'image': 'SoccerField.png',
     'cover': 'SoccerFieldHeader.png',
     'link': 'https://en.wikipedia.org/wiki/Association_football',
+          'info': 'Very nice soccer field.',
     'medals': [
       { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
       { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
@@ -142,36 +186,48 @@ app.get('/api/booking/current', (req, res) => {
   }
   ];
   res.json(current);
-})
+});
 
 app.post('/api/companies', (req, res) => {
   let companies = [
   {
-      company: 'Byggvesta:',
+      company: 'Byggvesta',
       city: 'Linköping',
-      id: 'byggvestaLink'
+      id: 'byggvestaLink',
+      image: 'byggvesta.png',
+      cover: 'ByggvestaHeader.png',
+      info: 'Rent apartments and book laundromat'
     },
     {
-      company: 'Byggvesta:',
+      company: 'Byggvesta',
       city: 'Stockholm',
-      id: 'byggvestaSthlm'
+      id: 'byggvestaSthlm',
+        image: 'byggvesta.png',
+      cover: 'ByggvestaHeader.png',
+        info: 'Rent apartments and book laundromat'
     },
     {
-      company: 'Datateknologsektionen:',
+      company: 'Datateknologsektionen',
       city: 'Linköping',
-      id: 'dsektionenLiu'
+      id: 'dsektionenLiu',
+        image: 'd-sektionen.png',
+      cover: 'd-sektionenHeader.png',
+        info: 'Rent our car etc.'
     },
     {
       company: 'Maskinteknologsektionen',
       city: 'Linköping',
-      id: 'msektionenLiu'
+      id: 'msektionenLiu',
+        image: 'm-sektionen.png',
+      cover: 'm-sektionenHeader.png',
+        info: 'Rent our car etc.'
     }
   ];
 
-  var escapedValue = req.body.query;
+  const escapedValue = req.body.query;
   const regex = new RegExp('\\b' + escapedValue, 'i');
   res.json(companies.filter(suggestion => regex.test(`${suggestion.company} ${suggestion.city}`)));
-})
+});
 
 function getSuggestionValue(suggestion) {
     return `${suggestion.company} ${suggestion.city}`;

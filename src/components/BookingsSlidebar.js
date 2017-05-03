@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import '../static/BookingsSlideBar.css';
 import {Panel, Image, Grid, Row, Col, Thumbnail} from 'react-bootstrap';
 import BookingThumbnail from './BookingThumbnail';
-//import bookings from '../data/bookings';
+//import companies from '../data/companies';
 import { getCurrentBookings } from '../utils/bookster-api';
 
 class BookingsSlideBar extends Component {
