@@ -9,10 +9,16 @@ const jwt = require('express-jwt');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const passport = require('passport');
+const session = require('express-session');
+var flash = require('connect-flash');
+
+require('./../config/passport')(passport);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+
 
 /*const authCheck = jwt({
   secret: 'FC_TDGQvIW5oenBn04qOMrCJsTZMs5CbvSFMsw-MiAugv8yDWMC2WqT3af64PiRF',
@@ -66,6 +72,12 @@ app.get('/api/booking/current', (req, res) => {
   ];
   res.json(current);
 })
+
+app.use(session({ secret: 'alexluktar' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash());
+
 
 app.listen(3333);
 console.log('Listening on localhost:3333');
