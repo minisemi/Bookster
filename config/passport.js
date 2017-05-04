@@ -2,8 +2,6 @@ var LocalStrategy   = require('passport-local').Strategy;
 var mysql = require('mysql');
 var connection = mysql.createConnection(require('./database').connection);
 
-connection.query('USE bookster');
-
 module.exports = function (passport){
     passport.serializeUser(function(user, done){
         done (null, user.email)
