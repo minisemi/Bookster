@@ -1,10 +1,14 @@
 
 header {
-  min-height: 130px;
+  min-height: 80px;
+  display: flex;
+  justify-content: space-between;
   width: 100%;
-  overflow: auto;
+  overflow: visible;
   background:url(../../public/assets/booksterheader.PNG) no-repeat;
-
+  background-size: 100%;
+  position: relative;
+  direction: ltr;
 }
 
 .noMargin {
@@ -20,9 +24,8 @@ margin-right: 0px !important
 
 }
 .navbar-header {
-  margin: 5px 10px 0 0;
-  padding: 15px;
   font-family: Philosopher;
   color: white;
   font-size: x-large;
+  margin-left: 15px;
 }

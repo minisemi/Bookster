@@ -14,11 +14,7 @@ export default class App extends Component {
     return (
 
       <div className="App">
-
           <Grid>
-              <Row>
-                <BookingsSearch/>
-              </Row>
 
           <Row>
               <BookingsSlideBar title="My bookings"/>
