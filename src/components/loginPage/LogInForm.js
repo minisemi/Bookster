@@ -1,12 +1,21 @@
-/**
- * Created by Matilda on 2017-04-27.
- */
+
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import {Grid, Row, Col, Form, FormGroup, ControlLabel, FormControl} from 'react-bootstrap';
 
+function updateSessionStorage(token, email){
+    if (typeof(Storage) !== "undefined") {
+        sessionStorage.setItem("token", token)
+        sessionStorage.setItem("email", email)
+        sessionStorage.setItem("currentTab", "homeTab")
+    } else {
+        alert("Browser doesn't support web storage")
+    }
+}
 
-class LogInForm extends Component {
+export default class LogInForm extends Component {
+
+
 
     render() {
         return (
@@ -23,10 +32,8 @@ class LogInForm extends Component {
                     <FormControl type="password" />
                 </FormGroup>
                 {' '}
-                <Link to="/special" className="btn btn-info log" role="button"> Log in </Link>
+                <Link to="/special" className="btn btn-info log" role="button" onClick={updateSessionStorage(1,"a.ulander@live.se")}> Log in </Link>
             </Form>
         );
     }
 }
-
-export default LogInForm;

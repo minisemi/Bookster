@@ -169,20 +169,6 @@ app.get('/api/booking/current', (req, res) => {
       { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
       { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
     ],
-  },
-      {
-    'id': 'soccerField6',
-    'name': 'Soccer Field',
-    'country': 'cu',
-    'birth': '1973',
-    'image': 'SoccerField.png',
-    'cover': 'SoccerFieldHeader.png',
-    'link': 'https://en.wikipedia.org/wiki/Association_football',
-          'info': 'Very nice soccer field.',
-    'medals': [
-      { 'year': '1992', 'type': 'B', 'city': 'Barcelona', 'event': 'Olympic Games', 'category': '-57kg' },
-      { 'year': '1993', 'type': 'B', 'city': 'Hamilton', 'event': 'World Championships', 'category': '-57kg' },
-    ],
   }
   ];
   res.json(current);

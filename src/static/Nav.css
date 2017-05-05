@@ -29,3 +29,21 @@ margin-right: 0px !important
   font-size: x-large;
   margin-left: 15px;
 }
+.searchNoDisplay {
+  display: none;
+}
+
+.searchDisplay {
+  display: block;
+  margin-left: 30px;
+}
+
+.formNoDisplay{
+  display: none;
+}
+
+.formDisplay{
+  display: block;
+}
+
+

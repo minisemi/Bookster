@@ -13,6 +13,7 @@
   background-size: cover;
   width: 100%;
   height: 200px;
+  position: static;
 }
 
 .booking .picture-container {

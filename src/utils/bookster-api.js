@@ -26,6 +26,8 @@ function getBooking(id) {
   });
 }
 
+TODO: "ändra till get"
+
 function getCompanies(query) {
   const url = `${BASE_URL}/api/companies`;
   return axios.post(url,{
