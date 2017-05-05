@@ -24,7 +24,7 @@ export default class CompanyPage extends Component {
 render() {
     const { companies }  = this.state;
     const company = companies;
-    console.log(company);
+    console.log('Company: ' + company);
     if (!company) {
       return <NotFoundPage/>;
     }
@@ -36,7 +36,7 @@ render() {
           <header style={headerStyle}/>
           <div className="picture-container">
             <img src={`/assets/searchResults/${company.image}`}/>
-            <h2 className="name">{company.company}</h2>
+            <h2 className="name">{company.name}</h2>
           </div>
           <section className="description">
               {company.info}

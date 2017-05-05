@@ -8,3 +8,154 @@ CREATE TABLE users(
 	birth varchar (255),
 	PRIMARY KEY (email)
 );
+
+CREATE TABLE companies(
+    name varchar(255),
+    city varchar(255),
+    id varchar(255),
+    image varchar(255),
+    cover varchar(255),
+    info varchar (255),
+    PRIMARY KEY (id)
+    );
+
+CREATE TABLE facilities(
+    id varchar(255),
+    name varchar(255),
+    country varchar(255),
+    company varchar(255),
+    image varchar(255),
+    cover varchar(255),
+    link varchar(255),
+    PRIMARY KEY (id),
+    FOREIGN KEY (company) REFERENCES companies(id)
+    );
+
+CREATE TABLE favourites(
+    user varchar(255),
+    facility varchar(255),
+    PRIMARY KEY (user, facility),
+    FOREIGN KEY (user) REFERENCES users(email),
+    FOREIGN KEY (facility) REFERENCES facilities(id)
+    );
+
+CREATE TABLE currentBookings(
+    user varchar(255),
+    facility varchar (255),
+    startTime int,
+    endTime int,
+    id varchar(255),
+    PRIMARY KEY (id),
+    FOREIGN KEY (user) REFERENCES users(email),
+    FOREIGN KEY (facility) REFERENCES facilities(id)
+    );
+
+INSERT INTO companies VALUES(
+    'Byggvesta',
+    'Stockholm',
+    'byggvestaSthlm',
+    'byggvesta.png',
+    'ByggvestaHeader.png',
+    'Rent apartments and book laundromat'
+    );
+
+INSERT INTO companies VALUES(
+    'Byggvesta',
+    'Linköping',
+    'byggvestaLink',
+    'byggvesta.png',
+    'ByggvestaHeader.png',
+    'Rent apartments and book laundromat'
+    );
+
+INSERT INTO companies VALUES(
+    'Datateknologsektionen',
+    'Linköping',
+    'dsektionenLiu',
+    'd-sektionen.png',
+    'd-sektionenHeader.png',
+    'Rent our car etc.'
+    );
+INSERT INTO companies VALUES(
+    'Maskinteknologsektionen',
+    'Linköping',
+    'msektionenLiu',
+    'm-sektionen.png',
+    'm-sektionenHeader.png',
+    'Rent our car etc.'
+    );
+
+INSERT INTO facilities VALUES(
+    'laundromat1',
+    'Laundromat',
+    'byggvestaSthlm',
+    'Laundromat.png',
+    'LaundromatHeader.png',
+    'https://en.wikipedia.org/wiki/Self-service_laundry',
+    'Very nice laundromat. Please remember to clean the filters after use.'
+    );
+INSERT INTO facilities VALUES(
+    'soccerField1',
+    'Soccer Field',
+    'byggvestaLink',
+    'SoccerField.png',
+    'SoccerFieldHeader.png',
+    'https://en.wikipedia.org/wiki/Association_football',
+    'Very nice soccer field.'
+    );
+
+INSERT INTO facilities VALUES(
+    'soccerField2',
+    'Soccer Field',
+    'byggvestaSthlm',
+    'SoccerField.png',
+    'SoccerFieldHeader.png',
+    'https://en.wikipedia.org/wiki/Association_football',
+    'Very nice soccer field.'
+    );
+
+INSERT INTO facilities VALUES(
+    'soccerField3',
+    'Soccer Field',
+    'byggvestaSthlm',
+    'SoccerField.png',
+    'SoccerFieldHeader.png',
+    'https://en.wikipedia.org/wiki/Association_football',
+    'Very nice soccer field.'
+    );
+
+INSERT INTO facilities VALUES(
+    'soccerField4',
+    'Soccer Field',
+    'byggvestaSthlm',
+    'SoccerField.png',
+    'SoccerFieldHeader.png',
+    'https://en.wikipedia.org/wiki/Association_football',
+    'Very nice soccer field.'
+    );
+
+INSERT INTO facilities VALUES(
+    'soccerField5',
+    'Soccer Field',
+    'byggvestaSthlm',
+    'SoccerField.png',
+    'SoccerFieldHeader.png',
+    'https://en.wikipedia.org/wiki/Association_football',
+    'Very nice soccer field.'
+    );
+
+INSERT INTO users VALUES(
+    'matildasoderholm@gmail.com',
+    'Matilda',
+    'Soderholm',
+    'password',
+    '1993/05/21'
+    );
+
+INSERT INTO currentBookings VALUES(
+    'matildasoderholm@gmail.com',
+    'laundromat1',
+    1495368000,
+    1495371600,
+    'bokning1'
+    );

@@ -24,11 +24,11 @@ import { Link } from 'react-router';
   }
 
 function getSuggestionValue(suggestion) {
-    return `${suggestion.company} ${suggestion.city}`;
+    return `${suggestion.name} ${suggestion.city}`;
   }
 
   function renderSuggestion(suggestion, { query }) {
-    const suggestionText = `${suggestion.company} ${suggestion.city}`;
+    const suggestionText = `${suggestion.name} ${suggestion.city}`;
     const matches = match(suggestionText, query);
     const parts = parse(suggestionText, matches);
 
