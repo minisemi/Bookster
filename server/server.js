@@ -53,7 +53,12 @@ app.get("/",function(req,res){
 });
 
 app.get(`/api/companies/:id1`, (req,res)=> {
-    let companies = [
+    connection.query('select * from companies where id = ?', [req.params.id1], function (err, rows){
+        let companies = JSON.parse(JSON.stringify(rows))[0];
+
+        res.json(companies);
+    })
+    /*let companies = [
         {
             company: 'Byggvesta',
             city: 'Linköping',
@@ -87,13 +92,14 @@ app.get(`/api/companies/:id1`, (req,res)=> {
             info: 'Rent our car etc.'
         }
     ];
-    res.json(companies.filter(company=>company.id ===req.params.id1)[0]);
+    res.json(companies.filter(company=>company.id ===req.params.id1)[0]);*/
 })
 
 app.get('/api/booking/current', (req, res) => {
     connection.query('select * from facilities', function(err, rows){
 
-        let current = JSON.parse(JSON.stringify(rows));/*[
+        let current = JSON.parse(JSON.stringify(rows));
+        /*[
          {
          'id': 'laundromat1',
          'name': 'Laundromat',
@@ -157,9 +163,11 @@ app.get('/api/booking/current', (req, res) => {
 });
 
 app.post('/api/companies', (req, res) => {
-    let companies = [
+    connection.query('select * from companies', function(err, rows){
+        let companies = JSON.parse(JSON.stringify(rows));
+   /* let companies = [
         {
-            company: 'Byggvesta',
+            name: 'Byggvesta',
             city: 'Linköping',
             id: 'byggvestaLink',
             image: 'byggvesta.png',
@@ -167,7 +175,7 @@ app.post('/api/companies', (req, res) => {
             info: 'Rent apartments and book laundromat'
         },
         {
-            company: 'Byggvesta',
+            name: 'Byggvesta',
             city: 'Stockholm',
             id: 'byggvestaSthlm',
             image: 'byggvesta.png',
@@ -175,7 +183,7 @@ app.post('/api/companies', (req, res) => {
             info: 'Rent apartments and book laundromat'
         },
         {
-            company: 'Datateknologsektionen',
+            name: 'Datateknologsektionen',
             city: 'Linköping',
             id: 'dsektionenLiu',
             image: 'd-sektionen.png',
@@ -183,18 +191,19 @@ app.post('/api/companies', (req, res) => {
             info: 'Rent our car etc.'
         },
         {
-            company: 'Maskinteknologsektionen',
+            name: 'Maskinteknologsektionen',
             city: 'Linköping',
             id: 'msektionenLiu',
             image: 'm-sektionen.png',
             cover: 'm-sektionenHeader.png',
             info: 'Rent our car etc.'
         }
-    ];
+    ];*/
 
     const escapedValue = req.body.query;
     const regex = new RegExp('\\b' + escapedValue, 'i');
-    res.json(companies.filter(suggestion => regex.test(`${suggestion.company} ${suggestion.city}`)));
+    res.json(companies.filter(suggestion => regex.test(`${suggestion.name} ${suggestion.city}`)));
+    })
 });
 
 function getSuggestionValue(suggestion) {

@@ -114,6 +114,36 @@ INSERT INTO facilities VALUES(
     'Very nice soccer field.'
     );
 
+INSERT INTO facilities VALUES(
+    'soccerField3',
+    'Soccer Field',
+    'byggvestaSthlm',
+    'SoccerField.png',
+    'SoccerFieldHeader.png',
+    'https://en.wikipedia.org/wiki/Association_football',
+    'Very nice soccer field.'
+    );
+
+INSERT INTO facilities VALUES(
+    'soccerField4',
+    'Soccer Field',
+    'byggvestaSthlm',
+    'SoccerField.png',
+    'SoccerFieldHeader.png',
+    'https://en.wikipedia.org/wiki/Association_football',
+    'Very nice soccer field.'
+    );
+
+INSERT INTO facilities VALUES(
+    'soccerField5',
+    'Soccer Field',
+    'byggvestaSthlm',
+    'SoccerField.png',
+    'SoccerFieldHeader.png',
+    'https://en.wikipedia.org/wiki/Association_football',
+    'Very nice soccer field.'
+    );
+
 INSERT INTO users VALUES(
     'matildasoderholm@gmail.com',
     'Matilda',

@@ -5,11 +5,7 @@ import cookie from 'react-cookie';
 const BASE_URL = 'http://localhost:3333';
 
 
-/*export function getCurrentBookings() {
-    const url = `${BASE_URL}/booking/current`;
-    return axios.get(url).then(response => response.data);
-}
-
+/*
 export function signUp({ email, firstName, familyName, password, age}){
     const url = `${BASE_URL}/auth/signup`
     return function (dispatch){
