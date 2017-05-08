@@ -1,4 +1,5 @@
-var LocalStrategy   = require('passport-local').Strategy;
+var passport = require('passport')
+    , LocalStrategy = require('passport-local').Strategy;
 var mysql = require('mysql');
 var connection = mysql.createConnection(require('./database').connection);
 
@@ -13,33 +14,33 @@ module.exports = function (passport){
     })
 
     passport.use('local-signup', new LocalStrategy({
-            usernameField : 'email',
-            passwordField : 'password',
-            passReqToCallback : true
+            usernameField: 'email',
+            passwordField: 'passw',
+            passReqToCallback: true
         },
-        function(req, email, firstName, familyName, password, birth, done) {
+        function(req, email, password, done) {
 
-            // find a user whose email is the same as the forms email
-            // we are checking to see if the user trying to login already exists
+            // check if user exists
             connection.query("select * from users where email = ?",[email], function(err,rows){
-                console.log(rows);
-                console.log("above row object");
                 if (err)
                     return done(err);
                 if (rows.length) {
-                    return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                    console.log('already taken!')
+                    return done(null, false);
                 } else {
+                    firstName = req.body.firstName
+                    surName = req.body.surName
+                    birth = req.body.birth
 
-                    // if there is no user with that email
-                    // create the user
+                    //If no user exists, create new
                     var newUserMysql = new Object();
 
                     newUserMysql.email    = email;
                     newUserMysql.password = password; // use the generateHash function in our user model
 
-                    var insertQuery = "INSERT INTO users ( email, password ) values ('" + email +"','"+ password +"')";
-                    console.log(insertQuery);
-                    connection.query(insertQuery,function(err,rows){
+                    var insertQuery = "INSERT INTO users values (?,?,?,?,?)";
+
+                    connection.query(insertQuery, [email, firstName, surName, password, birth],function(err,rows){
                         newUserMysql.id = rows.insertId;
 
                         return done(null, newUserMysql);

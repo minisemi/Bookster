@@ -26,22 +26,6 @@ app.use(cors());
  audience: 'ZN96W6dVcHVB_nw93rkRMRQt1DNHFAby'
  });*/
 
-
-/*var connection = mysql.createConnection({
- host     : 'localhost',
- user     : 'matilda',
- password : 'johan',
- database : 'bookster'
- });
-
- connection.connect(function(err){
- if(!err) {
- console.log("Database is connected ... \n\n");
- } else {
- console.log("Error connecting database ... \n\n");
- }
- });*/
-
 app.get("/",function(req,res){
     connection.query('SELECT * from users LIMIT 2', function(err, rows, fields) {
         connection.end();
@@ -58,106 +42,13 @@ app.get(`/api/companies/:id1`, (req,res)=> {
 
         res.json(companies);
     })
-    /*let companies = [
-        {
-            company: 'Byggvesta',
-            city: 'Linköping',
-            id: 'byggvestaLink',
-            image: 'byggvesta.png',
-            cover: 'ByggvestaHeader.png',
-            info: 'Rent apartments and book laundromat'
-        },
-        {
-            company: 'Byggvesta',
-            city: 'Stockholm',
-            id: 'byggvestaSthlm',
-            image: 'byggvesta.png',
-            cover: 'ByggvestaHeader.png',
-            info: 'Rent apartments and book laundromat'
-        },
-        {
-            company: 'Datateknologsektionen',
-            city: 'Linköping',
-            id: 'dsektionenLiu',
-            image: 'd-sektionen.png',
-            cover: 'd-sektionenHeader.png',
-            info: 'Rent our car etc.'
-        },
-        {
-            company: 'Maskinteknologsektionen',
-            city: 'Linköping',
-            id: 'msektionenLiu',
-            image: 'm-sektionen.png',
-            cover: 'm-sektionenHeader.png',
-            info: 'Rent our car etc.'
-        }
-    ];
-    res.json(companies.filter(company=>company.id ===req.params.id1)[0]);*/
 })
 
 app.get('/api/booking/current', (req, res) => {
     connection.query('select * from facilities', function(err, rows){
 
         let current = JSON.parse(JSON.stringify(rows));
-        /*[
-         {
-         'id': 'laundromat1',
-         'name': 'Laundromat',
-         'image': 'Laundromat.png',
-         'cover': 'LaundromatHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Self-service_laundry',
-         'info': 'Very nice laundromat. Please remember to clean the filters after use.',
-         },
 
-         {
-         'id': 'soccerField1',
-         'name': 'Soccer Field',
-         'image': 'SoccerField.png',
-         'cover': 'SoccerFieldHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Association_football',
-         'info': 'Very nice soccer field.',
-         },
-         {
-         'id': 'soccerField2',
-         'name': 'Soccer Field',
-         'image': 'SoccerField.png',
-         'cover': 'SoccerFieldHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Association_football',
-         'info': 'Very nice soccer field.',
-         },
-         {
-         'id': 'soccerField3',
-         'name': 'Soccer Field',
-         'image': 'SoccerField.png',
-         'cover': 'SoccerFieldHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Association_football',
-         'info': 'Very nice soccer field.',
-         },
-         {
-         'id': 'soccerField4',
-         'name': 'Soccer Field',
-         'image': 'SoccerField.png',
-         'cover': 'SoccerFieldHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Association_football',
-         'info': 'Very nice soccer field.',
-         },
-         {
-         'id': 'soccerField5',
-         'name': 'Soccer Field',
-         'image': 'SoccerField.png',
-         'cover': 'SoccerFieldHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Association_football',
-         'info': 'Very nice soccer field.',
-         },
-         {
-         'id': 'soccerField6',
-         'name': 'Soccer Field',
-         'image': 'SoccerField.png',
-         'cover': 'SoccerFieldHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Association_football',
-         'info': 'Very nice soccer field.',
-         }
-         ];*/
         res.json(current);
     })
 });
@@ -165,40 +56,6 @@ app.get('/api/booking/current', (req, res) => {
 app.post('/api/companies', (req, res) => {
     connection.query('select * from companies', function(err, rows){
         let companies = JSON.parse(JSON.stringify(rows));
-   /* let companies = [
-        {
-            name: 'Byggvesta',
-            city: 'Linköping',
-            id: 'byggvestaLink',
-            image: 'byggvesta.png',
-            cover: 'ByggvestaHeader.png',
-            info: 'Rent apartments and book laundromat'
-        },
-        {
-            name: 'Byggvesta',
-            city: 'Stockholm',
-            id: 'byggvestaSthlm',
-            image: 'byggvesta.png',
-            cover: 'ByggvestaHeader.png',
-            info: 'Rent apartments and book laundromat'
-        },
-        {
-            name: 'Datateknologsektionen',
-            city: 'Linköping',
-            id: 'dsektionenLiu',
-            image: 'd-sektionen.png',
-            cover: 'd-sektionenHeader.png',
-            info: 'Rent our car etc.'
-        },
-        {
-            name: 'Maskinteknologsektionen',
-            city: 'Linköping',
-            id: 'msektionenLiu',
-            image: 'm-sektionen.png',
-            cover: 'm-sektionenHeader.png',
-            info: 'Rent our car etc.'
-        }
-    ];*/
 
     const escapedValue = req.body.query;
     const regex = new RegExp('\\b' + escapedValue, 'i');
@@ -218,8 +75,12 @@ function escapeRegexCharacters(str) {
 app.use(session({ secret: 'alexluktar' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-app.use(flash());
 
+
+app.post('/auth/signup', passport.authenticate('local-signup', {
+		successRedirect : '/special', // redirect to the secure profile section
+		failureRedirect : '/hej' // redirect back to the signup page if there is an error
+}));
 
 app.listen(3333);
 console.log('Listening on localhost:3333');
