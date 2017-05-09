@@ -13,6 +13,7 @@ module.exports = function (passport){
         })
     })
 
+
     passport.use('local-signup', new LocalStrategy({
             usernameField: 'email',
             passwordField: 'passw',
@@ -25,12 +26,11 @@ module.exports = function (passport){
                 if (err)
                     return done(err);
                 if (rows.length) {
-                    console.log('already taken!')
-                    return done(null, false);
+                    return done(null, false, { message: 'user already exists'});
                 } else {
-                    firstName = req.body.firstName
-                    surName = req.body.surName
-                    birth = req.body.birth
+                    var firstName = req.body.firstName,
+                        surName = req.body.surName,
+                        birth = req.body.birth;
 
                     //If no user exists, create new
                     var newUserMysql = new Object();
@@ -43,10 +43,27 @@ module.exports = function (passport){
                     connection.query(insertQuery, [email, firstName, surName, password, birth],function(err,rows){
                         newUserMysql.id = rows.insertId;
 
-                        return done(null, newUserMysql);
+                        return done(null, newUserMysql, { message: 'Signed up!' });
                     });
                 }
             });
         }
     ))
+
+    passport.use('local-login', new LocalStrategy({
+            usernameField: 'email',
+            passwordField: 'password',
+            passReqToCallback: true
+        },
+        function(req, email, password, done){
+            connection.query('select * from users where email = ?', [email], function (err,  rows){
+                if (err)
+                    return done(err);
+                if (!rows.length || rows[0].password != password)
+                    return done (null, false, {message: 'Wrong email or password. Please try again.'});
+                return done(null, rows[0], {message: 'Successfully logged in'});
+            })
+        }
+        )
+    )
 }

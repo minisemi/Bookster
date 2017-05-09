@@ -57,9 +57,9 @@ app.post('/api/companies', (req, res) => {
     connection.query('select * from companies', function(err, rows){
         let companies = JSON.parse(JSON.stringify(rows));
 
-    const escapedValue = req.body.query;
-    const regex = new RegExp('\\b' + escapedValue, 'i');
-    res.json(companies.filter(suggestion => regex.test(`${suggestion.name} ${suggestion.city}`)));
+        const escapedValue = req.body.query;
+        const regex = new RegExp('\\b' + escapedValue, 'i');
+        res.json(companies.filter(suggestion => regex.test(`${suggestion.name} ${suggestion.city}`)));
     })
 });
 
@@ -75,12 +75,29 @@ function escapeRegexCharacters(str) {
 app.use(session({ secret: 'alexluktar' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
+app.use(flash());
 
 
-app.post('/auth/signup', passport.authenticate('local-signup', {
-		successRedirect : '/special', // redirect to the secure profile section
-		failureRedirect : '/hej' // redirect back to the signup page if there is an error
-}));
+
+app.post('/auth/signup', function(req, res, next) {
+    passport.authenticate('local-signup', function(err, user, info) {
+        if (err) { console.log(err)
+            return next(err); }
+        if (!user) {
+            return res.json(info)};
+        console.log(info.message)
+        return res.json(info);
+    })(req, res, next);
+});
+
+app.post('/auth/signin', function(req, res, next) {
+    passport.authenticate('local-login', function(err, user, info) {
+        console.log(info.message)
+        if (err) { console.log(err)
+            return next(err); }
+            return res.json(info);
+            })(req, res, next);
+});
 
 app.listen(3333);
 console.log('Listening on localhost:3333');
