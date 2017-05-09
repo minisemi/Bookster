@@ -22,11 +22,11 @@ CREATE TABLE companies(
 CREATE TABLE facilities(
     id varchar(255),
     name varchar(255),
-    country varchar(255),
     company varchar(255),
     image varchar(255),
     cover varchar(255),
     link varchar(255),
+    info varchar(255),
     PRIMARY KEY (id),
     FOREIGN KEY (company) REFERENCES companies(id)
     );

@@ -3,7 +3,9 @@ import '../static/BookingsSlideBar.css';
 import {Panel, Image, Grid, Row, Col, Thumbnail} from 'react-bootstrap';
 import BookingThumbnail from './BookingThumbnail';
 //import companies from '../data/companies';
-import { getCurrentBookings } from '../utils/bookster-api';
+import { getCurrentBookings, getCompanyBookings, getFavourites, getRecommendations } from '../utils/bookster-api';
+
+// A BOOKINGSSLIDEBAR NEEDS THE FOLLOWONG PROPS: TITLE, TYPE, ID.
 
 class BookingsSlideBar extends Component {
 
@@ -13,14 +15,45 @@ class BookingsSlideBar extends Component {
     this.state = { bookings: []};
   }
 
-  getBooking() {
-getCurrentBookings().then((objects) => {
-      this.setState({ bookings:objects });
-    });
+  loadBookings(id){
+        if (id!=undefined) {
+            switch (this.props.type) {
+                case "company":
+                    getCompanyBookings(id).then((objects) => {
+                        this.setState({bookings: objects});
+                    });
+                    break;
+                case "favourites" :
+                    getFavourites(id).then((objects) => {
+                        this.setState({bookings: objects});
+                    });
+                    break;
+                case "current":
+                    getCurrentBookings(id).then((objects) => {
+                        this.setState({bookings: objects});
+                    });
+                    break;
+                case "recommendations":
+                    getRecommendations(id).then((objects) => {
+                        this.setState({bookings: objects});
+                    });
+                    break;
+
+                default:
+                    break;
+                    this.getCurrentBookings();
+            }
+        }
+  }
+
+  componentWillReceiveProps(nextProps){
+        if (nextProps.id != this.props.id) {
+            this.loadBookings(nextProps.id);
+    }
   }
 
   componentDidMount() {
-    this.getBooking();
+        this.loadBookings(this.props.id);
   }
 
     render() {

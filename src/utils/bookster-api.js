@@ -20,15 +20,41 @@ export function signUp({ email, firstName, familyName, password, age}){
             });
     }
 */
-export {getCurrentBookings, getCompanies, getCompany};
+export {getCurrentBookings, getCompanies, getCompany, getBooking, getCompanyBookings, getFavourites, getRecommendations};
 
-function getCurrentBookings() {
-  const url = `${BASE_URL}/api/booking/current`;
+function getCurrentBookings(id) {
+  const url = `${BASE_URL}/api/users/${id}/current`;
   return axios.get(url).then(response => response.data)
       .catch(function (error) {
     console.log(error);
   });
 }
+
+function getFavourites(id) {
+  const url = `${BASE_URL}/api/users/${id}/favourites`;
+  return axios.get(url).then(response => response.data)
+      .catch(function (error) {
+    console.log(error);
+  });
+}
+
+function getRecommendations(id) {
+  const url = `${BASE_URL}/api/users/${id}/recommendations`;
+  return axios.get(url).then(response => response.data)
+      .catch(function (error) {
+    console.log(error);
+  });
+}
+
+function getCompanyBookings(id){
+  const url = `${BASE_URL}/api/companies/${id}/bookings`;
+  return axios.get(url).then(response => response.data)
+      .catch(function (error) {
+    console.log(error);
+  });
+
+}
+
 function getCompany(id) {
   const url = `${BASE_URL}/api/companies/${id}`;
   return axios.get(url).then(response => response.data)
@@ -36,8 +62,8 @@ function getCompany(id) {
     console.log(error);
   });
 }
-function getBooking(id) {
-  const url = `${BASE_URL}/api/companies/booking${id}`;
+function getBooking(compId, bookId) {
+  const url = `${BASE_URL}/api/companies/${compId}/bookings/${bookId}`;
   return axios.get(url).then(response => response.data)
       .catch(function (error) {
     console.log(error);

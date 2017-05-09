@@ -12,6 +12,8 @@ const mysql = require('mysql');
 const passport = require('passport');
 const session = require('express-session');
 var flash = require('connect-flash');
+var moment = require('moment');
+moment().format();
 
 require('./../config/passport')(passport);
 var connection = mysql.createConnection(require('./../config/database').connection)
@@ -52,153 +54,65 @@ app.get("/",function(req,res){
     });
 });
 
-app.get(`/api/companies/:id1`, (req,res)=> {
-    connection.query('select * from companies where id = ?', [req.params.id1], function (err, rows){
+app.get(`/api/companies/:id`, (req,res)=> {
+    connection.query('select * from companies where id = ?', [req.params.id], function (err, rows){
         let companies = JSON.parse(JSON.stringify(rows))[0];
 
         res.json(companies);
     })
-    /*let companies = [
-        {
-            company: 'Byggvesta',
-            city: 'Linköping',
-            id: 'byggvestaLink',
-            image: 'byggvesta.png',
-            cover: 'ByggvestaHeader.png',
-            info: 'Rent apartments and book laundromat'
-        },
-        {
-            company: 'Byggvesta',
-            city: 'Stockholm',
-            id: 'byggvestaSthlm',
-            image: 'byggvesta.png',
-            cover: 'ByggvestaHeader.png',
-            info: 'Rent apartments and book laundromat'
-        },
-        {
-            company: 'Datateknologsektionen',
-            city: 'Linköping',
-            id: 'dsektionenLiu',
-            image: 'd-sektionen.png',
-            cover: 'd-sektionenHeader.png',
-            info: 'Rent our car etc.'
-        },
-        {
-            company: 'Maskinteknologsektionen',
-            city: 'Linköping',
-            id: 'msektionenLiu',
-            image: 'm-sektionen.png',
-            cover: 'm-sektionenHeader.png',
-            info: 'Rent our car etc.'
-        }
-    ];
-    res.json(companies.filter(company=>company.id ===req.params.id1)[0]);*/
+
 })
 
-app.get('/api/booking/current', (req, res) => {
-    connection.query('select * from facilities', function(err, rows){
+app.get(`/api/companies/:compId/bookings/:bookId`, (req,res)=> {
+    connection.query('select * from facilities where id = ? and company = ?', [req.params.bookId, req.params.compId], function (err, rows){
+        let companies = JSON.parse(JSON.stringify(rows))[0];
+
+        res.json(companies);
+    })
+
+})
+
+app.get('/api/users/:id/current', (req, res) => {
+
+    connection.query('select A.id, A.name, A.company, A.image, A.cover, A.link, A.info from facilities as A inner join currentBookings as B on A.id = B.facility and B.user=?', [req.params.id],function(err, rows){
+        let currentBookings = JSON.parse(JSON.stringify(rows));
+        res.json(currentBookings);
+    });
+
+});
+
+app.get('/api/users/:id/favourites', (req, res) => {
+    connection.query('select A.id, A.name, A.company, A.image, A.cover, A.link, A.info from facilities as A inner join favourites as B on A.id = B.facility and B.user=?', [req.params.id],function(err, rows){
 
         let current = JSON.parse(JSON.stringify(rows));
-        /*[
-         {
-         'id': 'laundromat1',
-         'name': 'Laundromat',
-         'image': 'Laundromat.png',
-         'cover': 'LaundromatHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Self-service_laundry',
-         'info': 'Very nice laundromat. Please remember to clean the filters after use.',
-         },
 
-         {
-         'id': 'soccerField1',
-         'name': 'Soccer Field',
-         'image': 'SoccerField.png',
-         'cover': 'SoccerFieldHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Association_football',
-         'info': 'Very nice soccer field.',
-         },
-         {
-         'id': 'soccerField2',
-         'name': 'Soccer Field',
-         'image': 'SoccerField.png',
-         'cover': 'SoccerFieldHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Association_football',
-         'info': 'Very nice soccer field.',
-         },
-         {
-         'id': 'soccerField3',
-         'name': 'Soccer Field',
-         'image': 'SoccerField.png',
-         'cover': 'SoccerFieldHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Association_football',
-         'info': 'Very nice soccer field.',
-         },
-         {
-         'id': 'soccerField4',
-         'name': 'Soccer Field',
-         'image': 'SoccerField.png',
-         'cover': 'SoccerFieldHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Association_football',
-         'info': 'Very nice soccer field.',
-         },
-         {
-         'id': 'soccerField5',
-         'name': 'Soccer Field',
-         'image': 'SoccerField.png',
-         'cover': 'SoccerFieldHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Association_football',
-         'info': 'Very nice soccer field.',
-         },
-         {
-         'id': 'soccerField6',
-         'name': 'Soccer Field',
-         'image': 'SoccerField.png',
-         'cover': 'SoccerFieldHeader.png',
-         'link': 'https://en.wikipedia.org/wiki/Association_football',
-         'info': 'Very nice soccer field.',
-         }
-         ];*/
         res.json(current);
+    })
+});
+
+TODO: "ADD TABLE OR SOMETHING WITH RECOMMENDATIONS. CURRENTLY FETCHING FROM FAOURITES"
+app.get('/api/users/:id/recommendations', (req, res) => {
+    connection.query('select A.id, A.name, A.company, A.image, A.cover, A.link, A.info from facilities as A inner join favourites as B on A.id = B.facility and B.user=?', [req.params.id],function(err, rows){
+
+        let current = JSON.parse(JSON.stringify(rows));
+
+        res.json(current);
+    })
+});
+
+app.get('/api/companies/:id/bookings', (req, res) => {
+    console.log(req.params.id);
+    connection.query('select * from facilities where company=?', [req.params.id],function(err, rows){
+
+        let companyBookings = JSON.parse(JSON.stringify(rows));
+
+        res.json(companyBookings);
     })
 });
 
 app.post('/api/companies', (req, res) => {
     connection.query('select * from companies', function(err, rows){
         let companies = JSON.parse(JSON.stringify(rows));
-   /* let companies = [
-        {
-            name: 'Byggvesta',
-            city: 'Linköping',
-            id: 'byggvestaLink',
-            image: 'byggvesta.png',
-            cover: 'ByggvestaHeader.png',
-            info: 'Rent apartments and book laundromat'
-        },
-        {
-            name: 'Byggvesta',
-            city: 'Stockholm',
-            id: 'byggvestaSthlm',
-            image: 'byggvesta.png',
-            cover: 'ByggvestaHeader.png',
-            info: 'Rent apartments and book laundromat'
-        },
-        {
-            name: 'Datateknologsektionen',
-            city: 'Linköping',
-            id: 'dsektionenLiu',
-            image: 'd-sektionen.png',
-            cover: 'd-sektionenHeader.png',
-            info: 'Rent our car etc.'
-        },
-        {
-            name: 'Maskinteknologsektionen',
-            city: 'Linköping',
-            id: 'msektionenLiu',
-            image: 'm-sektionen.png',
-            cover: 'm-sektionenHeader.png',
-            info: 'Rent our car etc.'
-        }
-    ];*/
 
     const escapedValue = req.body.query;
     const regex = new RegExp('\\b' + escapedValue, 'i');

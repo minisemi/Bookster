@@ -21,10 +21,18 @@ export default class CompanyPage extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps){
+        if (nextProps.params.id != this.props.params.id) {
+            getCompany(nextProps.params.id).then((objects) => {
+      this.setState({ companies:objects });
+    });
+    }
+  }
+
 render() {
+
     const { companies }  = this.state;
     const company = companies;
-    console.log('Company: ' + company);
     if (!company) {
       return <NotFoundPage/>;
     }
@@ -41,7 +49,7 @@ render() {
           <section className="description">
               {company.info}
           </section>
-            <BookingSlidebar title="Bookable objects"/>
+            <BookingSlidebar title="Bookable objects" type="company" id={company.id}/>
         </div>
         <div className="navigateBack">
           <Link to="/special">« Back to the index</Link>
