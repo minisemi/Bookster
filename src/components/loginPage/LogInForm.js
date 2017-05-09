@@ -32,7 +32,7 @@ export default class LogInForm extends Component {
                     <FormControl type="password" />
                 </FormGroup>
                 {' '}
-                <Link to="/special" className="btn btn-info log" role="button" onClick={updateSessionStorage(1,"a.ulander@live.se")}> Log in </Link>
+                <Link to="/special" className="btn btn-info log" role="button" > Log in </Link>
             </Form>
         );
     }

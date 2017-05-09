@@ -28,22 +28,6 @@ app.use(cors());
  audience: 'ZN96W6dVcHVB_nw93rkRMRQt1DNHFAby'
  });*/
 
-
-/*var connection = mysql.createConnection({
- host     : 'localhost',
- user     : 'matilda',
- password : 'johan',
- database : 'bookster'
- });
-
- connection.connect(function(err){
- if(!err) {
- console.log("Database is connected ... \n\n");
- } else {
- console.log("Error connecting database ... \n\n");
- }
- });*/
-
 app.get("/",function(req,res){
     connection.query('SELECT * from users LIMIT 2', function(err, rows, fields) {
         connection.end();
@@ -60,7 +44,6 @@ app.get(`/api/companies/:id`, (req,res)=> {
 
         res.json(companies);
     })
-
 })
 
 app.get(`/api/companies/:compId/bookings/:bookId`, (req,res)=> {
@@ -117,6 +100,7 @@ app.post('/api/companies', (req, res) => {
     const escapedValue = req.body.query;
     const regex = new RegExp('\\b' + escapedValue, 'i');
     res.json(companies.filter(suggestion => regex.test(`${suggestion.name} ${suggestion.city}`)));
+
     })
 });
 
@@ -134,6 +118,27 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
 
+
+
+app.post('/auth/signup', function(req, res, next) {
+    passport.authenticate('local-signup', function(err, user, info) {
+        if (err) { console.log(err)
+            return next(err); }
+        if (!user) {
+            return res.json(info)};
+        console.log(info.message)
+        return res.json(info);
+    })(req, res, next);
+});
+
+app.post('/auth/signin', function(req, res, next) {
+    passport.authenticate('local-login', function(err, user, info) {
+        console.log(info.message)
+        if (err) { console.log(err)
+            return next(err); }
+            return res.json(info);
+            })(req, res, next);
+});
 
 app.listen(3333);
 console.log('Listening on localhost:3333');
