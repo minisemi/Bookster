@@ -39,8 +39,8 @@ function signUpUser(formValues){
 function logInUser(form){
     const url = `${BASE_URL}/signin`;
     return axios.post(url,{
-        email: form.email.toString(),
-        password: form.password.toString()
+        email: form.email,
+        password: form.password
     }).then(response =>{
         var loggedIn = response.data.message
         var token = response.data.token
