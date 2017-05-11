@@ -3,33 +3,37 @@ import { Link } from 'react-router';
 import {Panel, Image, Grid, Row, Col, Thumbnail} from 'react-bootstrap';
 import '../static/BookingPage.css';
 import NotFoundPage from './NotFoundPage';
-import { getCurrentBookings } from '../utils/bookster-api';
+import { getBooking } from '../utils/bookster-api';
+import BookingCalender from './BookingCalender';
 
 
 
 class BookingPage extends Component {
 
     constructor() {
-    super()
+    super();
     this.state = { bookings: []};
   }
 
-  getBooking() {
-getCurrentBookings().then((objects) => {
+  componentWillReceiveProps(nextProps){
+        if (nextProps.params.id != this.props.params.id) {
+            getBooking(nextProps.params.compId, nextProps.params.id).then((objects) => {
+      this.setState({ bookings:objects });
+    });
+    }
+  }
+
+  componentDidMount(){
+    getBooking(this.props.params.compId, this.props.params.id).then((objects) => {
       this.setState({ bookings:objects });
     });
   }
 
-  componentDidMount() {
-    this.getBooking();
-  }
-
 render() {
-    const id = this.props.params.id;
-    /*var companies = [];
-    getCurrentBookings().then((bookingData) => companies=bookingData);*/
+    //const id = this.props.params.id;
     const { bookings }  = this.state;
-    const booking = bookings.filter((booking) => booking.id===id )[0];
+    //const booking = bookings.filter((booking) => booking.id===id )[0];
+    const booking = bookings;
     if (!booking) {
       return <NotFoundPage/>;
     }
@@ -45,6 +49,7 @@ render() {
           <section className="description">
               {booking.info}
           </section>
+            <BookingCalender/>
         </div>
         <div className="navigateBack">
           <Link to="/special">« Back to the index</Link>

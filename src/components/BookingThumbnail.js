@@ -8,7 +8,7 @@ export default class BookingThumbnail extends Component {
     render() {
         return (
 
-                <Link to={`/company/booking/${this.props.id}`}>
+                <Link to={`/${this.props.company}/${this.props.id}`}>
         <div className="bookingThumbnail">
             <Image src={`/assets/bookingThumbnails/${this.props.image}`} thumbnail responsive/>
           <h2>{this.props.name}</h2>

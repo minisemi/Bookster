@@ -12,8 +12,8 @@ const routes = (
   <Route path="/" component={Layout}>
             <IndexRoute component={LogIn}/>
             <Route path="/special" component={App}/>
-            <Route path="/company/:id" component={CompanyPage}/>
-            <Route path="/company/booking/:id" component={BookingPage}/>
+            <Route path="/:id" component={CompanyPage}/>
+            <Route path="/:compId/:id" component={BookingPage}/>
                 <Route path="*" component={NotFoundPage}/>
             </Route>
 );

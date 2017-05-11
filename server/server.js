@@ -12,6 +12,8 @@ const mysql = require('mysql');
 const passport = require('passport');
 const session = require('express-session');
 var flash = require('connect-flash');
+var moment = require('moment');
+moment().format();
 
 
 require('./../config/passport')(passport);
@@ -37,16 +39,34 @@ app.get("/",function(req,res){
     });
 });
 
-app.get(`/api/companies/:id1`, (req,res)=> {
-    connection.query('select * from companies where id = ?', [req.params.id1], function (err, rows){
+app.get(`/api/companies/:id`, (req,res)=> {
+    connection.query('select * from companies where id = ?', [req.params.id], function (err, rows){
         let companies = JSON.parse(JSON.stringify(rows))[0];
 
         res.json(companies);
     })
 })
 
-app.get('/api/booking/current', (req, res) => {
-    connection.query('select * from facilities', function(err, rows){
+app.get(`/api/companies/:compId/bookings/:bookId`, (req,res)=> {
+    connection.query('select * from facilities where id = ? and company = ?', [req.params.bookId, req.params.compId], function (err, rows){
+        let companies = JSON.parse(JSON.stringify(rows))[0];
+
+        res.json(companies);
+    })
+
+})
+
+app.get('/api/users/:id/current', (req, res) => {
+
+    connection.query('select A.id, A.name, A.company, A.image, A.cover, A.link, A.info from facilities as A inner join currentBookings as B on A.id = B.facility and B.user=?', [req.params.id],function(err, rows){
+        let currentBookings = JSON.parse(JSON.stringify(rows));
+        res.json(currentBookings);
+    });
+
+});
+
+app.get('/api/users/:id/favourites', (req, res) => {
+    connection.query('select A.id, A.name, A.company, A.image, A.cover, A.link, A.info from facilities as A inner join favourites as B on A.id = B.facility and B.user=?', [req.params.id],function(err, rows){
 
         let current = JSON.parse(JSON.stringify(rows));
 
@@ -54,13 +74,34 @@ app.get('/api/booking/current', (req, res) => {
     })
 });
 
+TODO: "ADD TABLE OR SOMETHING WITH RECOMMENDATIONS. CURRENTLY FETCHING FROM FAOURITES"
+app.get('/api/users/:id/recommendations', (req, res) => {
+    connection.query('select A.id, A.name, A.company, A.image, A.cover, A.link, A.info from facilities as A inner join favourites as B on A.id = B.facility and B.user=?', [req.params.id],function(err, rows){
+
+        let current = JSON.parse(JSON.stringify(rows));
+
+        res.json(current);
+    })
+});
+
+app.get('/api/companies/:id/bookings', (req, res) => {
+    console.log(req.params.id);
+    connection.query('select * from facilities where company=?', [req.params.id],function(err, rows){
+
+        let companyBookings = JSON.parse(JSON.stringify(rows));
+
+        res.json(companyBookings);
+    })
+});
+
 app.post('/api/companies', (req, res) => {
     connection.query('select * from companies', function(err, rows){
         let companies = JSON.parse(JSON.stringify(rows));
 
-        const escapedValue = req.body.query;
-        const regex = new RegExp('\\b' + escapedValue, 'i');
-        res.json(companies.filter(suggestion => regex.test(`${suggestion.name} ${suggestion.city}`)));
+    const escapedValue = req.body.query;
+    const regex = new RegExp('\\b' + escapedValue, 'i');
+    res.json(companies.filter(suggestion => regex.test(`${suggestion.name} ${suggestion.city}`)));
+
     })
 });
 

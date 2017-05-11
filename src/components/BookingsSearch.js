@@ -33,7 +33,7 @@ function getSuggestionValue(suggestion) {
     const parts = parse(suggestionText, matches);
 
     return (
-        <Link to={`/company/${suggestion.id}`}>
+        <Link to={`/${suggestion.id}`}>
       <span className={'suggestion-content ' + suggestion.id}>
         <span className="name">
           {
@@ -82,6 +82,12 @@ export default class BookingsSearch extends Component {
     });
   };
 
+  storeInputReference = autosuggest => {
+    if (autosuggest !== null) {
+      this.input = autosuggest.input;
+    }
+  };
+
   render() {
 
       const { value, suggestions } = this.state;
@@ -98,7 +104,8 @@ export default class BookingsSearch extends Component {
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
-        inputProps={inputProps} />
+        inputProps={inputProps}
+        ref={this.storeInputReference}/>
 
     );
   }

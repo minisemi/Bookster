@@ -68,6 +68,10 @@ body {
   color: #fff;
 }
 
+.react-autosuggest__suggestion--highlighted {
+  background-color: #ddd;
+}
+
 .suggestion-content {
   display: flex;
   align-items: center;

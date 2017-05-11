@@ -17,14 +17,14 @@ export default class App extends Component {
           <Grid>
 
           <Row>
-              <BookingsSlideBar title="My bookings"/>
+              <BookingsSlideBar title="My bookings" type="current" id="matildasoderholm@gmail.com"/>
 
           </Row>
           <Row>
-              <BookingsSlideBar title="My Favourites"/>
+              <BookingsSlideBar title="My Favourites" type="favourites" id="matildasoderholm@gmail.com"/>
           </Row>
           <Row>
-              <BookingsSlideBar title="Recommendations"/>
+              <BookingsSlideBar title="Recommendations" type="recommendations" id="matildasoderholm@gmail.com"/>
 
           </Row>
           </Grid>
