@@ -2,14 +2,13 @@
 import React, { Component } from 'react';
 import {Form, FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
 import { logInUser } from '../../utils/auth-api';
-import browserHistory from 'react-router';
+import {browserHistory} from 'react-router';
 
 export default class LogInForm extends Component {
      constructor(props){
         super(props);
         this.state = {
             formValues: {},
-            message: "",
             loggedIn: false
         }
     }
@@ -27,8 +26,8 @@ export default class LogInForm extends Component {
     handleSubmit(event) {
         event.preventDefault();
         logInUser(this.state.formValues).then((response) => {
-            this.setState({loggedIn:true, message:response.message})
-            if (response.token){
+            this.setState({loggedIn:response})
+            if (response){
                 browserHistory.push('/special');
             }
         });

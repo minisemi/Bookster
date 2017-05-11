@@ -44,14 +44,11 @@ function logInUser(form){
     }).then(response =>{
         var loggedIn = response.data.message
         var token = response.data.token
-        console.log("Data: " + loggedIn);
-        console.log("Token: " + token);
         if (loggedIn){
-            console.log("log in")
-            cookie.save('token', token.toString, { path: '/' })
-            //window.location.href = 'http://localhost:3000/special';
-            console.log(cookie.get('token'))
+            cookie.set('token', token, { path: '/' })
+            return true
         }
+        else return false;
 
     })
         .catch(function (error) {

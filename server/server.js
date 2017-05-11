@@ -134,7 +134,6 @@ app.post('/auth/signup', function(req, res, next) {
 
 app.post('/auth/signin', function(req, res, next) {
     passport.authenticate('local-login', function(err, user, info) {
-        console.log("Message: " + info.message + info.token)
         if (err) {
             console.log("Error: " + err)
             return next(err);
