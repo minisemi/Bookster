@@ -16,22 +16,20 @@ export default class Nav extends Component {
         this.state = { loggedIn: true};
     }
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   handleLogin(){
-    console.log("handleLogin(): set state loggedIn=true")
       this.updateSessionStorage("token","email")
     this.setState({loggedIn:true});
       }
 
   handleLogout(){
-    console.log("handleLogout(): set state loggedIn=false")
       this.logout();
     this.setState({loggedIn:false});
       }
 
       updateSessionStorage(token, email){
-            console.log("add token")
 
     if (typeof(Storage) !== "undefined") {
         sessionStorage.setItem("token", token)
@@ -44,14 +42,12 @@ export default class Nav extends Component {
 }
 
  logout(){
-        console.log("remove token")
         sessionStorage.removeItem("token")
         sessionStorage.removeItem("email")
 }
 
   render() {
     let bookingsSearchClass, loginFormClass;
-    console.log("Nav render. State="+this.state.loggedIn)
     // Borde egentligen skapa elementen om man loggas in, istället för att dölja dem (säkerhet osv)
     if (!this.state.loggedIn){
       bookingsSearchClass="noDisplay"
@@ -65,11 +61,13 @@ export default class Nav extends Component {
 
         <div>
             <header >
-              <Link to={"/"} onClick={this.handleLogout}>
+                <div onClick={this.handleLogout}>
+              <Link to={"/"} >
                 <div className="navbar-header">
                   <h1>Bookster</h1>
                 </div>
               </Link>
+                </div>
               <div className={bookingsSearchClass}>
               <BookingsSearch  />
               </div>
@@ -77,8 +75,6 @@ export default class Nav extends Component {
                   <LogInForm handleLogin={this.handleLogin} className="booksterHeaderDisplay"/>
                 </ul>
             </header>
-
-
         </div>
 
     );
