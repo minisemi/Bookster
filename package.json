@@ -13,9 +13,12 @@
     "express-session": "^1.15.2",
     "express-stormpath": "^3.2.0",
     "history": "^4.6.1",
+    "jsonwebtoken": "^7.4.0",
+    "jwt-simple": "^0.5.1",
     "mysql": "^2.13.0",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1",
     "passport-local": "^1.0.0",
     "react": "^15.4.2",
     "react-autosuggest": "^9.0.1",
@@ -28,7 +31,8 @@
     "react-input-calendar": "^0.3.14",
     "react-router": "^2.8.1",
     "react-router-dom": "^4.0.0",
-    "react-stormpath": "^2.0.1"
+    "react-stormpath": "^2.0.1",
+    "universal-cookie": "^2.0.5"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

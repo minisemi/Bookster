@@ -29,7 +29,6 @@ export default class SignUpForm extends Component {
 
     handler(e) {
         e.preventDefault()
-        console.log("handler called")
         this.setState({
             showModal: false
         })
