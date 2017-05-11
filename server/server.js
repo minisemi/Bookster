@@ -15,6 +15,7 @@ var flash = require('connect-flash');
 var moment = require('moment');
 moment().format();
 
+
 require('./../config/passport')(passport);
 var connection = mysql.createConnection(require('./../config/database').connection)
 
@@ -133,12 +134,21 @@ app.post('/auth/signup', function(req, res, next) {
 
 app.post('/auth/signin', function(req, res, next) {
     passport.authenticate('local-login', function(err, user, info) {
-        console.log(info.message)
-        if (err) { console.log(err)
-            return next(err); }
-            return res.json(info);
-            })(req, res, next);
+        console.log("Message: " + info.message + info.token)
+        if (err) {
+            console.log("Error: " + err)
+            return next(err);
+        }
+        return res.json(info);
+    })(req, res, next);
 });
+
+//Data format expected: "JWT reallylongtoken"
+app.get('/auth/auth',passport.authenticate('jwt', { session: false}),
+    function(req, res) {
+        res.json({message: "Success! You can not see this without a token"});
+    }
+);
 
 app.listen(3333);
 console.log('Listening on localhost:3333');

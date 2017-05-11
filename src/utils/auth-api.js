@@ -1,4 +1,6 @@
 import axios from 'axios';
+import Cookies from 'universal-cookie';
+const cookie = new Cookies();
 
 const BASE_URL = 'http://localhost:3333/auth';
 
@@ -18,7 +20,7 @@ const BASE_URL = 'http://localhost:3333/auth';
  });
  }
  */
-export {signUpUser};
+export {signUpUser, logInUser};
 
 function signUpUser(formValues){
     const url = `${BASE_URL}/signup`;
@@ -35,12 +37,24 @@ function signUpUser(formValues){
 }
 
 function logInUser(form){
-   const url = `${BASE_URL}/signup`;
-    return axios.get(url,{
+    const url = `${BASE_URL}/signin`;
+    return axios.post(url,{
         email: form.email.toString(),
         password: form.password.toString()
-    }).then(response => response.data.message)
-      .catch(function (error) {
-    console.log(error);
-  });
+    }).then(response =>{
+        var loggedIn = response.data.message
+        var token = response.data.token
+        console.log("Data: " + loggedIn);
+        console.log("Token: " + token);
+        if (loggedIn){
+            console.log("log in")
+            cookie.save('token', token.toString, { path: '/' })
+            //window.location.href = 'http://localhost:3000/special';
+            console.log(cookie.get('token'))
+        }
+
+    })
+        .catch(function (error) {
+            console.log(error);
+        });
 }

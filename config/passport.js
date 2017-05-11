@@ -2,6 +2,15 @@ var passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 var mysql = require('mysql');
 var connection = mysql.createConnection(require('./database').connection);
+var passportJWT = require('passport-jwt')
+var JWTStrategy = passportJWT.Strategy;
+var conf = require('./jwt')
+var ExtractJwt = passportJWT.ExtractJwt;
+var jwt  = require('jsonwebtoken')
+var parameters = {
+    secretOrKey: conf.jwtSecret,
+    jwtFromRequest: ExtractJwt.fromAuthHeader()
+}
 
 module.exports = function (passport){
     passport.serializeUser(function(user, done){
@@ -57,13 +66,37 @@ module.exports = function (passport){
         },
         function(req, email, password, done){
             connection.query('select * from users where email = ?', [email], function (err,  rows){
+                console.log(rows[0])
                 if (err)
                     return done(err);
                 if (!rows.length || rows[0].password != password)
                     return done (null, false, {message: 'Wrong email or password. Please try again.'});
-                return done(null, rows[0], {message: 'Successfully logged in'});
+                var payload = {email: rows[0].email};
+                var token = jwt.sign(payload, parameters.secretOrKey)
+                return done(null, rows[0], {message: true, token: token});
             })
         }
         )
     )
+
+    passport.use(new JWTStrategy (parameters, function(payload, done) {
+            console.log('payload received', payload);
+            connection.query('select * from users where email = ?', [payload.email], function (err,  rows){
+                console.log(rows[0], "Length: " + rows.length)
+                if (err) {
+                    console.log(err);
+                    return done(err);
+                }
+                if (!rows.length) {
+                    console.log("not allowed")
+                    done(null, false)
+                }
+                else {
+                    console.log("allowed")
+                    done(null, rows[0]);
+                }
+            });
+        }
+    ))
+
 }
