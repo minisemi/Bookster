@@ -33,6 +33,7 @@ export default class LogInForm extends Component {
         });
     }
 
+
     render() {
         return (
             <Form inline onSubmit={ this.handleSubmit.bind(this)}>
@@ -48,7 +49,7 @@ export default class LogInForm extends Component {
                     <FormControl type="password" name="password" value={this.state.formValues["password"]} onChange={this.handleChange.bind(this)}/>
                 </FormGroup>
                 {' '}
-                 <Button type="submit" value="Submit" >
+                 <Button type="submit" value="Submit" onClick={this.props.handleLogin} >
                                 Sign in
                             </Button>
             </Form>
