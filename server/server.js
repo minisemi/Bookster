@@ -94,25 +94,44 @@ app.get('/api/companies/:id/bookings', (req, res) => {
     })
 });
 
-app.post('/api/companies', (req, res) => {
+app.get('/api/suggestions', (req, res) => {
+    let suggestions = [
+        {
+            section: 'Bookings',
+            suggestions: []
+        },
+        {
+            section: 'Companies',
+            suggestions: []
+        }
+    ];
     connection.query('select * from companies', function(err, rows){
         let companies = JSON.parse(JSON.stringify(rows));
+        suggestions[1].suggestions=companies;
+        connection.query('select * from facilities', function(err, rows2){
+            let facilities = JSON.parse(JSON.stringify(rows2));
+            suggestions[0].suggestions=facilities;
 
-    const escapedValue = req.body.query;
-    const regex = new RegExp('\\b' + escapedValue, 'i');
-    res.json(companies.filter(suggestion => regex.test(`${suggestion.name} ${suggestion.city}`)));
 
+            const escapedValue = req.query.query;
+
+            const regex = new RegExp('\\b' + escapedValue, 'i');
+            res.json(suggestions
+                .map(section => {
+                    return {
+                        section: section.section,
+                        suggestions: section.suggestions.filter(suggestion => regex.test(`${suggestion.name} ${suggestion.city}`))
+                    };
+                })
+                .filter(section => section.suggestions.length > 0));
+            //res.json(companies.filter(suggestion => regex.test(`${suggestion.name} ${suggestion.city}`)));
+
+        })
     })
 });
 
-function getSuggestionValue(suggestion) {
-    return `${suggestion.company} ${suggestion.city}`;
-}
 
-// https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
-function escapeRegexCharacters(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
+
 
 app.use(session({ secret: 'alexluktar' })); // session secret
 app.use(passport.initialize());
