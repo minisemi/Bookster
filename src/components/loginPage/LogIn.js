@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CarouselShower from './CarouselShower';
 import SignUpForm from './SignUpForm'
-import {Grid, Row, Col, Form, FormGroup, ControlLabel, Button, FormControl} from 'react-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 import '../../static/Login.css'
 
 

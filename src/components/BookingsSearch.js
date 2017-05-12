@@ -3,7 +3,7 @@ import '../static/BookingsSearch.css';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import { getCompanies } from '../utils/bookster-api';
+import { getServerSuggestions } from '../utils/bookster-api';
 import { Link } from 'react-router';
 
 
@@ -21,6 +21,10 @@ import { Link } from 'react-router';
 
 
     return escapedValue;
+  }
+
+  function onSuggestionSelected(event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }){
+
   }
 
 function getSuggestionValue(suggestion) {
@@ -51,9 +55,26 @@ function getSuggestionValue(suggestion) {
     );
   }
 
+  function renderSectionTitle(section) {
+  return (
+    <strong>{section.section}</strong>
+  );
+}
+
+function getSectionSuggestions(section) {
+  return section.suggestions;
+}
+
+function shouldRenderSuggestions(value) {
+  return value.trim().length > 2;
+}
+
+
+
 export default class BookingsSearch extends Component {
 
     constructor() {
+      console.log("Constructor")
     super();
 
     this.state = {
@@ -69,7 +90,7 @@ export default class BookingsSearch extends Component {
   };
 
   onSuggestionsFetchRequested = ({ value }) => {
-    getCompanies(getSuggestions(value)).then((results)=>{
+    getServerSuggestions(getSuggestions(value)).then((results)=>{
         this.setState({
       suggestions: results
     });});
@@ -88,13 +109,16 @@ export default class BookingsSearch extends Component {
     }
   };
 
+
+
   render() {
 
       const { value, suggestions } = this.state;
     const inputProps = {
       placeholder: "Search for companies",
       value,
-      onChange: this.onChange
+        type:'search',
+      onChange: this.onChange,
     };
 
     return (
@@ -105,7 +129,13 @@ export default class BookingsSearch extends Component {
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
-        ref={this.storeInputReference}/>
+        ref={this.storeInputReference}
+             onSuggestionSelected={onSuggestionSelected}
+              multiSection={true}
+              renderSectionTitle={renderSectionTitle}
+              getSectionSuggestions={getSectionSuggestions}
+              highlightFirstSuggestion={true}
+              shouldRenderSuggestions={shouldRenderSuggestions}/>
 
     );
   }

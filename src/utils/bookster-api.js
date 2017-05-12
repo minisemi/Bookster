@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { browserHistory } from 'react-router';
-import cookie from 'react-cookie';
 
 const BASE_URL = 'http://localhost:3333';
 
@@ -20,7 +18,7 @@ export function signUp({ email, firstName, familyName, password, age}){
             });
     }
 */
-export {getCurrentBookings, getCompanies, getCompany, getBooking, getCompanyBookings, getFavourites, getRecommendations};
+export {getCurrentBookings, getServerSuggestions, getCompany, getBooking, getCompanyBookings, getFavourites, getRecommendations};
 
 function getCurrentBookings(id) {
   const url = `${BASE_URL}/api/users/${id}/current`;
@@ -70,12 +68,14 @@ function getBooking(compId, bookId) {
   });
 }
 
-TODO: "ändra till get"
 
-function getCompanies(query) {
-  const url = `${BASE_URL}/api/companies`;
-  return axios.post(url,{
-    query: query
+function getServerSuggestions(query) {
+  const url = `${BASE_URL}/api/suggestions`;
+  return axios.get(url,{
+    params: {
+      query: query
+    }
+
   }).then(response => response.data)
       .catch(function (error) {
     console.log(error);
