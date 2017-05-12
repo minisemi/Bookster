@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, IndexRoute } from 'react-router'
+import { Route, IndexRoute, browserHistory } from 'react-router'
 import App from './components/App';
 import LogIn from './components/loginPage/LogIn';
 import BookingPage from './components/BookingPage';
@@ -18,11 +18,11 @@ var checkAuth = function(location, callback, component){
 
 const routes = (
     <Route path="/" component={Layout}>
-        <IndexRoute component={LogIn}/>
-        <Route path="/special" getComponent={(location, callback) => {
+        <IndexRoute getComponent={(location, callback) => {
             checkAuth(location, callback, App)
         }
         }/>
+        <Route path="/sign_in" component={LogIn}/>
         <Route path="/:id" getComponent={(location, callback) => {
             checkAuth(location, callback, CompanyPage)
         }
