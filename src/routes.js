@@ -8,13 +8,13 @@ import CompanyPage from './components/CompanyPage';
 import NotFoundPage from './components/NotFoundPage';
 import Auth from './Auth';
 
-/*var checkAuth = function(location, callback, component){
+var checkAuth = function(location, callback, component){
     if (Auth.checkIfAuthenticated()) {
         callback(null, component);
     } else {
         callback(null, LogIn);
     }
-}*/
+}
 
 const routes = (
     <Route path="/" component={Layout}>

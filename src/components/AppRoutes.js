@@ -4,7 +4,7 @@ import routes from '../routes';
 import Auth from '../Auth'
 
 
-let pathStack = [];
+/*let pathStack = [];
 browserHistory.listen(function(ev) {
 
   if (ev.pathname=='/' && pathStack[0]!='/' && Auth.checkIfAuthenticated()){
@@ -14,7 +14,7 @@ browserHistory.listen(function(ev) {
   pathStack.unshift(ev.pathname)
   console.log('Stack: ', pathStack)
 });
-
+*/
 export default class AppRoutes extends React.Component {
 
 
