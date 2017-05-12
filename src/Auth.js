@@ -13,10 +13,6 @@ class Auth {
         return cookie.get('token') !== "unauthorized";
     }
 
-    static getToken(){
-        return cookie.get('token');
-    }
-
 
     static deauthenticateUser() {
         console.log('Deauthenticating...')

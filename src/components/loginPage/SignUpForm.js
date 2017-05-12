@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import {Grid, Row, Col, Form, FormGroup, ControlLabel, Button, FormControl} from 'react-bootstrap';
-import  DatePicker  from 'react-bootstrap-date-picker';
+import {Col, Form, FormGroup, Button, FormControl} from 'react-bootstrap';
 import '../../static/SignUpForm.css'
 import Modal from './SignUpModal';
 import { signUpUser } from '../../utils/auth-api';
@@ -84,7 +83,7 @@ export default class SignUpForm extends Component {
                         </Col>
                     </FormGroup>
                 </Form>
-                <Modal showBol={this.state.showModal} title={this.state.message} handler = {this.handler.bind(this)} />
+                <Modal showBol={this.state.showModal} title={this.state.message} handler={this.handler.bind(this)} />
             </div>
         );
     }

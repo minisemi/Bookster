@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import {Panel, Image, Grid, Row, Col, Thumbnail} from 'react-bootstrap';
 import '../static/BookingPage.css';
 import NotFoundPage from './NotFoundPage';
 import { getCompany } from '../utils/bookster-api';
@@ -22,7 +21,7 @@ export default class CompanyPage extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-        if (nextProps.params.id != this.props.params.id) {
+        if (nextProps.params.id !== this.props.params.id) {
             getCompany(nextProps.params.id).then((objects) => {
       this.setState({ companies:objects });
     });
@@ -43,7 +42,7 @@ render() {
         <div className="booking">
           <header style={headerStyle}/>
           <div className="picture-container">
-            <img src={`/assets/searchResults/${company.image}`}/>
+            <img alt="" src={`/assets/searchResults/${company.image}`}/>
             <h2 className="name">{company.name}</h2>
           </div>
           <section className="description">

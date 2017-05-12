@@ -1,15 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './static/index.css';
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 import AppRoutes from './components/AppRoutes'
 
 
 
 
-import createBrowserHistory from 'history/createBrowserHistory'
+//import createBrowserHistory from 'history/createBrowserHistory'
 
-const newHistory = createBrowserHistory();
+//const newHistory = createBrowserHistory();
 
 const Root = () => {
     return (

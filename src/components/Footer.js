@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import '../static/Footer.css';
-import {Grid, Row, Col, Form, FormGroup, ControlLabel, Button, FormControl} from 'react-bootstrap';
+import {Col} from 'react-bootstrap';
 
 
 class Footer extends Component {

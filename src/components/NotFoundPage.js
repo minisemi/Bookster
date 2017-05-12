@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import {Panel, Image, Grid, Row, Col, Thumbnail} from 'react-bootstrap';
-import BookingThumbnail from './BookingThumbnail';
 
 
 

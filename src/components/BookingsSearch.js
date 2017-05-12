@@ -74,6 +74,7 @@ function shouldRenderSuggestions(value) {
 export default class BookingsSearch extends Component {
 
     constructor() {
+      console.log("Constructor")
     super();
 
     this.state = {
@@ -134,7 +135,7 @@ export default class BookingsSearch extends Component {
               renderSectionTitle={renderSectionTitle}
               getSectionSuggestions={getSectionSuggestions}
               highlightFirstSuggestion={true}
-              shouldRenderSuggestions ={shouldRenderSuggestions}/>
+              shouldRenderSuggestions={shouldRenderSuggestions}/>
 
     );
   }

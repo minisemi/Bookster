@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../static/BookingsSlideBar.css';
-import {Panel, Image, Grid, Row, Col, Thumbnail} from 'react-bootstrap';
+import {Panel, Row, Col} from 'react-bootstrap';
 import BookingThumbnail from './BookingThumbnail';
 //import companies from '../data/companies';
 import { getCurrentBookings, getCompanyBookings, getFavourites, getRecommendations } from '../utils/bookster-api';
@@ -16,7 +16,7 @@ class BookingsSlideBar extends Component {
   }
 
   loadBookings(id){
-        if (id!=undefined) {
+        if (id!==undefined) {
             switch (this.props.type) {
                 case "company":
                     getCompanyBookings(id).then((objects) => {
@@ -41,13 +41,12 @@ class BookingsSlideBar extends Component {
 
                 default:
                     break;
-                    this.getCurrentBookings();
             }
         }
   }
 
   componentWillReceiveProps(nextProps){
-        if (nextProps.id != this.props.id) {
+        if (nextProps.id !== this.props.id) {
             this.loadBookings(nextProps.id);
     }
   }

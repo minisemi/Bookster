@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { browserHistory } from 'react-router';
-import cookie from 'react-cookie';
 
 const BASE_URL = 'http://localhost:3333';
 
