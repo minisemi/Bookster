@@ -8,14 +8,14 @@ class Auth {
 
     static checkIfAuthenticated() {
         if (cookie.get('token') !== "unauthorized"){
-            console.log("Wie authenticated! with cookie" + cookie.get('token'))
+            //console.log("Wie authenticated! with cookie" + cookie.get('token'))
         } else console.log("nope")
         return cookie.get('token') !== "unauthorized";
     }
 
 
     static deauthenticateUser() {
-        console.log('Deauthenticating...')
+        //console.log('Deauthenticating...')
         cookie.set('token', "unauthorized");
         //localStorage.removeItem('token');
     }

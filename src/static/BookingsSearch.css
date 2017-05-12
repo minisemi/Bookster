@@ -36,7 +36,7 @@ body {
   display: block;
   position: absolute;
   top: 51px;
-  width: 280px;
+  width: 350px;
   border: 1px solid #aaa;
   background-color: #fff;
   font-family: Helvetica, sans-serif;
@@ -92,6 +92,24 @@ body {
 
 .msektionenLiu {
   background-image: url(../../public/assets/searchResults/m-sektionen.png);
+}
+.laundromat1 {
+  background-image: url(../../public/assets/searchResults/Laundromat.png);
+}
+.soccerField1 {
+  background-image: url(../../public/assets/searchResults/SoccerField.png);
+}
+.soccerField2 {
+  background-image: url(../../public/assets/searchResults/SoccerField.png);
+}
+.soccerField3 {
+  background-image: url(../../public/assets/searchResults/SoccerField.png);
+}
+.soccerField4 {
+  background-image: url(../../public/assets/searchResults/SoccerField.png);
+}
+.soccerField5 {
+  background-image: url(../../public/assets/searchResults/SoccerField.png);
 }
 
 .name {

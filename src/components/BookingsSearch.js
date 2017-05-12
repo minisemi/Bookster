@@ -5,6 +5,8 @@ import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import { getServerSuggestions } from '../utils/bookster-api';
 import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
+import {Image} from 'react-bootstrap';
 
 
   // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
@@ -25,6 +27,17 @@ import { Link } from 'react-router';
 
   function onSuggestionSelected(event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }){
 
+
+      switch (suggestion.type){
+          case 'facility':
+              browserHistory.push(`/${suggestion.company}/${suggestion.id}`);
+              break;
+          case 'company':
+              browserHistory.push(`/${suggestion.id}`);
+              break;
+          default:
+              break;
+      }
   }
 
 function getSuggestionValue(suggestion) {
@@ -37,7 +50,13 @@ function getSuggestionValue(suggestion) {
     const parts = parse(suggestionText, matches);
 
     return (
-        <Link to={`/${suggestion.id}`}>
+      <span className={'suggestion-content ' + suggestion.id}>
+        <span className="name">
+            {suggestionText}
+        </span>
+      </span>
+    );
+    /*return (
       <span className={'suggestion-content ' + suggestion.id}>
         <span className="name">
           {
@@ -51,8 +70,7 @@ function getSuggestionValue(suggestion) {
           }
         </span>
       </span>
-        </Link>
-    );
+    );*/
   }
 
   function renderSectionTitle(section) {
@@ -74,7 +92,6 @@ function shouldRenderSuggestions(value) {
 export default class BookingsSearch extends Component {
 
     constructor() {
-      console.log("Constructor")
     super();
 
     this.state = {
@@ -83,10 +100,17 @@ export default class BookingsSearch extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps){
+        if (nextProps.cleared !== this.props.cleared) {
+      this.setState({ value:'' });
+    }
+  }
+
   onChange = (event, { newValue, method }) => {
     this.setState({
       value: newValue
     });
+
   };
 
   onSuggestionsFetchRequested = ({ value }) => {

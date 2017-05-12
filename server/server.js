@@ -85,7 +85,6 @@ app.get('/api/users/:id/recommendations', (req, res) => {
 });
 
 app.get('/api/companies/:id/bookings', (req, res) => {
-    console.log(req.params.id);
     connection.query('select * from facilities where company=?', [req.params.id],function(err, rows){
 
         let companyBookings = JSON.parse(JSON.stringify(rows));
@@ -106,15 +105,13 @@ app.get('/api/suggestions', (req, res) => {
         }
     ];
     connection.query('select * from companies', function(err, rows){
-        let companies = JSON.parse(JSON.stringify(rows));
-        suggestions[1].suggestions=companies;
-        connection.query('select * from facilities', function(err, rows2){
-            let facilities = JSON.parse(JSON.stringify(rows2));
-            suggestions[0].suggestions=facilities;
 
+        suggestions[1].suggestions=JSON.parse(JSON.stringify(rows));
 
+        connection.query('select A.id,A.name,A.company,A.image,A.cover,A.link,A.info,A.type,B.city from facilities as A inner join companies as B on A.company=B.id', function(err, rows2){
+
+            suggestions[0].suggestions=JSON.parse(JSON.stringify(rows2));
             const escapedValue = req.query.query;
-
             const regex = new RegExp('\\b' + escapedValue, 'i');
             res.json(suggestions
                 .map(section => {
