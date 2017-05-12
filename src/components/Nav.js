@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import '../static/Nav.css';
 import LogInForm from './loginPage/LogInForm';
-import {Row, Col} from 'react-bootstrap';
 import BookingsSearch from './BookingsSearch';
+import Auth from '../Auth'
+import {browserHistory} from 'react-router';
 
 export default class Nav extends Component {
 
   constructor() {
     super()
-      console.log("sesstionstorage.token="+sessionStorage.token)
-      if (sessionStorage.token == undefined){
+      console.log("cookie token ="+Auth.getToken())
+      if (Auth.getToken() == "unauthorized"){
         this.state = { loggedIn: false};
     } else {
         this.state = { loggedIn: true};
@@ -19,32 +20,17 @@ export default class Nav extends Component {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  handleLogin(){
-      this.updateSessionStorage("token","email")
+  //TODO: fixa så detta funkar med tokens i cookie
+  handleLogin(token){
+      Auth.authenticateUser(token)
+      browserHistory.push('/special');
     this.setState({loggedIn:true});
       }
 
-  handleLogout(){
-      this.logout();
-    this.setState({loggedIn:false});
-      }
-
-      updateSessionStorage(token, email){
-
-    if (typeof(Storage) !== "undefined") {
-        sessionStorage.setItem("token", token)
-        sessionStorage.setItem("email", email)
-    } else {
-        alert("Browser doesn't support web storage")
+    handleLogout(){
+        Auth.deauthenticateUser()
+        this.setState({loggedIn:false});
     }
-
-
-}
-
- logout(){
-        sessionStorage.removeItem("token")
-        sessionStorage.removeItem("email")
-}
 
   render() {
     let bookingsSearchClass, loginFormClass;
@@ -71,6 +57,11 @@ export default class Nav extends Component {
               <div className={bookingsSearchClass}>
               <BookingsSearch  />
               </div>
+                <div onClick={this.handleLogout} className={bookingsSearchClass}>
+              <Link className="btn btn-danger" role="button" to={"/"} > Log out
+              </Link>
+                </div>
+
                 <ul className={`nav navbar-nav navbar-right ${loginFormClass}`}>
                   <LogInForm handleLogin={this.handleLogin} className="booksterHeaderDisplay"/>
                 </ul>

@@ -70,10 +70,10 @@ module.exports = function (passport){
                 if (err)
                     return done(err);
                 if (!rows.length || rows[0].password != password)
-                    return done (null, false, {message: false});
+                    return done (null, false, {message: 'notSignedIn'});
                 var payload = {email: rows[0].email};
                 var token = jwt.sign(payload, parameters.secretOrKey)
-                return done(null, rows[0], {message: true, token: token});
+                return done(null, rows[0], {message: 'signedIn', token: token});
             })
         }
         )
