@@ -1,6 +1,4 @@
 import axios from 'axios';
-import Cookies from 'universal-cookie';
-const cookie = new Cookies();
 
 const BASE_URL = 'http://localhost:3333/auth';
 
@@ -44,11 +42,10 @@ function logInUser(form){
     }).then(response =>{
         var loggedIn = response.data.message
         var token = response.data.token
-        if (loggedIn.equals('signedIn') && token!=null){
-            cookie.set('token', token, { path: '/' })
-            return true
+        if (loggedIn=='signedIn' && token!=null){
+            return {success: true, token: token}
         }
-        else return false;
+        else return {success: false, token: null};
 
     })
         .catch(function (error) {
