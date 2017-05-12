@@ -19,6 +19,7 @@ export default class Nav extends Component {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
+  //TODO: fixa så detta funkar med tokens i cookie
   handleLogin(){
       this.updateSessionStorage("token","email")
     this.setState({loggedIn:true});
