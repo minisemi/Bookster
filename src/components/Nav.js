@@ -10,7 +10,8 @@ export default class Nav extends Component {
 
   constructor() {
     super()
-      if (Auth.getToken() == "unauthorized"){
+      console.log("cookie token ="+Auth.getToken())
+      if (Auth.getToken() == null){
         this.state = { loggedIn: false};
     } else {
         this.state = { loggedIn: true};
@@ -22,12 +23,13 @@ export default class Nav extends Component {
   //TODO: fixa så detta funkar med tokens i cookie
   handleLogin(token){
       Auth.authenticateUser(token)
-      browserHistory.push('/special');
+      browserHistory.push('/');
     this.setState({loggedIn:true});
       }
 
     handleLogout(){
         Auth.deauthenticateUser()
+        browserHistory.push('/sign_in');
         this.setState({loggedIn:false});
     }
 
@@ -46,13 +48,11 @@ export default class Nav extends Component {
 
         <div>
             <header >
-                <div onClick={this.handleLogout}>
               <Link to={"/"} >
                 <div className="navbar-header">
                   <h1>Bookster</h1>
                 </div>
               </Link>
-                </div>
               <div className={bookingsSearchClass}>
               <BookingsSearch cleared={this.state.loggedIn} />
               </div>
