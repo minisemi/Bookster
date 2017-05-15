@@ -16,6 +16,7 @@ CREATE TABLE companies(
     image varchar(255),
     cover varchar(255),
     info varchar (255),
+    type varchar(15),
     PRIMARY KEY (id)
     );
 
@@ -27,6 +28,7 @@ CREATE TABLE facilities(
     cover varchar(255),
     link varchar(255),
     info varchar(255),
+    type varchar(15),
     PRIMARY KEY (id),
     FOREIGN KEY (company) REFERENCES companies(id)
     );
@@ -56,7 +58,8 @@ INSERT INTO companies VALUES(
     'byggvestaSthlm',
     'byggvesta.png',
     'ByggvestaHeader.png',
-    'Rent apartments and book laundromat'
+    'Rent apartments and book laundromat',
+    'company'
     );
 
 INSERT INTO companies VALUES(
@@ -65,7 +68,8 @@ INSERT INTO companies VALUES(
     'byggvestaLink',
     'byggvesta.png',
     'ByggvestaHeader.png',
-    'Rent apartments and book laundromat'
+    'Rent apartments and book laundromat',
+    'company'
     );
 
 INSERT INTO companies VALUES(
@@ -74,7 +78,8 @@ INSERT INTO companies VALUES(
     'dsektionenLiu',
     'd-sektionen.png',
     'd-sektionenHeader.png',
-    'Rent our car etc.'
+    'Rent our car etc.',
+    'company'
     );
 INSERT INTO companies VALUES(
     'Maskinteknologsektionen',
@@ -82,7 +87,8 @@ INSERT INTO companies VALUES(
     'msektionenLiu',
     'm-sektionen.png',
     'm-sektionenHeader.png',
-    'Rent our car etc.'
+    'Rent our car etc.',
+    'company'
     );
 
 INSERT INTO facilities VALUES(
@@ -92,7 +98,8 @@ INSERT INTO facilities VALUES(
     'Laundromat.png',
     'LaundromatHeader.png',
     'https://en.wikipedia.org/wiki/Self-service_laundry',
-    'Very nice laundromat. Please remember to clean the filters after use.'
+    'Very nice laundromat. Please remember to clean the filters after use.',
+    'facility'
     );
 INSERT INTO facilities VALUES(
     'soccerField1',
@@ -101,7 +108,8 @@ INSERT INTO facilities VALUES(
     'SoccerField.png',
     'SoccerFieldHeader.png',
     'https://en.wikipedia.org/wiki/Association_football',
-    'Very nice soccer field.'
+    'Very nice soccer field.',
+    'facility'
     );
 
 INSERT INTO facilities VALUES(
@@ -111,7 +119,8 @@ INSERT INTO facilities VALUES(
     'SoccerField.png',
     'SoccerFieldHeader.png',
     'https://en.wikipedia.org/wiki/Association_football',
-    'Very nice soccer field.'
+    'Very nice soccer field.',
+    'facility'
     );
 
 INSERT INTO facilities VALUES(
@@ -121,7 +130,8 @@ INSERT INTO facilities VALUES(
     'SoccerField.png',
     'SoccerFieldHeader.png',
     'https://en.wikipedia.org/wiki/Association_football',
-    'Very nice soccer field.'
+    'Very nice soccer field.',
+    'facility'
     );
 
 INSERT INTO facilities VALUES(
@@ -131,7 +141,8 @@ INSERT INTO facilities VALUES(
     'SoccerField.png',
     'SoccerFieldHeader.png',
     'https://en.wikipedia.org/wiki/Association_football',
-    'Very nice soccer field.'
+    'Very nice soccer field.',
+    'facility'
     );
 
 INSERT INTO facilities VALUES(
@@ -141,7 +152,8 @@ INSERT INTO facilities VALUES(
     'SoccerField.png',
     'SoccerFieldHeader.png',
     'https://en.wikipedia.org/wiki/Association_football',
-    'Very nice soccer field.'
+    'Very nice soccer field.',
+    'facility'
     );
 
 INSERT INTO users VALUES(
