@@ -1,13 +1,11 @@
 import Cookies from 'universal-cookie';
 var cookie = new Cookies();
-import {getUserInfo} from './utils/bookster-api';
 class Auth {
 
     static authenticateUser(token, email) {
         cookie.set('token', token);
         cookie.set('email', email)
             console.log(cookie.get('email'))
-        });
 
     }
 
