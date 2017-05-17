@@ -66,7 +66,6 @@ module.exports = function (passport){
         },
         function(req, email, password, done){
             connection.query('select * from users where email = ?', [email], function (err,  rows){
-                console.log(rows[0])
                 if (err)
                     return done(err);
                 if (!rows.length || rows[0].password != password)
@@ -82,7 +81,6 @@ module.exports = function (passport){
     passport.use(new JWTStrategy (parameters, function(payload, done) {
             console.log('payload received', payload);
             connection.query('select * from users where email = ?', [payload.email], function (err,  rows){
-                console.log(rows[0], "Length: " + rows.length)
                 if (err) {
                     console.log(err);
                     return done(err);
@@ -94,6 +92,7 @@ module.exports = function (passport){
                 else {
                     console.log("allowed")
                     done(null, rows[0]);
+                    return payload.email;
                 }
             });
         }

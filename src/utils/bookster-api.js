@@ -18,7 +18,7 @@ export function signUp({ email, firstName, familyName, password, age}){
             });
     }
 */
-export {getCurrentBookings, getServerSuggestions, getCompany, getBooking, getCompanyBookings, getFavourites, getRecommendations};
+export {getCurrentBookings, getServerSuggestions, getCompany, getBooking, getCompanyBookings, getFavourites, getRecommendations, getUserInfo};
 
 function getCurrentBookings(id) {
   const url = `${BASE_URL}/api/users/${id}/current`;
@@ -80,4 +80,14 @@ function getServerSuggestions(query) {
       .catch(function (error) {
     console.log(error);
   });
+}
+
+function getUserInfo (token){
+    const url = `${BASE_URL}/api/get_user`
+    return axios.get(url, {headers:{
+            Authorization: `JWT ${token}`
+    }}).then(response => response.data)
+        .catch(function (error) {
+            console.log(error)
+        })
 }

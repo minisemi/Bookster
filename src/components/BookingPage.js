@@ -51,7 +51,7 @@ render() {
             <BookingCalender/>
         </div>
         <div className="navigateBack">
-          <Link to="/special">« Back to the index</Link>
+          <Link to="/">« Back to home page</Link>
         </div>
       </div>
     );

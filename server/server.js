@@ -127,6 +127,17 @@ app.get('/api/suggestions', (req, res) => {
     })
 });
 
+app.get('/api/get_user',
+    passport.authenticate('jwt', { session: false}),
+    function(req, res) {
+       // let userEmail = req.headers.email,
+        let response = res.req.user;
+        let user = {email: response.email, firstName:response.firstName, familyName:response.familyName,
+            birth: response.birth, address: response.address}
+        res.json(user)
+    }
+)
+
 
 
 
