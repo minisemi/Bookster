@@ -27,6 +27,10 @@ class Auth {
         //return localStorage.getItem('token');
     }
 
+    static getEmail(){
+        return cookie.get('email');
+    }
+
 }
 
 export default Auth;
