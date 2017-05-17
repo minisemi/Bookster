@@ -18,7 +18,7 @@ export function signUp({ email, firstName, familyName, password, age}){
             });
     }
 */
-export {getCurrentBookings, getServerSuggestions, getCompany, getBooking, getCompanyBookings, getFavourites, getRecommendations, getUserInfo};
+export {getCurrentBookings, getServerSuggestions, getCompany, getBooking, getCompanyBookings, getFavourites, getRecommendations, getUserInfo, updateUserInfo};
 
 function getCurrentBookings(id) {
   const url = `${BASE_URL}/api/users/${id}/current`;
@@ -80,6 +80,16 @@ function getServerSuggestions(query) {
       .catch(function (error) {
     console.log(error);
   });
+}
+
+function updateUserInfo(token, info){
+    const url = `${BASE_URL}/api/update_user`
+    return axios.post(url,info, {headers:{
+        Authorization: `Bearer ${token}`
+    }}).then(response => response.data)
+        .catch(function (error) {
+            console.log("ERROR!!" + error)
+        })
 }
 
 function getUserInfo (token){

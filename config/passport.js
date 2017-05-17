@@ -79,18 +79,15 @@ module.exports = function (passport){
     )
 
     passport.use(new JWTStrategy (parameters, function(payload, done) {
-            console.log('payload received', payload);
             connection.query('select * from users where email = ?', [payload.email], function (err,  rows){
                 if (err) {
                     console.log(err);
                     return done(err);
                 }
                 if (!rows.length) {
-                    console.log("not allowed")
                     done(null, false)
                 }
                 else {
-                    console.log("allowed")
                     done(null, rows[0]);
                     return payload.email;
                 }
