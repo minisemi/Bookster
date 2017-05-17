@@ -1,6 +1,5 @@
-/**
- * Created by Matilda on 2017-04-11.
- */
+//KAN BEHÖVA KOLLA PÅ JUDOATHLETES EXEMPEL FÖR SERVER-SIDE ROUTING OM 404 FÅS VID REFRESH AV SIDA
+
 'use strict';
 
 const express = require('express');
@@ -41,17 +40,25 @@ app.get("/",function(req,res){
 
 app.get(`/api/companies/:id`, (req,res)=> {
     connection.query('select * from companies where id = ?', [req.params.id], function (err, rows){
-        let companies = JSON.parse(JSON.stringify(rows))[0];
+        let company = JSON.parse(JSON.stringify(rows))[0];
 
-        res.json(companies);
+        res.json(company);
     })
 })
 
 app.get(`/api/companies/:compId/bookings/:bookId`, (req,res)=> {
     connection.query('select * from facilities where id = ? and company = ?', [req.params.bookId, req.params.compId], function (err, rows){
-        let companies = JSON.parse(JSON.stringify(rows))[0];
+        let booking = JSON.parse(JSON.stringify(rows))[0];
 
-        res.json(companies);
+        res.json(booking);
+    })
+
+})
+
+app.get(`/api/companies/:compId/bookings/:bookId/calender/events`, (req,res)=> {
+    connection.query('select * from facilitybookings where facility = ?', [req.params.bookId], function (err, rows){
+        let events = JSON.parse(JSON.stringify(rows));
+        res.json(events);
     })
 
 })
@@ -126,8 +133,6 @@ app.get('/api/suggestions', (req, res) => {
         })
     })
 });
-
-
 
 
 app.use(session({ secret: 'alexluktar' })); // session secret

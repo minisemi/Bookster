@@ -1,4 +1,4 @@
-
+DROP TABLE IF EXISTS users,favourites,currentBookings,facilityBookings,companies,facilities;
 
 CREATE TABLE users(
 	email varchar(255),
@@ -51,6 +51,19 @@ CREATE TABLE currentBookings(
     FOREIGN KEY (user) REFERENCES users(email),
     FOREIGN KEY (facility) REFERENCES facilities(id)
     );
+
+CREATE TABLE facilityBookings(
+    bookedBy varchar(255),
+    facility varchar (255),
+    title VARCHAR(255),
+    allDay BOOLEAN,
+    start BIGINT,
+    end BIGINT,
+    descr VARCHAR(255),
+    PRIMARY KEY (facility, start, end),
+    FOREIGN KEY (facility) REFERENCES facilities(id)
+    );
+
 
 INSERT INTO companies VALUES(
     'Byggvesta',
@@ -170,4 +183,34 @@ INSERT INTO currentBookings VALUES(
     1495368000,
     1495371600,
     'bokning1'
+    );
+
+INSERT INTO facilityBookings VALUES(
+    'matildasoderholm@gmail.com',
+    'laundromat1',
+    'Laundry',
+    FALSE,
+    1494852244000,
+    1494853244000,
+    'Laundry for residents at Byggvesta Stockholm'
+    );
+
+INSERT INTO facilityBookings VALUES(
+    'matildasoderholm@gmail.com',
+    'laundromat1',
+    'Laundry',
+    FALSE,
+    1494852344000,
+    1494853444000,
+    'Laundry for residents at Byggvesta Stockholm'
+    );
+
+INSERT INTO facilityBookings VALUES(
+    'null',
+    'laundromat1',
+    'Laundry',
+    FALSE,
+    1494852544000,
+    1494853844000,
+    'Laundry for residents at Byggvesta Stockholm'
     );

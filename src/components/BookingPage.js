@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import '../static/BookingPage.css';
 import NotFoundPage from './NotFoundPage';
 import { getBooking } from '../utils/bookster-api';
 import BookingCalender from './BookingCalender';
+import Popup from 'react-popup';
+import {Button} from 'react-bootstrap';
 
 
 
@@ -48,10 +49,7 @@ render() {
           <section className="description">
               {booking.info}
           </section>
-            <BookingCalender/>
-        </div>
-        <div className="navigateBack">
-          <Link to="/special">« Back to the index</Link>
+            <BookingCalender bookingId={this.props.params.id}/>
         </div>
       </div>
     );
