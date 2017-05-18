@@ -2,8 +2,11 @@ import Cookies from 'universal-cookie';
 var cookie = new Cookies();
 class Auth {
 
-    static authenticateUser(token) {
+    static authenticateUser(token, email) {
         cookie.set('token', token);
+        cookie.set('email', email)
+            console.log(cookie.get('email'))
+
     }
 
     static checkIfAuthenticated() {
@@ -22,6 +25,10 @@ class Auth {
     static getToken() {
         return cookie.get('token');
         //return localStorage.getItem('token');
+    }
+
+    static getEmail(){
+        return cookie.get('email');
     }
 
 }

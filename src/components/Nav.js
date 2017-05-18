@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Row, Col} from 'react-bootstrap';
 import { Link } from 'react-router';
 import '../static/Nav.css';
 import LogInForm from './loginPage/LogInForm';
@@ -21,8 +22,8 @@ export default class Nav extends Component {
   }
 
   //TODO: fixa så detta funkar med tokens i cookie
-  handleLogin(token){
-      Auth.authenticateUser(token)
+  handleLogin(token, email){
+      Auth.authenticateUser(token, email)
       browserHistory.push('/');
     this.setState({loggedIn:true});
       }
@@ -48,22 +49,32 @@ export default class Nav extends Component {
 
         <div>
             <header >
+<Row>
+                <Col xs={12} sm={4} md={3} lg={2}>
               <Link to={"/"} >
                 <div className="navbar-header">
                   <h1>Bookster</h1>
                 </div>
               </Link>
-              <div className={bookingsSearchClass}>
+                </Col>
+                <Col xs={12} sm={4} md={5} lg={7} className={bookingsSearchClass}>
               <BookingsSearch cleared={this.state.loggedIn} />
-              </div>
-                <div onClick={this.handleLogout} className={bookingsSearchClass}>
-              <Link className="btn btn-danger" role="button" to={"/"} > Log out
+                </Col>
+              <Col xs={12} sm={4}  md={4} lg={3} className={`${bookingsSearchClass} buttons`}>
+              <Link onClick={this.handleLogout} className="btn btn-danger" role="button" to={"/"} > Log out
               </Link>
-                </div>
-
-                <ul className={`nav navbar-nav navbar-right ${loginFormClass}`}>
+                <Link className="btn btn-info" role="button" to={"/profile"} > Profile
+                </Link>
+             </Col>
+              <Col xs={12} sm={12} md={10} lg={10} className={loginFormClass}>
+                    <ul className={`nav navbar-nav navbar-right ${loginFormClass}`}>
                   <LogInForm handleLogin={this.handleLogin} className="booksterHeaderDisplay"/>
                 </ul>
+              </Col>
+
+
+</Row>
+
             </header>
         </div>
 

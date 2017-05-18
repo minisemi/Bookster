@@ -15,7 +15,7 @@ import {PopupWindow} from './Prompt'
 import {Button} from 'react-bootstrap';
 import {Prompt} from './Prompt';
 import Popup from 'react-popup';
-import '../static/PopUp.css';
+import Auth from '../Auth'
 
 
 // Setup the localizer by providing the moment (or globalize) Object
@@ -65,8 +65,9 @@ class BookingCalender extends Component {
     }
 
     componentWillReceiveProps(nextProps){
+
         if (nextProps.bookingId !== this.props.bookingId) {
-            getCalenderEvents(this.props.bookingId).then((events) => {
+            getCalenderEvents(nextProps.bookingId).then((events) => {
                 for (var i =0; i<events.length;i++){
 
                     events[i].start=new Date(events[i].start);
@@ -97,14 +98,44 @@ class BookingCalender extends Component {
 
     handleSelectEvent(event) {
 
-        //Popup.alert('Hello, look at me');
-        //console.log(Popup);
-        //bookEvent()
-        console.log(event)
+        if (event.bookedBy !== "null"){
+
+            bookEvent(event.facility, event.start, event.end, Auth.getEmail()).then((response)=>{
+               if (response.success){
+
+               }
+            });
+
+        }
+        Popup.alert('Hello, look at me');
+
+        /*allDay
+:
+0
+bookedBy
+:
+"null"
+descr
+:
+"Laundry for residents at Byggvesta Stockholm"
+end
+:
+Mon May 15 2017 15:10:44 GMT+0200 (Västeuropa, sommartid)
+facility
+:
+"laundromat1"
+start
+:
+Mon May 15 2017 14:49:04 GMT+0200 (Västeuropa, sommartid)
+title
+:
+"Laundry"
+__proto__
+:
+Object*/
 
 
     }
-
 
     render() {
         return (

@@ -27,7 +27,7 @@ export default class LogInForm extends Component {
         logInUser(this.state.formValues).then((response) => {
             this.setState({loggedIn:response.success})
             if (response.success){
-                this.props.handleLogin(response.token);
+                this.props.handleLogin(response.token, this.state.formValues.email);
             }
         });
     }
@@ -48,7 +48,7 @@ export default class LogInForm extends Component {
                     <FormControl type="password" name="password" value={this.state.formValues["password"]} onChange={this.handleChange.bind(this)}/>
                 </FormGroup>
                 {' '}
-                 <Button type="submit" value="Submit" >
+                 <Button type="submit" value="Submit">
                                 Sign in
                             </Button>
             </Form>

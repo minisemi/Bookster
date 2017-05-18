@@ -18,7 +18,7 @@ export function signUp({ email, firstName, familyName, password, age}){
             });
     }
 */
-export {getCurrentBookings, getServerSuggestions, getCompany, getBooking, getCompanyBookings, getFavourites, getRecommendations, getCalenderEvents, bookEvent};
+export {getCurrentBookings, getServerSuggestions, getCompany, getBookable, getCompanyBookables, getFavourites, getRecommendations, getCalenderEvents, bookEvent, getUserInfo};
 
 function getCurrentBookings(id) {
   const url = `${BASE_URL}/api/users/${id}/current`;
@@ -44,8 +44,8 @@ function getRecommendations(id) {
   });
 }
 
-function getCompanyBookings(id){
-  const url = `${BASE_URL}/api/companies/${id}/bookings`;
+function getCompanyBookables(id){
+  const url = `${BASE_URL}/api/companies/${id}/bookables`;
   return axios.get(url).then(response => response.data)
       .catch(function (error) {
     console.log(error);
@@ -60,8 +60,8 @@ function getCompany(id) {
     console.log(error);
   });
 }
-function getBooking(compId, bookId) {
-  const url = `${BASE_URL}/api/companies/${compId}/bookings/${bookId}`;
+function getBookable(compId, bookId) {
+  const url = `${BASE_URL}/api/companies/${compId}/bookables/${bookId}`;
   return axios.get(url).then(response => response.data)
       .catch(function (error) {
     console.log(error);
@@ -69,18 +69,19 @@ function getBooking(compId, bookId) {
 }
 
 function getCalenderEvents(bookId) {
-    const url = `${BASE_URL}/api/companies/compId/bookings/${bookId}/calender/events`;
+    const url = `${BASE_URL}/api/companies/compId/bookables/${bookId}/calender/events`;
   return axios.get(url).then(response => response.data)
       .catch(function (error) {
     console.log(error);
   });
 }
 
-function bookEvent(bookId) {
-  const url = `${BASE_URL}/api/companies/compId/bookings/${bookId}/calender/events`;
+function bookEvent(user, start, end, bookId) {
+  const url = `${BASE_URL}/api/companies/compId/bookables/${bookId}/calender/events`;
   return axios.post(url, {
-    firstName: 'Fred',
-    lastName: 'Flintstone'
+    user: user,
+    start: start,
+      end: end
   }).then(response => response.data)
       .catch(function (error) {
     console.log(error);
@@ -99,4 +100,14 @@ function getServerSuggestions(query) {
       .catch(function (error) {
     console.log(error);
   });
+}
+
+function getUserInfo (token){
+    const url = `${BASE_URL}/api/get_user`
+    return axios.get(url, {headers:{
+            Authorization: `JWT ${token}`
+    }}).then(response => response.data)
+        .catch(function (error) {
+            console.log(error)
+        })
 }

@@ -28,11 +28,11 @@ import { browserHistory } from 'react-router';
 
 
       switch (suggestion.type){
-          case 'facility':
-              browserHistory.push(`/${suggestion.company}/${suggestion.id}`);
+          case 'bookable':
+              browserHistory.push(`/${suggestion.companyAlias}/${suggestion.bookableAlias}`);
               break;
           case 'company':
-              browserHistory.push(`/${suggestion.id}`);
+              browserHistory.push(`/${suggestion.companyAlias}`);
               break;
           default:
               break;
@@ -47,9 +47,15 @@ function getSuggestionValue(suggestion) {
     const suggestionText = `${suggestion.name} ${suggestion.city}`;
     //const matches = match(suggestionText, query);
     //const parts = parse(suggestionText, matches);
+      let pic;
+      if (suggestion.type=="bookable"){
+           pic = suggestion.bookableAlias;
+      } else{
+           pic = suggestion.companyAlias;
+      }
 
     return (
-      <span className={'suggestion-content ' + suggestion.id}>
+      <span className={'suggestion-content ' + pic}>
         <span className="name">
             {suggestionText}
         </span>

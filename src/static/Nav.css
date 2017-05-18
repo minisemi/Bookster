@@ -11,6 +11,24 @@ header {
   direction: ltr;
 }
 
+.row{
+  margin-right:0;
+  margin-left: 0;
+  width: 100%;
+}
+
+.buttons{
+  float:right;
+  display: inline-block;
+  vertical-align: middle;
+float: none;
+}
+
+.btn{
+  margin:7px;
+  float:right;
+}
+
 .noMargin {
 margin-right: 0px !important
 }
@@ -34,8 +52,13 @@ margin-right: 0px !important
 }
 
 .searchDisplay {
-  display: block;
-  margin-left: 30px;
+    padding-left:0;
+  padding-right:0;
+  padding-top:10px;
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+
 }
 
 .formDisplay{

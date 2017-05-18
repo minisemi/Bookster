@@ -47,7 +47,7 @@ render() {
           <section className="description">
               {company.info}
           </section>
-            <BookingSlidebar title="Bookable objects" type="company" id={company.id}/>
+            <BookingSlidebar title="Bookable objects" type="company" id={company.companyAlias}/>
         </div>
       </div>
     );
