@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Link, Grid, Row } from 'react-router';
+import { Row, Col  } from 'react-bootstrap';
 import '../../static/ProfilePage.css';
 import { getCompany } from '../../utils/bookster-api';
 import BookingsSlideBar from '../BookingsSlidebar';
 import InfoBar from './InfoBar';
+import AccountBar from './AccountBar'
 
 
 
@@ -13,9 +14,14 @@ export default class ProfilePage extends Component {
 
     return (
 
-      <div >
+      <Row >
+        <Col xs={12} sm={12} md={6} lg={6}>
           <InfoBar/>
-      </div>
+        </Col>
+          <Col xs={12} sm={12} md={6} lg={6}>
+              <AccountBar/>
+        </Col>
+      </Row>
 
 
     );

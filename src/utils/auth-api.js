@@ -52,3 +52,17 @@ function logInUser(form){
             console.log(error);
         });
 }
+
+function checkPassword(oldPassword, newPassword, token){
+    const url = `${BASE_URL}/check_pw`;
+    return axios.post(url, {
+        token: token,
+        oldPassword: oldPassword,
+        newPassword: newPassword
+    }).then(response =>{
+
+    })
+        .catch(function (error) {
+            console.log(error);
+        });
+}

@@ -14,6 +14,8 @@ var flash = require('connect-flash');
 var moment = require('moment');
 moment().format();
 
+const authenticate = jwt({secret : '4l3XXXiz5m311y'});
+
 
 require('./../config/passport')(passport);
 var connection = mysql.createConnection(require('./../config/database').connection)
@@ -153,9 +155,45 @@ app.get('/api/get_user',
         let response = res.req.user;
         let user = {email: response.email, firstName:response.firstName, familyName:response.familyName,
             birth: response.birth, address: response.address}
+
         res.json(user)
     }
 )
+
+app.post('/api/update_user', authenticate, function(req, res) {
+    console.log(req.body.firstName, req.body.familyName,
+                req.body.birth, req.body.address, req.user.email)
+  connection.query('UPDATE users SET firstName=?, familyName=?, birth=?, address=? WHERE email=?',
+            [req.body.firstName, req.body.familyName,
+                req.body.birth, req.body.address, req.user.email], function(err, rows){
+      if(err){
+          console.log(err)
+          res.json("error in database")
+      }
+      else
+          res.json("success")
+      }
+
+
+            );
+});
+
+/*app.get('/api/update_user',
+    passport.authenticate('jwt', { session: false}),
+    function(req, res) {
+        let info = req.headers.info,
+            response = res.req.user;
+
+        connection.query('UPDATE users SET email=?, firstName=?, familyName=?, birth=?, address=?',
+            [req.headers.email, req.headers.firstName, req.headers.familyName,
+                req.headers.birth, req.headers.address], function(err){
+                if (err)
+                    res.json(err);
+                res.json("success");
+            });
+        //res.json(user)
+    }
+)*/
 
 
 app.use(session({ secret: 'alexluktar' })); // session secret

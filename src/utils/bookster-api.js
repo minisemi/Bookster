@@ -20,6 +20,7 @@ export function signUp({ email, firstName, familyName, password, age}){
 */
 export {getCurrentBookings, getServerSuggestions, getCompany, getBookable, getCompanyBookables, getFavourites, getRecommendations, getCalenderEvents, bookEvent, getUserInfo};
 
+
 function getCurrentBookings(id) {
   const url = `${BASE_URL}/api/users/${id}/current`;
   return axios.get(url).then(response => response.data)
@@ -100,6 +101,16 @@ function getServerSuggestions(query) {
       .catch(function (error) {
     console.log(error);
   });
+}
+
+function updateUserInfo(token, info){
+    const url = `${BASE_URL}/api/update_user`
+    return axios.post(url,info, {headers:{
+        Authorization: `Bearer ${token}`
+    }}).then(response => response.data)
+        .catch(function (error) {
+            console.log("ERROR!!" + error)
+        })
 }
 
 function getUserInfo (token){
