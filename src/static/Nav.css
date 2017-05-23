@@ -52,12 +52,13 @@ margin-right: 0px !important
 }
 
 .searchDisplay {
-  padding-left:0;
+    padding-left:0;
   padding-right:0;
   padding-top:10px;
   display: inline-block;
   vertical-align: middle;
   float: none;
+
 }
 
 .formDisplay{

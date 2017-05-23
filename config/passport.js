@@ -47,7 +47,7 @@ module.exports = function (passport){
                     newUserMysql.email    = email;
                     newUserMysql.password = password; // use the generateHash function in our user model
 
-                    var insertQuery = "INSERT INTO users values (?,?,?,?,?)";
+                    var insertQuery = "INSERT INTO users (email, firstName, familyName, password, birth) values (?,?,?,?,?)";
 
                     connection.query(insertQuery, [email, firstName, surName, password, birth],function(err,rows){
                         newUserMysql.id = rows.insertId;

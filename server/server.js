@@ -1,6 +1,5 @@
-/**
- * Created by Matilda on 2017-04-11.
- */
+//KAN BEHÖVA KOLLA PÅ JUDOATHLETES EXEMPEL FÖR SERVER-SIDE ROUTING OM 404 FÅS VID REFRESH AV SIDA
+
 'use strict';
 
 const express = require('express');
@@ -41,34 +40,52 @@ app.get("/",function(req,res){
     });
 });
 
-app.get(`/api/companies/:id`, (req,res)=> {
-    connection.query('select * from companies where id = ?', [req.params.id], function (err, rows){
-        let companies = JSON.parse(JSON.stringify(rows))[0];
+TODO: "SERVER CRASHES IF SQL SYNTAX IS WRONG. ADD ERROR HANDLERS"
+app.get(`/api/companies/:companyAlias`, (req,res)=> {
+    connection.query('select companyAlias,name,city,image,cover,info,type from companies where companyAlias = ?', [req.params.companyAlias], function (err, rows){
+        let company = JSON.parse(JSON.stringify(rows))[0];
 
-        res.json(companies);
+        res.json(company);
     })
 })
 
-app.get(`/api/companies/:compId/bookings/:bookId`, (req,res)=> {
-    connection.query('select * from facilities where id = ? and company = ?', [req.params.bookId, req.params.compId], function (err, rows){
-        let companies = JSON.parse(JSON.stringify(rows))[0];
+app.get(`/api/companies/:companyAlias/bookables/:bookableAlias`, (req,res)=> {
+    connection.query('select A.bookableAlias, A.name, A.image, A.cover, A.info, A.type, B.companyAlias from bookables as A inner join companies as B on A.company = B.id and A.bookableAlias=?', [req.params.bookableAlias], function (err, rows){
+        let booking = JSON.parse(JSON.stringify(rows))[0];
 
-        res.json(companies);
+        res.json(booking);
     })
 
 })
 
-app.get('/api/users/:id/current', (req, res) => {
+TODO: "SE TILL SÅ ATT INGA KAN BOKA SAMMA OBJEKT SAMTIDIGT. DVS IMPLEMENTERA TRANSACTION OSV"
+app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events`, (req,res)=> {
+    connection.query('update facilitybookings set bookedBy = ? where ', [req.body.user], function (err, rows){
+        let events = JSON.parse(JSON.stringify(rows));
+        res.json(events);
+    })
 
-    connection.query('select A.id, A.name, A.company, A.image, A.cover, A.link, A.info from facilities as A inner join currentBookings as B on A.id = B.facility and B.user=?', [req.params.id],function(err, rows){
+})
+
+app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events`, (req,res)=> {
+    connection.query('select * from facilitybookings where bookable = (select id from bookables where bookableAlias=?)', [req.params.bookableAlias], function (err, rows){
+        let events = JSON.parse(JSON.stringify(rows));
+        res.json(events);
+    })
+
+})
+
+app.get('/api/users/:email/current', (req, res) => {
+
+    connection.query('select A.bookableAlias, A.name, A.image, A.cover, A.info, A.type, D.companyAlias from bookables as A inner join facilityBookings as B on A.id = B.bookable and B.bookedBy=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
         let currentBookings = JSON.parse(JSON.stringify(rows));
         res.json(currentBookings);
     });
 
 });
 
-app.get('/api/users/:id/favourites', (req, res) => {
-    connection.query('select A.id, A.name, A.company, A.image, A.cover, A.link, A.info from facilities as A inner join favourites as B on A.id = B.facility and B.user=?', [req.params.id],function(err, rows){
+app.get('/api/users/:email/favourites', (req, res) => {
+    connection.query('select A.bookableAlias, A.name, A.image, A.cover, A.info, A.type, D.companyAlias from bookables as A inner join favourites as B on A.id = B.bookable and B.user=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
 
         let current = JSON.parse(JSON.stringify(rows));
 
@@ -77,8 +94,8 @@ app.get('/api/users/:id/favourites', (req, res) => {
 });
 
 TODO: "ADD TABLE OR SOMETHING WITH RECOMMENDATIONS. CURRENTLY FETCHING FROM FAOURITES"
-app.get('/api/users/:id/recommendations', (req, res) => {
-    connection.query('select A.id, A.name, A.company, A.image, A.cover, A.link, A.info from facilities as A inner join favourites as B on A.id = B.facility and B.user=?', [req.params.id],function(err, rows){
+app.get('/api/users/:email/recommendations', (req, res) => {
+    connection.query('select A.bookableAlias, A.name, A.image, A.cover, A.info, A.type, D.companyAlias from bookables as A inner join favourites as B on A.id = B.bookable and B.user=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
 
         let current = JSON.parse(JSON.stringify(rows));
 
@@ -86,19 +103,21 @@ app.get('/api/users/:id/recommendations', (req, res) => {
     })
 });
 
-app.get('/api/companies/:id/bookings', (req, res) => {
-    connection.query('select * from facilities where company=?', [req.params.id],function(err, rows){
 
-        let companyBookings = JSON.parse(JSON.stringify(rows));
+app.get('/api/companies/:companyAlias/bookables', (req, res) => {
+    connection.query('select A.bookableAlias, A.name, A.image, A.cover, A.info, A.type, B.companyAlias from bookables as A inner join companies as B on A.company = B.id and B.companyAlias=?', [req.params.companyAlias],function(err, rows){
 
-        res.json(companyBookings);
+        let companybookables = JSON.parse(JSON.stringify(rows));
+
+        res.json(companybookables);
     })
+
 });
 
 app.get('/api/suggestions', (req, res) => {
     let suggestions = [
         {
-            section: 'Bookings',
+            section: 'Bookables',
             suggestions: []
         },
         {
@@ -106,11 +125,11 @@ app.get('/api/suggestions', (req, res) => {
             suggestions: []
         }
     ];
-    connection.query('select * from companies', function(err, rows){
+    connection.query('select companyAlias,name,city,image,cover,info,type from companies', function(err, rows){
 
         suggestions[1].suggestions=JSON.parse(JSON.stringify(rows));
 
-        connection.query('select A.id,A.name,A.company,A.image,A.cover,A.link,A.info,A.type,B.city from facilities as A inner join companies as B on A.company=B.id', function(err, rows2){
+        connection.query('select A.bookableAlias,A.name,B.companyAlias,A.image,A.cover,A.info,A.type,B.city from bookables as A inner join companies as B on A.company=B.id', function(err, rows2){
 
             suggestions[0].suggestions=JSON.parse(JSON.stringify(rows2));
             const escapedValue = req.query.query;
@@ -177,15 +196,13 @@ app.post('/api/update_user', authenticate, function(req, res) {
 )*/
 
 
-
-
 app.use(session({ secret: 'alexluktar' })); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
 
 
-
+TODO: "HASH PASSWORD"
 app.post('/auth/signup', function(req, res, next) {
     passport.authenticate('local-signup', function(err, user, info) {
         if (err) { console.log(err)

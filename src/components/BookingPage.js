@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import '../static/BookingPage.css';
 import NotFoundPage from './NotFoundPage';
-import { getBooking } from '../utils/bookster-api';
+import { getBookable } from '../utils/bookster-api';
 import BookingCalender from './BookingCalender';
+import Popup from 'react-popup';
+import {Button} from 'react-bootstrap';
 
 
 
@@ -16,14 +17,14 @@ class BookingPage extends Component {
 
   componentWillReceiveProps(nextProps){
         if (nextProps.params.id !== this.props.params.id) {
-            getBooking(nextProps.params.compId, nextProps.params.id).then((objects) => {
+            getBookable(nextProps.params.compId, nextProps.params.id).then((objects) => {
       this.setState({ bookings:objects });
     });
     }
   }
 
   componentDidMount(){
-    getBooking(this.props.params.compId, this.props.params.id).then((objects) => {
+    getBookable(this.props.params.compId, this.props.params.id).then((objects) => {
       this.setState({ bookings:objects });
     });
   }
@@ -48,10 +49,7 @@ render() {
           <section className="description">
               {booking.info}
           </section>
-            <BookingCalender/>
-        </div>
-        <div className="navigateBack">
-          <Link to="/">« Back to home page</Link>
+            <BookingCalender bookingId={this.props.params.id}/>
         </div>
       </div>
     );

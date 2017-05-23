@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import '../static/BookingPage.css';
 import NotFoundPage from './NotFoundPage';
 import { getCompany } from '../utils/bookster-api';
@@ -48,10 +47,7 @@ render() {
           <section className="description">
               {company.info}
           </section>
-            <BookingSlidebar title="Bookable objects" type="company" id={company.id}/>
-        </div>
-        <div className="navigateBack">
-          <Link to="/special">« Back to the index</Link>
+            <BookingSlidebar title="Bookable objects" type="company" id={company.companyAlias}/>
         </div>
       </div>
     );

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import '../static/BookingsSearch.css';
 import Autosuggest from 'react-autosuggest';
-import match from 'autosuggest-highlight/match';
-import parse from 'autosuggest-highlight/parse';
+//import match from 'autosuggest-highlight/match';
+//import parse from 'autosuggest-highlight/parse';
 import { getServerSuggestions } from '../utils/bookster-api';
-import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
-import {Image} from 'react-bootstrap';
+//import {Image} from 'react-bootstrap';
 
 
   // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
@@ -29,11 +28,11 @@ import {Image} from 'react-bootstrap';
 
 
       switch (suggestion.type){
-          case 'facility':
-              browserHistory.push(`/${suggestion.company}/${suggestion.id}`);
+          case 'bookable':
+              browserHistory.push(`/${suggestion.companyAlias}/${suggestion.bookableAlias}`);
               break;
           case 'company':
-              browserHistory.push(`/${suggestion.id}`);
+              browserHistory.push(`/${suggestion.companyAlias}`);
               break;
           default:
               break;
@@ -46,11 +45,17 @@ function getSuggestionValue(suggestion) {
 
   function renderSuggestion(suggestion, { query }) {
     const suggestionText = `${suggestion.name} ${suggestion.city}`;
-    const matches = match(suggestionText, query);
-    const parts = parse(suggestionText, matches);
+    //const matches = match(suggestionText, query);
+    //const parts = parse(suggestionText, matches);
+      let pic;
+      if (suggestion.type=="bookable"){
+           pic = suggestion.bookableAlias;
+      } else{
+           pic = suggestion.companyAlias;
+      }
 
     return (
-      <span className={'suggestion-content ' + suggestion.id}>
+      <span className={'suggestion-content ' + pic}>
         <span className="name">
             {suggestionText}
         </span>

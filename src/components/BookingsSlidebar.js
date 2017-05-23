@@ -3,7 +3,7 @@ import '../static/BookingsSlideBar.css';
 import {Panel, Row, Col} from 'react-bootstrap';
 import BookingThumbnail from './BookingThumbnail';
 //import companies from '../data/companies';
-import { getCurrentBookings, getCompanyBookings, getFavourites, getRecommendations } from '../utils/bookster-api';
+import { getCurrentBookings, getCompanyBookables, getFavourites, getRecommendations } from '../utils/bookster-api';
 
 // A BOOKINGSSLIDEBAR NEEDS THE FOLLOWONG PROPS: TITLE, TYPE, ID.
 
@@ -19,7 +19,7 @@ class BookingsSlideBar extends Component {
         if (id!==undefined) {
             switch (this.props.type) {
                 case "company":
-                    getCompanyBookings(id).then((objects) => {
+                    getCompanyBookables(id).then((objects) => {
                         this.setState({bookings: objects});
                     });
                     break;
@@ -63,7 +63,7 @@ class BookingsSlideBar extends Component {
                 <Panel header={this.props.title} bsStyle="default">
                     <Row>
                         { bookings.map((booking )=> (
-                            <Col key={booking.id} xs={12} sm={5} md={3} lg={2}>
+                            <Col key={booking.bookableAlias} xs={12} sm={5} md={3} lg={2}>
                                 <BookingThumbnail {...booking} />
                             </Col>
                         ))}
