@@ -175,7 +175,7 @@ class BookingCalender extends Component {
             }else {
                 Popup.create({
                     title: event.title,
-                    content: "This bookable is already booked for this timeslot.",
+                    content: "This bookable is already  booked for this timeslot.",
                     buttons: {
                         right: [{
                             text: 'Ok',

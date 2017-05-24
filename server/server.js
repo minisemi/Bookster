@@ -86,7 +86,7 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events`,
 
 app.get('/api/users/:email/current', (req, res) => {
 
-    connection.query('select A.bookableAlias, A.name, A.image, A.cover, A.info, A.type, D.companyAlias from bookables as A inner join facilityBookings as B on A.id = B.bookable and B.bookedBy=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
+    connection.query('select A.bookableAlias, A.name, A.image, A.cover, A.info, A.type, D.companyAlias, B.start from bookables as A inner join facilityBookings as B on A.id = B.bookable and B.bookedBy=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
         let currentBookings = JSON.parse(JSON.stringify(rows));
         res.json(currentBookings);
     });
