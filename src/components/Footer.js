@@ -9,7 +9,7 @@ class Footer extends Component {
     return (
 
 
-      <footer >
+      <footer className="layoutFooter">
           <Col  xs={3} smOffset={1} sm={3} mdOffset={1} md={3} lgOffset={1} lg={3}>
             <div>
           <h2 className="header">Bookster</h2>

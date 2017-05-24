@@ -59,16 +59,25 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias`, (req,res)=> {
 })
 
 TODO: "SE TILL SÅ ATT INGA KAN BOKA SAMMA OBJEKT SAMTIDIGT. DVS IMPLEMENTERA TRANSACTION OSV"
-app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events`, (req,res)=> {
-    connection.query('update facilitybookings set bookedBy = ? where ', [req.body.user], function (err, rows){
-        let events = JSON.parse(JSON.stringify(rows));
-        res.json(events);
+app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/book`, (req,res)=> {
+    connection.query('update facilitybookings set bookedBy=(select id from users where email=?) where bookable=(select id from bookables where bookableAlias=?) and start=?', [req.body.user, req.body.bookableAlias, req.body.start], function (err, rows){
+
+        return res.json({success:true})
+    })
+
+})
+
+TODO: "SE TILL SÅ ATT INGA KAN BOKA SAMMA OBJEKT SAMTIDIGT. DVS IMPLEMENTERA TRANSACTION OSV"
+app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/unBook`, (req,res)=> {
+    connection.query('update facilitybookings set bookedBy=? where bookable=(select id from bookables where bookableAlias=?) and start=? and bookedBy=(select id from users where email=?)', [null, req.body.bookableAlias, req.body.start, req.body.user], function (err, rows){
+
+        return res.json({success:true})
     })
 
 })
 
 app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events`, (req,res)=> {
-    connection.query('select * from facilitybookings where bookable = (select id from bookables where bookableAlias=?)', [req.params.bookableAlias], function (err, rows){
+    connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from facilitybookings as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err, rows){
         let events = JSON.parse(JSON.stringify(rows));
         res.json(events);
     })
