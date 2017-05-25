@@ -5,6 +5,7 @@
 const express = require('express');
 const app = express();
 const jwt = require('express-jwt');
+var jwtGen  = require('jsonwebtoken')
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
@@ -14,7 +15,10 @@ var flash = require('connect-flash');
 var moment = require('moment');
 moment().format();
 
-const authenticate = jwt({secret : '4l3XXXiz5m311y'});
+var conf = require('../config/jwt')
+
+
+const authenticate = jwt({secret : conf.jwtSecret});
 
 
 require('./../config/passport')(passport);
@@ -161,17 +165,36 @@ app.get('/api/get_user',
 )
 
 app.post('/api/update_user', authenticate, function(req, res) {
-    console.log(req.body.firstName, req.body.familyName,
-                req.body.birth, req.body.address, req.user.email)
-  connection.query('UPDATE users SET firstName=?, familyName=?, birth=?, address=? WHERE email=?',
+  connection.query('UPDATE users SET firstName=?, familyName=?, birth=?, address=?, email=? WHERE email=?',
             [req.body.firstName, req.body.familyName,
-                req.body.birth, req.body.address, req.user.email], function(err, rows){
+                req.body.birth, req.body.address, req.body.email, req.user.email], function(err, rows){
       if(err){
           console.log(err)
+          res.json({message:"error in database", token:null})
+      }
+      else {
+          if(rows.affectedRows==0)
+              res.json({message: "Information could not be updated", token:null})
+           var token = jwtGen.sign({email:req.body.email}, conf.jwtSecret)
+          res.json({message: "success", token: token})
+      }
+      }
+
+
+            );
+});
+
+app.post('/auth/change_pw', authenticate, function(req, res) {
+
+  connection.query('UPDATE users SET password=? WHERE email=? AND password=?',
+            [req.body.newPassword, req.user.email, req.body.oldPassword], function(err, rows){
+      if(err){
           res.json("error in database")
       }
       else
-          res.json("success")
+          if(rows.affectedRows==0)
+              return res.json("Wrong password")
+          res.json("Password successfully changed")
       }
 
 

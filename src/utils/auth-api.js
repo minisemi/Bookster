@@ -18,7 +18,7 @@ const BASE_URL = 'http://localhost:3333/auth';
  });
  }
  */
-export {signUpUser, logInUser, checkPassword};
+export {signUpUser, logInUser, changePassword};
 
 function signUpUser(formValues){
     const url = `${BASE_URL}/signup`;
@@ -53,14 +53,13 @@ function logInUser(form){
         });
 }
 
-function checkPassword(oldPassword, token){
-    const url = `${BASE_URL}/check_pw`;
-    return axios.get(url, {
-        token: token,
-        oldPassword: oldPassword
-    }).then(response =>{
+function changePassword(oldPassword, newPassword, token){
+    const url = `${BASE_URL}/change_pw`;
+    return axios.post(url,{oldPassword:oldPassword, newPassword:newPassword}, {headers:{
+        Authorization: `Bearer ${token}`
+    }}).then(response =>response.data
 
-    })
+    )
         .catch(function (error) {
             console.log(error);
         });

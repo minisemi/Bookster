@@ -5,8 +5,14 @@ class Auth {
     static authenticateUser(token, email) {
         cookie.set('token', token);
         cookie.set('email', email)
-            console.log(cookie.get('email'))
+            console.log(cookie.get('email') + cookie.get('token'))
 
+    }
+
+    static switchCred(token, email){
+        cookie.remove('token')
+        cookie.remove('email')
+        this.authenticateUser(token, email);
     }
 
     static checkIfAuthenticated() {

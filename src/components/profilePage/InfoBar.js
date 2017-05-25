@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../../static/BookingsSlideBar.css';
-import {Col, Panel, Form, FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
+import {Alert, Panel, Form, FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
 import { getUserInfo, updateUserInfo } from '../../utils/bookster-api';
 import Auth from '../../Auth'
 var buttonText = "Edit";
@@ -14,7 +14,9 @@ export default class InfoBar extends Component {
             {   info:
                 {email: "", firstName: "", familyName: "", birth: ""
                 },
-                editable: true
+                editable: true,
+                message:"",
+                visibility: "hiddenAlert"
             };
     }
 
@@ -27,9 +29,14 @@ export default class InfoBar extends Component {
         else {
             buttonText="Edit";
             if(changeOccured) {
+                var email = this.state.info.email;
                 updateUserInfo(Auth.getToken(), this.state.info).then((message) => {
-                    if (message) {
-                        console.log("info updated!" + message)
+                    console.log (message)
+                    if (message.message=="success") {
+                        Auth.switchCred(message.token, email)
+
+
+
                     }
                 });
             }
@@ -46,9 +53,8 @@ export default class InfoBar extends Component {
 
     loadInfo(){
         getUserInfo(Auth.getToken()).then((response) => {
-            console.log(response)
             this.setState({info: response,
-            editable:true});
+                editable:true});
         });
     }
 
@@ -62,18 +68,20 @@ export default class InfoBar extends Component {
         return (
 
             <div className="BookingsSlideBar">
-                <Panel header="Information" bsStyle="default">
-                    <Col sm={6}><label>First name</label></Col><Col sm={6}><input type="text" disabled={this.state.editable} value={this.state.info.firstName} name="firstName"
-                                                                                  onChange={this.handleChange.bind(this)}/></Col>
-                    <Col sm={6}><label>Last name</label></Col><Col sm={6}><input type="text" disabled={this.state.editable} value={this.state.info.familyName} name="familyName"
-                                                                                 onChange={this.handleChange.bind(this)}/></Col>
-                    <Col sm={6}><label>Email</label></Col><Col sm={6}><input type="email" disabled={true} value={this.state.info.email} name="email"
-                                                                             onChange={this.handleChange.bind(this)}/></Col>
-                    <Col sm={6}><label>Address</label></Col><Col sm={6}><input type="text" disabled={this.state.editable} value={this.state.info.address} name="address"
-                                                                               onChange={this.handleChange.bind(this)}/></Col>
-                    <Col sm={6}><label>Birthday</label></Col><Col sm={6}><input type="text" disabled={this.state.editable} value={this.state.info.birth} name="birth"
-                                                                                onChange={this.handleChange.bind(this)}/></Col>
-                    <Button bsStyle="warning" onClick={this.handleEdit.bind(this)}>{buttonText}</Button>
+                <Panel header="Information" bsStyle="default"><Form horizontal>
+                    <FormGroup>First name</FormGroup><FormControl type="text" disabled={this.state.editable} value={this.state.info.firstName} name="firstName"
+                                                                  onChange={this.handleChange.bind(this)}/>
+                    <FormGroup>Last name</FormGroup><FormControl type="text" disabled={this.state.editable} value={this.state.info.familyName} name="familyName"
+                                                                 onChange={this.handleChange.bind(this)}/>
+                    <FormGroup>Email</FormGroup><FormControl type="email" disabled={this.state.editable} value={this.state.info.email} name="email"
+                                                             onChange={this.handleChange.bind(this)}/>
+                    <FormGroup>Address</FormGroup><FormControl type="text" disabled={this.state.editable} value={this.state.info.address} name="address"
+                                                               onChange={this.handleChange.bind(this)}/>
+                    <FormGroup>Birthday</FormGroup><FormControl type="text" disabled={this.state.editable} value={this.state.info.birth} name="birth"
+                                                                onChange={this.handleChange.bind(this)}/>
+                    <Button bsStyle="warning" onClick={ this.handleEdit.bind(this)} >{buttonText}</Button>
+                </Form>
+                    <Alert className={`formAlert ${this.state.visibility}`} > {this.state.message}</Alert>
                 </Panel>
 
             </div>
