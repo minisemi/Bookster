@@ -4,7 +4,7 @@ import ReactDom from 'react-dom';
 
 
 
-export default class Prompt extends React.Component {
+class Prompt extends React.Component {
     constructor(props) {
         super(props);
 
@@ -28,7 +28,7 @@ export default class Prompt extends React.Component {
     }
 
     render() {
-        return ;
+        return <input type="text" placeholder={this.props.placeholder} className="mm-popup__input" value={this.state.value} onChange={this.onChange} />;
     }
 }
 
@@ -39,46 +39,27 @@ Popup.registerPlugin('prompt', function (defaultValue, placeholder, callback) {
         promptValue = value;
     };
 
-        this.create({
+    this.create({
         title: 'What\'s your name?',
-        content: 'content',
+        content: <Prompt onChange={promptChange} placeholder={placeholder} value={defaultValue} />,
         buttons: {
-            left: [{
-            text: 'Cancel',
-            className: 'danger',
-            action: function () {
-                Popup.alert('You pressed the Cancel btn');
-
-                /** Close this popup. Close will always close the current visible one, if one is visible */
-                Popup.close();
-            }
-        }],
-        right: [{
-            text: 'Alt',
-            action: function () {
-                Popup.alert('You pressed the Alt btn');
-
-                /** Close this popup. Close will always close the current visible one, if one is visible */
-                Popup.close();
-            }
-        }, {
-            text: 'Save',
-            className: 'success',
-            action: function () {
-                Popup.alert('You pressed the Save btn');
-
-                /** Close this popup. Close will always close the current visible one, if one is visible */
-                Popup.close();
-            }
-        }]
+            left: ['cancel'],
+            right: [{
+                text: 'Save',
+                className: 'success',
+                action: function () {
+                    callback(promptValue);
+                    Popup.close();
+                }
+            }]
         }
     });
 });
 
 /** Call the plugin */
-Popup.plugins().prompt('', 'Type your name', function (value) {
+/*Popup.plugins().prompt('', 'Type your name', function (value) {
     Popup.alert('You typed: ' + value);
-});
+});*/
 
 
 // GLobal Plugin

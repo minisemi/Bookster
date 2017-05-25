@@ -173,13 +173,53 @@ INSERT INTO facilityBookings VALUES(
     );
 
 INSERT INTO facilityBookings VALUES(
-    1,
-    2,
-    'Soccer Field',
-    TRUE,
-    1494852344000,
-    1494853444000,
-    'Game between IFK Gbg and Sirius IK'
+     NULL,
+     1,
+    'Laundry',
+     FALSE ,
+    1495983600000,
+    1495994400000,
+    'Laundry for residents at Byggvesta Stockholm'
+    );
+
+INSERT INTO facilityBookings VALUES(
+     NULL,
+     1,
+    'Laundry',
+     FALSE ,
+    1496070000000,
+    1496080800000,
+    'Laundry for residents at Byggvesta Stockholm'
+    );
+
+INSERT INTO facilityBookings VALUES(
+     NULL,
+     1,
+    'Laundry',
+     FALSE ,
+    1496156400000,
+    1496167200000,
+    'Laundry for residents at Byggvesta Stockholm'
+    );
+
+INSERT INTO facilityBookings VALUES(
+     NULL,
+     1,
+    'Laundry',
+     FALSE ,
+    1496242800000,
+    1496253600000,
+    'Laundry for residents at Byggvesta Stockholm'
+    );
+
+INSERT INTO facilityBookings VALUES(
+     NULL,
+     1,
+    'Laundry',
+     FALSE ,
+    1496145600000,
+    1496156400000,
+    'Laundry for residents at Byggvesta Stockholm'
     );
 
 INSERT INTO facilityBookings VALUES(
@@ -187,8 +227,8 @@ INSERT INTO facilityBookings VALUES(
      2,
     'Soccer Field - All day',
      TRUE ,
-    1494852544000,
-    1494853844000,
+    1496275200000,
+    1496275200000,
     'All day event for Linköpings Kommun'
     );
 
@@ -197,7 +237,47 @@ INSERT INTO facilityBookings VALUES(
      2,
     'Soccer Field',
      FALSE ,
-    1494852554000,
-    1494853874000,
-    'Game between IFK Gbg and Sirius IK'
+    1495983600000,
+    1495994400000,
+    'Only bookable for soccer practice'
+    );
+
+INSERT INTO facilityBookings VALUES(
+     NULL,
+     2,
+    'Soccer Field',
+     FALSE ,
+    1496070000000,
+    1496080800000,
+    'Only bookable for soccer practice'
+    );
+
+INSERT INTO facilityBookings VALUES(
+     NULL,
+     2,
+    'Soccer Field',
+     FALSE ,
+    1496156400000,
+    1496167200000,
+    'Only bookable for soccer practice'
+    );
+
+INSERT INTO facilityBookings VALUES(
+     NULL,
+     2,
+    'Soccer Field',
+     FALSE ,
+    1496242800000,
+    1496253600000,
+    'Only bookable for soccer practice'
+    );
+
+INSERT INTO facilityBookings VALUES(
+     NULL,
+     2,
+    'Soccer Field',
+     FALSE ,
+    1496145600000,
+    1496156400000,
+    'Only bookable for soccer practice'
     );

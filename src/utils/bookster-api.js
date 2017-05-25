@@ -18,7 +18,8 @@ export function signUp({ email, firstName, familyName, password, age}){
             });
     }
 */
-export {getCurrentBookings, getServerSuggestions, getCompany, getBookable, getCompanyBookables, getFavourites, getRecommendations, getCalenderEvents, bookEvent, getUserInfo, updateUserInfo};
+export {getCurrentBookings, getServerSuggestions, getCompany, getBookable, getCompanyBookables, getFavourites, getRecommendations, getCalenderEvents, bookEvent, unBookEvent,  getUserInfo, updateUserInfo};
+
 
 
 function getCurrentBookings(id) {
@@ -77,18 +78,33 @@ function getCalenderEvents(bookId) {
   });
 }
 
-function bookEvent(user, start, end, bookId) {
-  const url = `${BASE_URL}/api/companies/compId/bookables/${bookId}/calender/events`;
+function bookEvent(bookableAlias, start, user) {
+  const url = `${BASE_URL}/api/companies/compId/bookables/${bookableAlias}/calender/events/book`;
   return axios.post(url, {
     user: user,
     start: start,
-      end: end
-  }).then(response => response.data)
+      bookableAlias: bookableAlias,
+  }).then(response => {
+      let success = response.data.success;
+        return {success:success}})
       .catch(function (error) {
     console.log(error);
   });
 }
 
+function unBookEvent(bookableAlias, start, user) {
+  const url = `${BASE_URL}/api/companies/compId/bookables/${bookableAlias}/calender/events/unBook`;
+  return axios.post(url, {
+    user: user,
+    start: start,
+      bookableAlias: bookableAlias,
+  }).then(response => {
+      let success = response.data.success;
+        return {success:success}})
+      .catch(function (error) {
+    console.log(error);
+  });
+}
 
 function getServerSuggestions(query) {
   const url = `${BASE_URL}/api/suggestions`;

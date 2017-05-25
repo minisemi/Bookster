@@ -13,7 +13,6 @@ export default class App extends Component {
 
       <div className="App">
           <Grid>
-
           <Row>
               <BookingsSlideBar title="My bookings" type="current" id={Auth.getEmail()}/>
 
