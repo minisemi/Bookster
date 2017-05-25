@@ -1,3 +1,11 @@
 Panel {
     margin: 40px;
 }
+
+.formAlert {
+    width:50%;
+}
+
+.hiddenAlert{
+    display: none;
+}

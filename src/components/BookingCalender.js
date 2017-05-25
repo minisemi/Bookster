@@ -5,7 +5,7 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 //import events from '../data/events';
-import HTML5Backend from 'react-dnd-html5-backend'
+//import HTML5Backend from 'react-dnd-html5-backend'
 //import { DragDropContext } from 'react-dnd'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import '../static/BookingCalender.css'

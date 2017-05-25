@@ -18,7 +18,8 @@ export function signUp({ email, firstName, familyName, password, age}){
             });
     }
 */
-export {getCurrentBookings, getServerSuggestions, getCompany, getBookable, getCompanyBookables, getFavourites, getRecommendations, getCalenderEvents, bookEvent, unBookEvent, getUserInfo};
+export {getCurrentBookings, getServerSuggestions, getCompany, getBookable, getCompanyBookables, getFavourites, getRecommendations, getCalenderEvents, bookEvent, unBookEvent,  getUserInfo, updateUserInfo};
+
 
 
 function getCurrentBookings(id) {

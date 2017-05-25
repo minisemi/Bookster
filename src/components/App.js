@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../static/App.css';
 import {Grid, Row} from 'react-bootstrap';
 import BookingsSlideBar from './BookingsSlidebar';
-import Auth from '../Auth'
+import Auth from '../Auth';
 
 
 export default class App extends Component {
