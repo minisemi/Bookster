@@ -100,8 +100,12 @@ class BookingCalender extends Component {
         if (event.bookedBy === null){
 
             Popup.create({
-                title: event.title,
-                content: "Are you sure you wont to book the selected bookable? ",
+                title: <h2>{event.title}</h2>,
+                content: <div><b>Are you sure you want to book the following bookable?</b>
+                <br/><br/><p><b>Description: </b>{event.descr}</p>
+                <br/><p><b>Start: </b>{`${event.start}`}</p>
+                <br/><p><b>End: </b>{`${event.end}`}</p>
+                </div>,
                 buttons: {
                     left: [{
                         text: 'Cancel',
@@ -138,8 +142,12 @@ class BookingCalender extends Component {
 
             if (event.bookedBy === 1){
                 Popup.create({
-                title: event.title,
-                content: "Are you sure you want to cancel your selected booking?",
+                title: <h2>{event.title}</h2>,
+                content: <div><b>Are you sure you want to cancel the following bookable?</b>
+                <br/><br/><p><b>Description: </b>{event.descr}</p>
+                <br/><p><b>Start: </b>{`${event.start}`}</p>
+                <br/><p><b>End: </b>{`${event.end}`}</p>
+                </div>,
                 buttons: {
                     left: [{
                         text: 'Cancel',
@@ -174,7 +182,7 @@ class BookingCalender extends Component {
             });
             }else {
                 Popup.create({
-                    title: event.title,
+                    title: <h2>{event.title}</h2>,
                     content: "This bookable is already  booked for this timeslot.",
                     buttons: {
                         right: [{
