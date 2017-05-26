@@ -9,3 +9,8 @@ Panel {
 .hiddenAlert{
     display: none;
 }
+
+.formControl{
+    width:70%;
+    float:right;
+}

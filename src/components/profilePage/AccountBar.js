@@ -16,35 +16,19 @@ export default class AccountBar extends Component {
         this.state={formValues:
             {
                 oldPassword: "",
-                newPassword: "",
+                password: "",
                 repeatPassword:""},
             formValidation:{
-                oldPassword: null
             },
             message:"",
-            visibility: "hiddenAlert"
+            visibility: "hiddenAlert",
+            buttonEnabled:true
         }
         this.handleChange = this.handleChange.bind(this);
         this.instantCheck = this.instantCheck.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-
-
-
-    /*   http://jsfiddle.net/TzLZq/2/
-     http://stackoverflow.com/questions/23123138/perform-debounce-in-react-js/24679479#24679479
-     componentWillMount() {
-     this.inputCallback = _.debounce(function (e) {
-     var div = document.getElementById("foo");
-     div.innerHTML = e.target.value;
-     }, 500);
-     }
-
-     inputCallbackDelayed (e) {
-     e.persist();
-     this.inputCallback(e);
-     }*/
 
     handleChange(event){
 
@@ -55,6 +39,8 @@ export default class AccountBar extends Component {
         formValues[name] = value;
 
         this.setState({formValues, message:this.state.message});
+
+
 
     }
 
@@ -70,53 +56,18 @@ export default class AccountBar extends Component {
     }
 
 
-
-    setMessage (context, event, helpFunction) {
-        let message="";
-        if(!helpFunction(event.target.value)){
-            message="error";
-        }
-        else message="success";
-        let formValidation = context.state.formValidation;
-        formValidation[event.target.name] = message;
-        context.setState({formValues:context.state.formValues, formValidation})
-        console.log(context.state);
-    }
-
-
-
-
-
     handleSubmit(event) {
         event.preventDefault()
 
-        let newPassword = this.state.formValues.newPassword,
+        let password = this.state.formValues.password,
             oldPassword = this.state.formValues.oldPassword,
-            repeatPassword = this.state.formValues.repeatPassword,
             formValid = this.state.formValidation;
 
-        if (!Validation.CheckPassword(newPassword)) {
-            this.setState({message: "Password must be at least 6 characters and contain upper and lower case letters"})
-            formValid[newPassword] = "error"
-
-
-        } else if (newPassword != repeatPassword) {
-            this.setState({message: "Repeated password does not match"})
-            formValid[repeatPassword] = "error"
-
-        } else if (newPassword == oldPassword) {
-            this.setState({message: "New password identical to old password."})
-            formValid[newPassword] = "error"
-
-        } else {
-            formValid[newPassword] = "success"
-            formValid[repeatPassword] = "success"
-
-            changePassword(oldPassword, newPassword, Auth.getToken()).then(response => {
+            changePassword(oldPassword, password, Auth.getToken()).then(response => {
                 this.setState({message: response});
                 if (this.state.message == "Password successfully changed") {
                     this.setState({visibility: "alert-success"})
-                    formValid["oldPassword"]="success"
+                    this.setState(Validation.clearVals(formValid))
                 }
                 else {
                     this.setState({visibility: "alert-danger"})
@@ -125,7 +76,7 @@ export default class AccountBar extends Component {
                 }
             })
 
-        }
+
 
 
     }
@@ -139,12 +90,12 @@ export default class AccountBar extends Component {
                 <Panel header="Account Settings" bsStyle="default">
                     <Form horizontal onSubmit={ this.handleSubmit.bind(this)}>
                         <FormGroup validationState={this.state.formValidation.oldPassword}>
-                            <FormControl type="password" value={this.state.formValues.oldPassword} name="oldPassword"
+                            <FormControl required={true} type="password" value={this.state.formValues.oldPassword} name="oldPassword"
                                          placeholder="Old password" onChange={this.handleChange} />
                             <FormControl.Feedback />
                         </FormGroup>
-                        <FormGroup validationState={this.state.formValidation.newPassword}>
-                            <FormControl type="password" value={this.state.formValues.newPassword} name="newPassword"
+                        <FormGroup validationState={this.state.formValidation.password}>
+                            <FormControl type="password" value={this.state.formValues.password} name="password"
                                          placeholder="New password" onChange={this.instantCheck}/>
                             <FormControl.Feedback />
                         </FormGroup>
@@ -152,7 +103,7 @@ export default class AccountBar extends Component {
                             <FormControl type="password" value={this.state.formValues.repeatPassword} name="repeatPassword"
                                          placeholder="Repeat new password" onChange={this.instantCheck}/>
                             <FormControl.Feedback />
-                        </FormGroup><Button type="submit" value="Submit" >
+                        </FormGroup><Button disabled={!this.state.buttonEnabled} type="submit" >
                         Change password
                     </Button>
                     </Form>

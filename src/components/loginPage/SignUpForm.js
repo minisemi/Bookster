@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import {Col, Form, FormGroup, Button, FormControl} from 'react-bootstrap';
+import {Col, Form, FormGroup, Button, FormControl, Alert} from 'react-bootstrap';
 import '../../static/SignUpForm.css'
-import Modal from './SignUpModal';
+import Validation from '../../Validation'
 import { signUpUser } from '../../utils/auth-api';
+var timeout= null;
 
 
 export default class SignUpForm extends Component {
@@ -10,8 +11,10 @@ export default class SignUpForm extends Component {
         super(props);
         this.state = {
             formValues: {},
+            formValidation:{},
             message: "",
-            showModal: false
+            visibility:"hiddenAlert",
+            buttonEnabled:true
         }
     }
 
@@ -26,10 +29,20 @@ export default class SignUpForm extends Component {
         this.setState({formValues}, "")
     }
 
+    instantCheck(event){
+        event.persist();
+        this.handleChange(event);
+
+        clearTimeout(timeout);
+        timeout = setTimeout(Validation.feedback, 500,this, event);
+
+
+
+    }
+
     handler(e) {
         e.preventDefault()
         this.setState({
-            showModal: false
         })
 
     }
@@ -37,8 +50,9 @@ export default class SignUpForm extends Component {
     handleSubmit(event) {
         event.preventDefault();
         signUpUser(this.state.formValues).then((message) => {
-            this.setState({ message:message, showModal:true});
-            console.log("Meddelande: " + this.state.message);
+            let formValid = Validation.clearVals(this.state.formValidation)
+            this.setState({ visibility:"success", message:"Signed up!", formValid});
+
         });
     }
 
@@ -48,42 +62,44 @@ export default class SignUpForm extends Component {
                 <Form className="form" horizontal onSubmit={ this.handleSubmit.bind(this)}>
                     <FormGroup controlId="formHorizontalName">
                         <Col sm={6}>
-                            <FormControl type="firstName" name="firstName" placeholder="First name"  required={true} value={this.state.formValues["firstName"]} onChange={this.handleChange.bind(this)}/>
+                            <FormControl type="firstName" name="firstName" placeholder="First name"  required={true} value={this.state.formValues["firstName"]} onChange={this.handleChange.bind(this)}/><FormControl.Feedback />
                         </Col>
                         <Col sm={6}>
-                            <FormControl type="surName" name="surName" placeholder="Surname" value={this.state.formValues["surName"]} onChange={this.handleChange.bind(this)} required={true}/>
+                            <FormControl type="surName" name="surName" placeholder="Surname" value={this.state.formValues["surName"]} onChange={this.handleChange.bind(this)} required={true}/><FormControl.Feedback />
                         </Col>
                     </FormGroup>
-                    <FormGroup controlId="formHorizontalEmail">
+                    <FormGroup controlId="formHorizontalEmail" validationState={this.state.formValidation.email}>
                         <Col sm={12}>
-                            <FormControl type="email" name="email" placeholder="Email" required={true} value={this.state.formValues["email"]} onChange={this.handleChange.bind(this)}/>
+                            <FormControl type="email" name="email" placeholder="Email" required={true} value={this.state.formValues["email"]} onChange={this.instantCheck.bind(this)}/><FormControl.Feedback />
                         </Col>
                     </FormGroup>
-                    <FormGroup controlId="formHorizontalPassword">
+                    <FormGroup controlId="formHorizontalPassword" validationState={this.state.formValidation.password}>
                         <Col sm={12}>
-                            <FormControl type="password" name="password" placeholder="Password" required={true} minLength={5} value={this.state.formValues["password"]} onChange={this.handleChange.bind(this)}/>
+                            <FormControl type="password" name="password" placeholder="Password" required={true} value={this.state.formValues["password"]} onChange={this.instantCheck.bind(this)}/><FormControl.Feedback />
                         </Col>
                     </FormGroup>
-                    <FormGroup controlId="formHorizontalPassword">
+                    <FormGroup controlId="formHorizontalPassword" validationState={this.state.formValidation.repeatPassword}>
                         <Col sm={12}>
-                            <FormControl type="password" name="repeatPassword" placeholder="Repeat password" required={true} minLength={5} value={this.state.formValues["repeatPassword"]} onChange={this.handleChange.bind(this)}/>
+                            <FormControl type="password" name="repeatPassword" placeholder="Repeat password" required={true}  value={this.state.formValues["repeatPassword"]} onChange={this.instantCheck.bind(this)}/><FormControl.Feedback />
                         </Col>
                     </FormGroup>
-                    <FormGroup controlId="date">
+                    <FormGroup validationState={this.state.formValidation.birth}>
                         <Col sm={10}>
-                            <FormControl type="date" name="birth" placeholder="Birth (YYYY/MM/DD)" required={true} value={this.state.formValues["birth"]} onChange={this.handleChange.bind(this)}/>
+                            <FormControl type="date" name="birth" placeholder="Birth (YYYY/MM/DD)" required={true} value={this.state.formValues["birth"]} onChange={this.instantCheck.bind(this)}/><FormControl.Feedback />
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="">
-
-                        <Col smOffset={9} sm={3} mdOffset={9} md={3} lgOffset={9} lg={3}>
-                            <Button type="submit" value="Submit" >
+                        <Col sm={12}  md={6}  lg={6}>
+                            <Alert className={`formAlert ${this.state.visibility}`} > {this.state.message}</Alert>
+                        </Col>
+                        <Col sm={12}  md={3}  lg={6}>
+                            <Button type="submit" value="Submit" disabled={!this.state.buttonEnabled}>
                                 Create account
                             </Button>
                         </Col>
                     </FormGroup>
                 </Form>
-                <Modal showBol={this.state.showModal} title={this.state.message} handler={this.handler.bind(this)} />
+
             </div>
         );
     }

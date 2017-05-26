@@ -3,10 +3,14 @@ import '../../static/BookingsSlideBar.css';
 import {Alert, Panel, Form, FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
 import { getUserInfo, updateUserInfo } from '../../utils/bookster-api';
 import Auth from '../../Auth'
+import Validation from '../../Validation'
+import '../../static/ProfilePage.css'
 var buttonText = "Edit";
 var changeOccured = false;
-export default class InfoBar extends Component {
+var timeout = null;
 
+
+export default class InfoBar extends Component {
 
     constructor() {
         super()
@@ -14,26 +18,30 @@ export default class InfoBar extends Component {
             {   info:
                 {email: "", firstName: "", familyName: "", birth: ""
                 },
+                formValidation:{},
                 editable: true,
+                buttonText:"Edit",
                 message:"",
-                visibility: "hiddenAlert"
+                visibility: "hiddenAlert",
+                buttonEnabled : true
             };
     }
 
 
 
-    handleEdit(){
+    handleEdit(event){
+        event.preventDefault()
         if (this.state.editable){
-            buttonText= "Save";
+            this.setState({buttonText:"Save"})
         }
         else {
-            buttonText="Edit";
+             this.setState({buttonText:"Edit"})
             if(changeOccured) {
                 var email = this.state.info.email;
                 updateUserInfo(Auth.getToken(), this.state.info).then((message) => {
-                    console.log (message)
                     if (message.message=="success") {
                         Auth.switchCred(message.token, email)
+
 
 
 
@@ -41,7 +49,8 @@ export default class InfoBar extends Component {
                 });
             }
         }
-        this.setState({info:this.state.info, editable:!this.state.editable})
+        let formValid = Validation.clearVals(this.state.formValidation)
+        this.setState({info:this.state.info, editable:!this.state.editable, formValid})
     }
 
     handleChange (event){
@@ -49,6 +58,15 @@ export default class InfoBar extends Component {
         info[event.target.name]=event.target.value;
         this.setState({info, editable: this.state.editable})
         changeOccured = true;
+
+    }
+
+    handleValidation (event){
+        event.persist();
+        this.handleChange(event);
+
+        clearTimeout(timeout);
+        timeout = setTimeout(Validation.feedback, 500,this, event);
     }
 
     loadInfo(){
@@ -68,18 +86,18 @@ export default class InfoBar extends Component {
         return (
 
             <div className="BookingsSlideBar">
-                <Panel header="Information" bsStyle="default"><Form horizontal>
-                    <FormGroup>First name</FormGroup><FormControl type="text" disabled={this.state.editable} value={this.state.info.firstName} name="firstName"
-                                                                  onChange={this.handleChange.bind(this)}/>
-                    <FormGroup>Last name</FormGroup><FormControl type="text" disabled={this.state.editable} value={this.state.info.familyName} name="familyName"
-                                                                 onChange={this.handleChange.bind(this)}/>
-                    <FormGroup>Email</FormGroup><FormControl type="email" disabled={this.state.editable} value={this.state.info.email} name="email"
-                                                             onChange={this.handleChange.bind(this)}/>
-                    <FormGroup>Address</FormGroup><FormControl type="text" disabled={this.state.editable} value={this.state.info.address} name="address"
-                                                               onChange={this.handleChange.bind(this)}/>
-                    <FormGroup>Birthday</FormGroup><FormControl type="text" disabled={this.state.editable} value={this.state.info.birth} name="birth"
-                                                                onChange={this.handleChange.bind(this)}/>
-                    <Button bsStyle="warning" onClick={ this.handleEdit.bind(this)} >{buttonText}</Button>
+                <Panel header="Information" bsStyle="default"><Form  onSubmit={ this.handleEdit.bind(this)}>
+                    <FormGroup validationState={this.state.formValidation.firstName}>First name<FormControl type="text" required={true} className="formControl" disabled={this.state.editable} value={this.state.info.firstName} name="firstName"
+                                                                  onChange={this.handleChange.bind(this)}/></FormGroup>
+                    <FormGroup validationState={this.state.formValidation.familyName}>Last name<FormControl className="formControl" required={true} type="text" disabled={this.state.editable} value={this.state.info.familyName} name="familyName"
+                                                                 onChange={this.handleChange.bind(this)}/></FormGroup>
+                    <FormGroup  validationState={this.state.formValidation.email}>Email<FormControl className="formControl" required={true} type="email" disabled={this.state.editable} value={this.state.info.email} name="email"
+                                                             onChange={this.handleValidation.bind(this)}/><FormControl.Feedback /></FormGroup>
+                    <FormGroup validationState={this.state.formValidation.address}>Address<FormControl type="text" required={true} disabled={this.state.editable} className="formControl" value={this.state.info.address} name="address"
+                                                               onChange={this.handleChange.bind(this)}/></FormGroup>
+                    <FormGroup validationState={this.state.formValidation.birth}>Birthday<FormControl className="formControl" required={true} type="text" disabled={this.state.editable} value={this.state.info.birth} name="birth"
+                                                                onChange={this.handleValidation.bind(this)}/><FormControl.Feedback /></FormGroup>
+                    <Button bsStyle="warning" type="submit" disabled={!this.state.buttonEnabled} >{this.state.buttonText}</Button>
                 </Form>
                     <Alert className={`formAlert ${this.state.visibility}`} > {this.state.message}</Alert>
                 </Panel>
