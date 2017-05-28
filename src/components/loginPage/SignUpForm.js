@@ -50,8 +50,20 @@ export default class SignUpForm extends Component {
     handleSubmit(event) {
         event.preventDefault();
         signUpUser(this.state.formValues).then((message) => {
-            let formValid = Validation.clearVals(this.state.formValidation)
-            this.setState({ visibility:"success", message:"Signed up!", formValid});
+            var vis = "";
+            if (message=="Signed up!") {
+                Validation.clearVals(this.state.formValidation)
+                vis="alert-success"
+            }else{
+                vis="alert-danger"
+                if (message="User already exists") {
+                    let formVal = this.state.formValidation
+                    formVal["email"]= "error";
+
+                }
+
+            }
+            this.setState({visibility: vis, message: message});
 
         });
     }

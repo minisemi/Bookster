@@ -36,24 +36,20 @@ module.exports = function (passport){
                 if (err)
                     return done(err);
                 if (rows.length) {
-                    return done(null, false, { message: 'user already exists'});
+                    return done(null, false, { message: 'User already exists'});
                 } else {
                     var firstName = req.body.firstName,
                         surName = req.body.surName,
                         birth = req.body.birth;
 
-                    //If no user exists, create new
-                    var newUserMysql = new Object();
-
-                    newUserMysql.email    = email;
-                    newUserMysql.password = password; // use the generateHash function in our user model
+                    //If user does not exist, create new
 
                     var insertQuery = "INSERT INTO users (email, firstName, familyName, password, birth) values (?,?,?,?,?)";
 
                     connection.query(insertQuery, [email, firstName, surName, password, birth],function(err,rows){
-                        newUserMysql.id = rows.insertId;
 
-                        return done(null, newUserMysql, { message: 'Signed up!' });
+
+                        return done(null, email, { message: 'Signed up!' });
                     });
                 }
             });

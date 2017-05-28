@@ -32,25 +32,29 @@ export default class InfoBar extends Component {
     handleEdit(event){
         event.preventDefault()
         if (this.state.editable){
-            this.setState({buttonText:"Save"})
+            this.setState({info:this.state.info,buttonText:"Save", editable:!this.state.editable})
         }
         else {
-             this.setState({buttonText:"Edit"})
+
             if(changeOccured) {
                 var email = this.state.info.email;
-                updateUserInfo(Auth.getToken(), this.state.info).then((message) => {
+                updateUserInfo(this.state.info).then((message) => {
+                    var formValid = this.state.formValidation
                     if (message.message=="success") {
                         Auth.switchCred(message.token, email)
-
+                        Validation.clearVals(formValid)
+                        this.setState({info:this.state.info,buttonText:"Edit", editable:!this.state.editable, formValid})
 
 
 
                     }
+                    else{
+                        formValid["email"]= "error"
+                        this.setState({visibility:"alert-danger", message: message.message, formValid})
+                    }
                 });
             }
         }
-        let formValid = Validation.clearVals(this.state.formValidation)
-        this.setState({info:this.state.info, editable:!this.state.editable, formValid})
     }
 
     handleChange (event){
@@ -70,7 +74,7 @@ export default class InfoBar extends Component {
     }
 
     loadInfo(){
-        getUserInfo(Auth.getToken()).then((response) => {
+        getUserInfo().then((response) => {
             this.setState({info: response,
                 editable:true});
         });
