@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../static/BookingsSlideBar.css';
 import {Alert, Panel, Form, FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
-import { getUserInfo, updateUserInfo } from '../../utils/bookster-api';
+import { getUserInfo, updateUserInfo, updateToken } from '../../utils/bookster-api';
 import Auth from '../../Auth'
 import Validation from '../../Validation'
 import '../../static/ProfilePage.css'
@@ -42,6 +42,7 @@ export default class InfoBar extends Component {
                     var formValid = this.state.formValidation
                     if (message.message=="success") {
                         Auth.switchCred(message.token, email)
+                        updateToken();
                         Validation.clearVals(formValid)
                         this.setState({info:this.state.info,buttonText:"Edit", editable:!this.state.editable, formValid})
 

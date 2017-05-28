@@ -11,17 +11,22 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const passport = require('passport');
 const session = require('express-session');
+const path = require('path');
 var flash = require('connect-flash');
 var moment = require('moment');
+
 moment().format();
 
 var conf = require('../config/jwt')
+
+app.use(express.static(path.join(__dirname, 'assets')));
 
 
 const authenticate = jwt({secret : conf.jwtSecret});
 
 
 require('./../config/passport')(passport);
+
 var connection = mysql.createConnection(require('./../config/database').connection)
 
 app.use(bodyParser.json());
@@ -37,6 +42,8 @@ app.get(`/api/companies/:companyAlias`,authenticate, (req,res)=> {
         } else {
 
             let company = JSON.parse(JSON.stringify(rows))[0];
+            console.log(company.image)
+            company.image = `http://localhost:3333/companyProfilePictures/${company.image}`
 
             res.json(company);
         }
@@ -190,7 +197,9 @@ app.post('/api/update_user', authenticate, function(req, res) {
 
     connection.query(sqlQuery,
         parameters, function(err, rows){
+        console.log(req.body.address)
             if(err){
+                console.log(err)
                 if(err.errno==1062){
                     res.json({message: "Email already taken", token: null})
                 }else
@@ -207,6 +216,11 @@ app.post('/api/update_user', authenticate, function(req, res) {
 
     );
 });
+
+app.get('/image/:type/:company', authenticate, function(req, res){
+
+
+})
 
 app.post('/auth/change_pw', authenticate, function(req, res) {
 

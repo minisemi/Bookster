@@ -42,6 +42,7 @@ render() {
           <header style={headerStyle}/>
           <div className="picture-container">
             <img alt="" src={`/assets/searchResults/${company.image}`}/>
+              <img alt="" src={company.image}/>
             <h2 className="name">{company.name}</h2>
           </div>
           <section className="description">
