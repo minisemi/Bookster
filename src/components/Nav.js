@@ -22,8 +22,8 @@ export default class Nav extends Component {
   }
 
   //TODO: fixa så detta funkar med tokens i cookie
-  handleLogin(token, email){
-      Auth.authenticateUser(token, email)
+  handleLogin(token, email, userId){
+      Auth.authenticateUser(token, email, userId)
       browserHistory.push('/');
     this.setState({loggedIn:true});
       }

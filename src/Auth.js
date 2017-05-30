@@ -2,9 +2,10 @@ import Cookies from 'universal-cookie';
 var cookie = new Cookies();
 class Auth {
 
-    static authenticateUser(token, email) {
+    static authenticateUser(token, email, userId) {
         cookie.set('token', token);
-        cookie.set('email', email)
+        cookie.set('email', email);
+         cookie.set('userId', userId)
             console.log(cookie.get('email') + cookie.get('token'))
 
     }
@@ -12,7 +13,9 @@ class Auth {
     static switchCred(token, email){
         cookie.remove('token')
         cookie.remove('email')
-        this.authenticateUser(token, email);
+        let userId = cookie.get('userId')
+        cookie.remove('userId')
+        this.authenticateUser(token, email, userId);
     }
 
     static checkIfAuthenticated() {
@@ -23,7 +26,7 @@ class Auth {
     static deauthenticateUser() {
         console.log('Deauthenticating...')
         cookie.remove("token")
-        console.log(cookie.get('token'))
+        cookie.remove('userId')
     }
 
 
@@ -34,6 +37,10 @@ class Auth {
 
     static getEmail(){
         return cookie.get('email');
+    }
+
+    static getUserId(){
+        return cookie.get("userId");
     }
 
 }
