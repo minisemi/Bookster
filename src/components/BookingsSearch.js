@@ -50,13 +50,15 @@ function getSuggestionValue(suggestion) {
     //const parts = parse(suggestionText, matches);
       let pic;
       if (suggestion.type=="bookable"){
-           pic = suggestion.bookableAlias;
-      } else{
-           pic = suggestion.companyAlias;
-      }
+          pic = { backgroundImage: `url(${suggestion.image})` };
 
+      } else{
+          pic = { backgroundImage: `url(${suggestion.image})` };
+
+      }
+      console.log(pic)
     return (
-      <span className={'suggestion-content ' + pic}>
+      <span className={'suggestion-content '} style={pic}>
         <span className="name">
             {suggestionText}
         </span>

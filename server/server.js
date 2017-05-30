@@ -85,15 +85,17 @@ app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/
         if(err){
             return res.json({success:false, message: "error in database"})
         }
-            return res.json({success:true})
+        return res.json({success:true})
     })
 
 })
 
 app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events`,authenticate, (req,res)=> {
-    connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from bookables as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err, rows){
-         if (err)
+    connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from facilitybookings as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err, rows){
+        if (err) {
+            console.log(err)
             return res.json("error in database")
+        }
         let events = JSON.parse(JSON.stringify(rows));
         res.json(events);
     })
@@ -116,7 +118,7 @@ app.get('/api/users/:email/current',authenticate, (req, res) => {
 
 app.get('/api/users/:email/favourites',authenticate, (req, res) => {
     connection.query('select A.bookableAlias, A.name, A.info, A.type, D.companyAlias from bookables as A inner join favourites as B on A.id = B.bookable and B.user=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
- if (err)
+        if (err)
             return res.json("error in database")
         let current = JSON.parse(JSON.stringify(rows));
         for (let key in current){
@@ -130,7 +132,7 @@ app.get('/api/users/:email/favourites',authenticate, (req, res) => {
 TODO: "ADD TABLE OR SOMETHING WITH RECOMMENDATIONS. CURRENTLY FETCHING FROM FAOURITES"
 app.get('/api/users/:email/recommendations',authenticate, (req, res) => {
     connection.query('select A.bookableAlias, A.name, A.info, A.type, D.companyAlias from bookables as A inner join favourites as B on A.id = B.bookable and B.user=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
- if (err)
+        if (err)
             return res.json("error in database")
         let current = JSON.parse(JSON.stringify(rows));
         for (let key in current){
@@ -143,10 +145,10 @@ app.get('/api/users/:email/recommendations',authenticate, (req, res) => {
 
 app.get('/api/companies/:companyAlias/bookables', authenticate, (req, res) => {
     connection.query('select A.bookableAlias, A.name, A.info, A.type, B.companyAlias from bookables as A inner join companies as B on A.company = B.id and B.companyAlias=?', [req.params.companyAlias],function(err, rows){
- if (err)
+        if (err)
             return res.json("error in database")
         let companybookables = JSON.parse(JSON.stringify(rows));
-  for (let key in companybookables){
+        for (let key in companybookables){
             companybookables[key]["image"] = `http://localhost:3333/bookables/profile/${companybookables[key].bookableAlias}.png`
         }
 
@@ -178,14 +180,28 @@ app.get('/api/suggestions', authenticate, (req, res) => {
             suggestions[0].suggestions=JSON.parse(JSON.stringify(rows2));
             const escapedValue = req.query.query;
             const regex = new RegExp('\\b' + escapedValue, 'i');
-            res.json(suggestions
+
+            var response = suggestions
                 .map(section => {
                     return {
                         section: section.section,
                         suggestions: section.suggestions.filter(suggestion => regex.test(`${suggestion.name} ${suggestion.city}`))
                     };
                 })
-                .filter(section => section.suggestions.length > 0));
+                .filter(section => section.suggestions.length > 0);
+
+            for (let key in response) {
+                for (let sug in response[key].suggestions){
+                    if(response[key].section ==="Bookables")
+                        response[key].suggestions[sug]["image"]=`http://localhost:3333/searchResult/${response[key].suggestions[sug].bookableAlias}.png`
+                    else
+                        response[key].suggestions[sug]["image"]=`http://localhost:3333/searchResult/${response[key].suggestions[sug].companyAlias}.png`
+
+
+                }
+
+            }
+            res.json(response);
             //res.json(companies.filter(suggestion => regex.test(`${suggestion.name} ${suggestion.city}`)));
 
         })
@@ -210,7 +226,7 @@ app.post('/api/update_user', authenticate, function(req, res) {
 
     connection.query(sqlQuery,
         parameters, function(err, rows){
-        console.log(req.body.address)
+            console.log(req.body.address)
             if(err){
                 console.log(err)
                 if(err.errno==1062){
@@ -243,9 +259,9 @@ app.post('/auth/change_pw', authenticate, function(req, res) {
                 return res.json("error in database")
             }
 
-                if (rows.affectedRows == 0)
-                    return res.json("Wrong password")
-                res.json("Password successfully changed")
+            if (rows.affectedRows == 0)
+                return res.json("Wrong password")
+            res.json("Password successfully changed")
 
         }
 
