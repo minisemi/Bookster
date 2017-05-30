@@ -15,8 +15,6 @@ CREATE TABLE companies(
     companyAlias varchar(15) UNIQUE ,
     name varchar(30) NOT NULL,
     city varchar(30),
-    image varchar(255),
-    cover varchar(255),
     info varchar (255) NOT NULL,
     type varchar(15) NOT NULL,
     PRIMARY KEY (id)
@@ -27,8 +25,6 @@ CREATE TABLE bookables(
     bookableAlias varchar(15) UNIQUE,
     name varchar(30) NOT NULL,
     company int NOT NULL,
-    image varchar(255),
-    cover varchar(255),
     info varchar(255) NOT NULL,
     type varchar(15) NOT NULL,
     PRIMARY KEY (id),
@@ -56,100 +52,80 @@ CREATE TABLE facilityBookings(
     );
 
 
-INSERT INTO companies (companyAlias, name, city, image, cover, info, type)VALUES(
+INSERT INTO companies (companyAlias, name, city, info, type)VALUES(
     'byggvestaSthlm',
     'Byggvesta',
     'Stockholm',
-    'byggvesta.png',
-    'ByggvestaHeader.png',
     'Rent apartments and book laundromat',
     'company'
     );
 
-INSERT INTO companies (companyAlias, name, city, image, cover, info, type)VALUES(
+INSERT INTO companies (companyAlias, name, city, info, type)VALUES(
     'byggvestaLink',
     'Byggvesta',
     'Linköping',
-    'byggvesta.png',
-    'ByggvestaHeader.png',
     'Rent apartments and book laundromat',
     'company'
     );
 
-INSERT INTO companies (companyAlias, name, city, image, cover, info, type) VALUES(
+INSERT INTO companies (companyAlias, name, city, info, type) VALUES(
     'dsektionenLiu',
     'Datateknologsektionen',
     'Linköping',
-    'd-sektionen.png',
-    'd-sektionenHeader.png',
     'Rent our car etc.',
     'company'
     );
-INSERT INTO companies (companyAlias, name, city, image, cover, info, type) VALUES(
+INSERT INTO companies (companyAlias, name, city, info, type) VALUES(
     'msektionenLiu',
     'Maskinteknologsektionen',
     'Linköping',
-    'm-sektionen.png',
-    'm-sektionenHeader.png',
     'Rent our car etc.',
     'company'
     );
 
-INSERT INTO bookables (bookableAlias, name, company, image, cover, info, type) VALUES(
+INSERT INTO bookables (bookableAlias, name, company, info, type) VALUES(
     'laundromat1',
     'Laundromat',
     1,
-    'Laundromat.png',
-    'LaundromatHeader.png',
     'Very nice laundromat. Please remember to clean the filters after use.',
     'bookable'
     );
-INSERT INTO bookables (bookableAlias, name, company, image, cover, info, type)VALUES(
+INSERT INTO bookables (bookableAlias, name, company, info, type)VALUES(
     'soccerField1',
     'Soccer Field',
     2,
-    'SoccerField.png',
-    'SoccerFieldHeader.png',
     'Very nice soccer field.',
     'bookable'
     );
 
-INSERT INTO bookables (bookableAlias, name, company, image, cover, info, type)VALUES(
+INSERT INTO bookables (bookableAlias, name, company, info, type)VALUES(
     'soccerField2',
     'Soccer Field',
     1,
-    'SoccerField.png',
-    'SoccerFieldHeader.png',
     'Very nice soccer field.',
     'bookable'
     );
 
-INSERT INTO bookables(bookableAlias, name, company, image, cover, info, type) VALUES(
+INSERT INTO bookables(bookableAlias, name, company, info, type) VALUES(
     'soccerField3',
     'Soccer Field',
     1,
-    'SoccerField.png',
-    'SoccerFieldHeader.png',
     'Very nice soccer field.',
     'bookable'
     );
 
-INSERT INTO bookables (bookableAlias, name, company, image, cover, info, type)VALUES(
+INSERT INTO bookables (bookableAlias, name, company, info, type)VALUES(
     'soccerField4',
     'Soccer Field',
     1,
-    'SoccerField.png',
-    'SoccerFieldHeader.png',
     'Very nice soccer field.',
     'bookable'
     );
 
-INSERT INTO bookables (bookableAlias, name, company, image, cover, info, type)VALUES(
+INSERT INTO bookables (bookableAlias, name, company, info, type)VALUES(
     'soccerField5',
     'Soccer Field',
     1,
-    'SoccerField.png',
-    'SoccerFieldHeader.png',
     'Very nice soccer field.',
     'bookable'
     );
