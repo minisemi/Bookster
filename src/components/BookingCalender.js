@@ -147,11 +147,10 @@ class BookingCalender extends Component {
                                                 text: 'Ok',
                                                 action: function () {
                                                     Popup.close();
-
                                                 }
                                             }]
                                         }
-                                    }, true);
+                                    });
 
 
                                 }
@@ -296,6 +295,10 @@ class BookingCalender extends Component {
         }
     }
 
+    onSelecting({}){
+        return false;
+    }
+
     render() {
         return (
             <div>
@@ -304,6 +307,7 @@ class BookingCalender extends Component {
                     events={this.state.events}
                     onSelectEvent={this.handleSelectEvent}
                     eventPropGetter={this.eventPropGetter}
+                    onSelecting={this.onSelecting}
                     defaultView='week'
                     defaultDate={new Date(2017, 4, 31)}
                     scrollToTime={new Date(2017, 4, 31, 15)}
