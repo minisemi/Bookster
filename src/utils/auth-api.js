@@ -43,7 +43,7 @@ function logInUser(form){
         var loggedIn = response.data.message
         var token = response.data.token
         if (loggedIn=='signedIn' && token!=null){
-            return {success: true, token: token}
+            return {success: true, token: token, userId: response.data.id}
         }
         else return {success: false, token: null};
 

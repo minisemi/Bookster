@@ -32,7 +32,7 @@ export default class LogInForm extends Component {
         logInUser(this.state.formValues).then((response) => {
             this.setState({loggedIn:response.success})
             if (response.success){
-                this.props.handleLogin(response.token, this.state.formValues.email);
+                this.props.handleLogin(response.token, this.state.formValues.email, response.userId);
                 updateToken();
             }
             else{

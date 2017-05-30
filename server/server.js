@@ -36,7 +36,7 @@ app.use(cors());
 
 TODO: "SERVER CRASHES IF SQL SYNTAX IS WRONG. ADD ERROR HANDLERS"
 app.get(`/api/companies/:companyAlias`,authenticate, (req,res)=> {
-    connection.query('select companyAlias,name,city,image,cover,info,type from companies where companyAlias = ?', [req.params.companyAlias], function (err, rows) {
+    connection.query('select companyAlias,name,city,info,type from companies where companyAlias = ?', [req.params.companyAlias], function (err, rows) {
         if (err) {
             res.json("error in database")
         } else {
@@ -51,7 +51,7 @@ app.get(`/api/companies/:companyAlias`,authenticate, (req,res)=> {
 })
 
 app.get(`/api/companies/:companyAlias/bookables/:bookableAlias`,authenticate, (req,res)=> {
-    connection.query('select A.bookableAlias, A.name, A.image, A.cover, A.info, A.type, B.companyAlias from bookables as A inner join companies as B on A.company = B.id and A.bookableAlias=?', [req.params.bookableAlias], function (err, rows){
+    connection.query('select A.bookableAlias, A.name, A.info, A.type, B.companyAlias from bookables as A inner join companies as B on A.company = B.id and A.bookableAlias=?', [req.params.bookableAlias], function (err, rows){
         if(err){
             return res.json({success:false, message: "error in database"})
         }
@@ -102,20 +102,26 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events`,
 
 app.get('/api/users/:email/current',authenticate, (req, res) => {
 
-    connection.query('select A.bookableAlias, A.name, A.image, A.cover, A.info, A.type, D.companyAlias, B.start from bookables as A inner join facilityBookings as B on A.id = B.bookable and B.bookedBy=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
+    connection.query('select A.bookableAlias, A.name, A.info, A.type, D.companyAlias, B.start from bookables as A inner join facilityBookings as B on A.id = B.bookable and B.bookedBy=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
         if (err)
             return res.json("error in database")
         let currentBookings = JSON.parse(JSON.stringify(rows));
+        for (let key in currentBookings){
+            currentBookings[key]["image"] = `http://localhost:3333/bookables/profile/${currentBookings[key].bookableAlias}.png`
+        }
         res.json(currentBookings);
     });
 
 });
 
 app.get('/api/users/:email/favourites',authenticate, (req, res) => {
-    connection.query('select A.bookableAlias, A.name, A.image, A.cover, A.info, A.type, D.companyAlias from bookables as A inner join favourites as B on A.id = B.bookable and B.user=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
+    connection.query('select A.bookableAlias, A.name, A.info, A.type, D.companyAlias from bookables as A inner join favourites as B on A.id = B.bookable and B.user=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
  if (err)
             return res.json("error in database")
         let current = JSON.parse(JSON.stringify(rows));
+        for (let key in current){
+            current[key]["image"] = `http://localhost:3333/bookables/profile/${current[key].bookableAlias}.png`
+        }
 
         res.json(current);
     })
@@ -123,21 +129,26 @@ app.get('/api/users/:email/favourites',authenticate, (req, res) => {
 
 TODO: "ADD TABLE OR SOMETHING WITH RECOMMENDATIONS. CURRENTLY FETCHING FROM FAOURITES"
 app.get('/api/users/:email/recommendations',authenticate, (req, res) => {
-    connection.query('select A.bookableAlias, A.name, A.image, A.cover, A.info, A.type, D.companyAlias from bookables as A inner join favourites as B on A.id = B.bookable and B.user=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
+    connection.query('select A.bookableAlias, A.name, A.info, A.type, D.companyAlias from bookables as A inner join favourites as B on A.id = B.bookable and B.user=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
  if (err)
             return res.json("error in database")
         let current = JSON.parse(JSON.stringify(rows));
-
+        for (let key in current){
+            current[key]["image"] = `http://localhost:3333/bookables/profile/${current[key].bookableAlias}.png`
+        }
         res.json(current);
     })
 });
 
 
 app.get('/api/companies/:companyAlias/bookables', authenticate, (req, res) => {
-    connection.query('select A.bookableAlias, A.name, A.image, A.cover, A.info, A.type, B.companyAlias from bookables as A inner join companies as B on A.company = B.id and B.companyAlias=?', [req.params.companyAlias],function(err, rows){
+    connection.query('select A.bookableAlias, A.name, A.info, A.type, B.companyAlias from bookables as A inner join companies as B on A.company = B.id and B.companyAlias=?', [req.params.companyAlias],function(err, rows){
  if (err)
             return res.json("error in database")
         let companybookables = JSON.parse(JSON.stringify(rows));
+  for (let key in companybookables){
+            companybookables[key]["image"] = `http://localhost:3333/bookables/profile/${companybookables[key].bookableAlias}.png`
+        }
 
         res.json(companybookables);
     })
@@ -155,14 +166,14 @@ app.get('/api/suggestions', authenticate, (req, res) => {
             suggestions: []
         }
     ];
-    connection.query('select companyAlias,name,city,image,cover,info,type from companies', function(err, rows){
+    connection.query('select companyAlias,name,city,info,type from companies', function(err, rows){
 
         if (err)
             return res.json("error in database")
 
         suggestions[1].suggestions=JSON.parse(JSON.stringify(rows));
 
-        connection.query('select A.bookableAlias,A.name,B.companyAlias,A.image,A.cover,A.info,A.type,B.city from bookables as A inner join companies as B on A.company=B.id', function(err, rows2){
+        connection.query('select A.bookableAlias,A.name,B.companyAlias,A.info,A.type,B.city from bookables as A inner join companies as B on A.company=B.id', function(err, rows2){
 
             suggestions[0].suggestions=JSON.parse(JSON.stringify(rows2));
             const escapedValue = req.query.query;

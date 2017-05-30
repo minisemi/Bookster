@@ -69,7 +69,7 @@ module.exports = function (passport){
                     return done (null, false, {message: 'notSignedIn'});
                 var payload = {email: rows[0].email};
                 var token = jwt.sign(payload, parameters.secretOrKey)
-                return done(null, rows[0], {message: 'signedIn', token: token});
+                return done(null, rows[0], {message: 'signedIn', token: token, id: rows[0].id});
             })
         }
         )
