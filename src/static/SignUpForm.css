@@ -1,3 +1,14 @@
 .form {
     padding: 10px;
 }
+.formAlert {
+    width:90%;
+}
+
+.hiddenAlert{
+    display: none;
+}
+
+Button {
+    float:right;
+}

@@ -1,23 +1,12 @@
 import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3333';
+import Auth from '../Auth';
+
+axios.defaults.headers.common['Authorization'] = `Bearer ${Auth.getToken()}`;
+console.log("HEJHEJ API CALLED")
 
 
-/*
-export function signUp({ email, firstName, familyName, password, age}){
-    const url = `${BASE_URL}/auth/signup`
-    return function (dispatch){
-        axios.post(url, { email, firstName, familyName, password, age})
-            .then(response => {
-                cookie.set('token', response.data.token, { path: '/' });
-                //dispatch({ type: 'auth_user' });
-                window.location.href = 'http://localhost:3000/special';
-            })
-            .catch((error) => {
-                console.log('Error!' + error.response)
-            });
-    }
-*/
 export {getCurrentBookings, getServerSuggestions, getCompany, getBookable, getCompanyBookables, getFavourites, getRecommendations, getCalenderEvents, bookEvent, unBookEvent,  getUserInfo, updateUserInfo};
 
 
@@ -119,20 +108,18 @@ function getServerSuggestions(query) {
   });
 }
 
-function updateUserInfo(token, info){
+function updateUserInfo( info){
     const url = `${BASE_URL}/api/update_user`
-    return axios.post(url,info, {headers:{
-        Authorization: `Bearer ${token}`
-    }}).then(response => response.data)
+    return axios.post(url,info).then(response => response.data)
         .catch(function (error) {
             console.log("ERROR!!" + error)
         })
 }
 
-function getUserInfo (token){
+function getUserInfo (){
     const url = `${BASE_URL}/api/get_user`
     return axios.get(url, {headers:{
-            Authorization: `JWT ${token}`
+            Authorization: `JWT ${Auth.getToken()}`
     }}).then(response => response.data)
         .catch(function (error) {
             console.log(error)

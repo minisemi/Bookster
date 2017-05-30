@@ -1,14 +1,18 @@
 
 import React, { Component } from 'react';
 import {Form, FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
+import Modal from './SignUpModal'
 import { logInUser } from '../../utils/auth-api';
 
 export default class LogInForm extends Component {
-     constructor(props){
+    constructor(props){
         super(props);
         this.state = {
             formValues: {},
-            loggedIn: false
+            loggedIn: false,
+            formValidation:{},
+            visibility:"hiddenAlert",
+            showModal:false
         }
     }
     handleChange(event){
@@ -29,7 +33,17 @@ export default class LogInForm extends Component {
             if (response.success){
                 this.props.handleLogin(response.token, this.state.formValues.email);
             }
+            else{
+                this.setState({showModal:true})
+            }
         });
+    }
+
+    handler(e) {
+        e.preventDefault()
+        this.setState({
+            showModal: false
+        })
     }
 
 
@@ -39,18 +53,20 @@ export default class LogInForm extends Component {
                 <FormGroup controlId="formInlineEmail">
                     <ControlLabel>Email: </ControlLabel>
                     {' '}
-                    <FormControl type="email" name="email" placeholder="Enter your email" value={this.state.formValues["email"]} onChange={this.handleChange.bind(this)} />
+                    <FormControl type="email" name="email" placeholder="Enter your email" value={this.state.formValues["email"]} required={true} onChange={this.handleChange.bind(this)} />
                 </FormGroup>
                 {' '}
                 <FormGroup controlId="formInlinePassword">
                     <ControlLabel>Password: </ControlLabel>
                     {' '}
-                    <FormControl type="password" name="password" value={this.state.formValues["password"]} onChange={this.handleChange.bind(this)}/>
+                    <FormControl type="password" name="password" value={this.state.formValues["password"]} required={true} onChange={this.handleChange.bind(this)}/>
                 </FormGroup>
                 {' '}
-                 <Button type="submit" value="Submit">
-                                Sign in
-                            </Button>
+                <Button type="submit" value="Submit">
+                    Sign in
+                </Button>
+                <Modal showBol = {this.state.showModal} handler = {this.handler.bind(this)} email = {this.state.formValues.email}/>
+
             </Form>
         );
     }

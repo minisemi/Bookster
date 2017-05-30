@@ -4,6 +4,7 @@ import Autosuggest from 'react-autosuggest';
 //import match from 'autosuggest-highlight/match';
 //import parse from 'autosuggest-highlight/parse';
 import { getServerSuggestions } from '../utils/bookster-api';
+import Auth from '../Auth';
 import { browserHistory } from 'react-router';
 //import {Image} from 'react-bootstrap';
 
