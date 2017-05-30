@@ -13,16 +13,10 @@ function updateToken(){
     axios.defaults.headers.common['Authorization'] = `Bearer ${Auth.getToken()}`;
 }
 
-function getImage(id, type){
-    const url = `${BASE_URL}/api/users/${id}/current`;
-    return axios.get(url).then(response => response.data)
-        .catch(function (error) {
-            console.log(error);
-        });
-}
 
 function getCurrentBookings(id) {
   const url = `${BASE_URL}/api/users/${id}/current`;
+  console.log(axios.defaults)
   return axios.get(url).then(response => response.data)
       .catch(function (error) {
     console.log(error);
