@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Col, Form, FormGroup, Button, FormControl, Alert} from 'react-bootstrap';
+import {Row, Col, Form, FormGroup, Button, FormControl, Alert} from 'react-bootstrap';
 import '../../static/SignUpForm.css'
 import Validation from '../../Validation'
 import { signUpUser } from '../../utils/auth-api';
@@ -101,14 +101,14 @@ export default class SignUpForm extends Component {
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="">
-                        <Col sm={12}  md={6}  lg={6}>
+                        <Row>
                             <Alert className={`formAlert ${this.state.visibility}`} > {this.state.message}</Alert>
-                        </Col>
-                        <Col sm={12}  md={3}  lg={6}>
-                            <Button type="submit" value="Submit" disabled={!this.state.buttonEnabled}>
+                        </Row>
+                        <Row>
+                            <Button className="signUpButton" type="submit" value="Submit" disabled={!this.state.buttonEnabled}>
                                 Create account
                             </Button>
-                        </Col>
+                        </Row>
                     </FormGroup>
                 </Form>
 

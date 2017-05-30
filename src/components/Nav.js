@@ -49,32 +49,29 @@ export default class Nav extends Component {
 
         <div>
             <header >
-<Row>
-                <Col xs={12} sm={4} md={3} lg={2}>
-              <Link to={"/"} >
-                <div className="navbar-header">
-                  <h1>Bookster</h1>
-                </div>
-              </Link>
-                </Col>
-                <Col xs={12} sm={4} md={5} lg={7} className={bookingsSearchClass}>
-              <BookingsSearch cleared={this.state.loggedIn} />
-                </Col>
-              <Col xs={12} sm={4}  md={4} lg={3} className={`${bookingsSearchClass} buttons`}>
-              <Link onClick={this.handleLogout} className="btn btn-danger" role="button" to={"/"} > Log out
-              </Link>
-                <Link className="btn btn-info" role="button" to={"/profile"} > Profile
-                </Link>
-             </Col>
-              <Col xs={12} sm={12} md={10} lg={10} className={loginFormClass}>
-                    <ul className={`nav navbar-nav navbar-right ${loginFormClass}`}>
-                  <LogInForm handleLogin={this.handleLogin} className="booksterHeaderDisplay"/>
-                </ul>
-              </Col>
-
-
-</Row>
-
+                <Row>
+                    <Col xs={12} sm={2} md={2} lg={2}>
+                        <Link to={"/"} >
+                            <div className="navbar-header">
+                                <h1>Bookster</h1>
+                            </div>
+                        </Link>
+                    </Col>
+                    <Col xs={12} smOffset={1} sm={6} mdOffset={1} md={6} lg={6} className={bookingsSearchClass}>
+                        <BookingsSearch cleared={this.state.loggedIn} />
+                    </Col>
+                    <Col xs={12} sm={3}  md={3} lg={3} className={`${bookingsSearchClass} buttons`}>
+                        <Link onClick={this.handleLogout} className="btn btn-danger" role="button" to={"/"} > Log out
+                        </Link>
+                        <Link className="btn btn-info" role="button" to={"/profile"} > Profile
+                        </Link>
+                    </Col>
+                    <Col xs={12} sm={10} md={10} lg={10} className={loginFormClass}>
+                        <ul className={`nav navbar-nav navbar-right ${loginFormClass}`}>
+                            <LogInForm handleLogin={this.handleLogin} className="booksterHeaderDisplay"/>
+                        </ul>
+                    </Col>
+                </Row>
             </header>
         </div>
 
