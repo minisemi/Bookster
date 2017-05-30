@@ -2,13 +2,15 @@
     padding: 10px;
 }
 .formAlert {
-    width:90%;
+    width:97% !important;
+    margin-left: 12px;
+    margin-right: 12px;
 }
 
 .hiddenAlert{
     display: none;
 }
 
-Button {
+.signUpButton {
     float:right;
 }
