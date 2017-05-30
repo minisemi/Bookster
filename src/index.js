@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Popup from 'react-popup';
 import './static/index.css';
-import AppRoutes from './components/AppRoutes'
+import AppRoutes from './components/layout/AppRoutes'
 
 
 

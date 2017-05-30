@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import '../static/BookingPage.css';
-import NotFoundPage from './NotFoundPage';
-import { getCompany } from '../utils/bookster-api';
-import BookingSlidebar from './BookingsSlidebar';
+import '../../static/BookingPage.css';
+import NotFoundPage from '../layout/NotFoundPage';
+import { getCompany } from '../../utils/bookster-api';
+import BookingSlidebar from '../BookingsSlidebar';
 
 
 

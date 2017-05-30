@@ -2,10 +2,10 @@ import React from 'react'
 import { Route, IndexRoute, browserHistory } from 'react-router'
 import App from './components/App';
 import LogIn from './components/loginPage/LogIn';
-import BookingPage from './components/BookingPage';
-import Layout from './components/Layout'
-import CompanyPage from './components/CompanyPage';
-import NotFoundPage from './components/NotFoundPage';
+import BookingPage from './components/bookablePage/BookingPage';
+import Layout from './components/layout/Layout'
+import CompanyPage from './components/companyPage/CompanyPage';
+import NotFoundPage from './components/layout/NotFoundPage';
 import ProfilePage from './components/profilePage/ProfilePage'
 import Auth from './Auth';
 

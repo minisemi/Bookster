@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../static/Footer.css';
+import '../../static/Footer.css';
 import {Col} from 'react-bootstrap';
 
 

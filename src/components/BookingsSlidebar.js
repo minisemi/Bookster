@@ -63,7 +63,7 @@ class BookingsSlideBar extends Component {
                 <Panel header={this.props.title} bsStyle="default">
                     <Row>
                         { bookings.map((booking,index )=> (
-                            <Col key={index} xs={12} sm={5} md={3} lg={2}>
+                            <Col key={index} sm={6} md={3} lg={2}>
                                 <BookingThumbnail {...booking} />
                             </Col>
                         ))}

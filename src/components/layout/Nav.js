@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {Row, Col} from 'react-bootstrap';
 import { Link } from 'react-router';
-import '../static/Nav.css';
-import LogInForm from './loginPage/LogInForm';
-import BookingsSearch from './BookingsSearch';
-import Auth from '../Auth'
+import '../../static/Nav.css';
+import LogInForm from '../loginPage/LogInForm';
+import BookingsSearch from '../BookingsSearch';
+import Auth from '../../Auth'
 import {browserHistory} from 'react-router';
 
 export default class Nav extends Component {

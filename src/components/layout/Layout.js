@@ -1,8 +1,7 @@
-// src/components/Layout.js
 import React, { Component } from 'react';
 import Nav from './Nav'
 import Footer from './Footer';
-import '../static/Layout.css';
+import '../../static/Layout.css';
 
 
 export default class Layout extends Component {

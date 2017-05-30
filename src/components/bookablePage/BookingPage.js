@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import '../static/BookingPage.css';
-import NotFoundPage from './NotFoundPage';
-import { getBookable } from '../utils/bookster-api';
-import BookingCalender from './BookingCalender';
+import '../../static/BookingPage.css';
+import NotFoundPage from '../layout/NotFoundPage';
+import { getBookable } from '../../utils/bookster-api';
+import BookingCalender from '../bookablePage/BookingCalender';
 import Popup from 'react-popup';
 import {Button} from 'react-bootstrap';
 

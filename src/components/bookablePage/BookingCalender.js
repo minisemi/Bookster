@@ -8,14 +8,12 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 //import HTML5Backend from 'react-dnd-html5-backend'
 //import { DragDropContext } from 'react-dnd'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
-import '../static/BookingCalender.css'
+import '../../static/BookingCalender.css'
 //import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
-import {getCalenderEvents, bookEvent, unBookEvent} from '../utils/bookster-api'
-import {PopupWindow} from './Prompt'
+import {getCalenderEvents, bookEvent, unBookEvent} from '../../utils/bookster-api'
 import {Button} from 'react-bootstrap';
-import {Prompt} from './Prompt';
 import Popup from 'react-popup';
-import Auth from '../Auth'
+import Auth from '../../Auth'
 import update from 'react-addons-update';
 
 
