@@ -16,7 +16,6 @@ class Auth {
     }
 
     static checkIfAuthenticated() {
-
         return cookie.get('token') != null;
     }
 

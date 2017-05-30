@@ -4,12 +4,22 @@ const BASE_URL = 'http://localhost:3333';
 import Auth from '../Auth';
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${Auth.getToken()}`;
-console.log("HEJHEJ API CALLED")
 
 
-export {getCurrentBookings, getServerSuggestions, getCompany, getBookable, getCompanyBookables, getFavourites, getRecommendations, getCalenderEvents, bookEvent, unBookEvent,  getUserInfo, updateUserInfo};
+export {getCurrentBookings, getServerSuggestions, getCompany, getBookable, getCompanyBookables, getFavourites,
+    getRecommendations, getCalenderEvents, bookEvent, unBookEvent,  getUserInfo, updateUserInfo, updateToken};
 
+function updateToken(){
+    axios.defaults.headers.common['Authorization'] = `Bearer ${Auth.getToken()}`;
+}
 
+function getImage(id, type){
+    const url = `${BASE_URL}/api/users/${id}/current`;
+    return axios.get(url).then(response => response.data)
+        .catch(function (error) {
+            console.log(error);
+        });
+}
 
 function getCurrentBookings(id) {
   const url = `${BASE_URL}/api/users/${id}/current`;
