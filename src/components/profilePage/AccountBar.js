@@ -2,7 +2,7 @@
  * Created by Matilda on 2017-05-17.
  */
 import React, { Component } from 'react';
-import { Panel, Form, FormControl, Button, FormGroup, Alert} from 'react-bootstrap';
+import { Row, Panel, Form, FormControl, Button, FormGroup, Alert} from 'react-bootstrap';
 import '../../static/ProfilePage.css'
 import Auth from '../../Auth'
 import Validation from '../../Validation'
@@ -86,31 +86,33 @@ export default class AccountBar extends Component {
 
         return (
 
-            <div>
-                <Panel header="Account Settings" bsStyle="default">
-                    <Form horizontal onSubmit={ this.handleSubmit.bind(this)}>
-                        <FormGroup validationState={this.state.formValidation.oldPassword}>
-                            <FormControl required={true} type="password" value={this.state.formValues.oldPassword} name="oldPassword"
-                                         placeholder="Old password" onChange={this.handleChange} />
-                            <FormControl.Feedback />
-                        </FormGroup>
-                        <FormGroup validationState={this.state.formValidation.password}>
-                            <FormControl type="password" value={this.state.formValues.password} name="password"
-                                         placeholder="New password" onChange={this.instantCheck}/>
-                            <FormControl.Feedback />
-                        </FormGroup>
-                        <FormGroup validationState={this.state.formValidation.repeatPassword}>
-                            <FormControl type="password" value={this.state.formValues.repeatPassword} name="repeatPassword"
-                                         placeholder="Repeat new password" onChange={this.instantCheck}/>
-                            <FormControl.Feedback />
-                        </FormGroup><Button disabled={!this.state.buttonEnabled} type="submit" >
-                        Change password
-                    </Button>
-                    </Form>
-                    <Alert className={`formAlert ${this.state.visibility}`} > {this.state.message}</Alert>
-                </Panel>
-            </div>
-
+            <Panel header="Account Settings" bsStyle="default">
+                <Form horizontal onSubmit={ this.handleSubmit.bind(this)}>
+                    <FormGroup validationState={this.state.formValidation.oldPassword}>
+                        <FormControl required={true} type="password" value={this.state.formValues.oldPassword} name="oldPassword"
+                                     placeholder="Old password" onChange={this.handleChange} />
+                        <FormControl.Feedback />
+                    </FormGroup>
+                    <FormGroup validationState={this.state.formValidation.password}>
+                        <FormControl type="password" value={this.state.formValues.password} name="password"
+                                     placeholder="New password" onChange={this.instantCheck}/>
+                        <FormControl.Feedback />
+                    </FormGroup>
+                    <FormGroup validationState={this.state.formValidation.repeatPassword}>
+                        <FormControl type="password" value={this.state.formValues.repeatPassword} name="repeatPassword"
+                                     placeholder="Repeat new password" onChange={this.instantCheck}/>
+                        <FormControl.Feedback />
+                    </FormGroup>
+                    <Row>
+                        <Alert className={`formAlert ${this.state.visibility}`} > {this.state.message}</Alert>
+                    </Row>
+                    <Row>
+                        <Button disabled={!this.state.buttonEnabled} type="submit" >
+                            Change password
+                        </Button>
+                    </Row>
+                </Form>
+            </Panel>
 
         );
     }

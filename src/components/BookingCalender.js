@@ -44,7 +44,6 @@ class BookingCalender extends Component {
     componentDidMount(){
 
         if (this.props.bookingId!==undefined) {
-            console.log("componentDIdMount2")
             getCalenderEvents(this.props.bookingId).then((events) => {
                 for (let i =0; i<events.length;i++){
 
@@ -63,7 +62,6 @@ class BookingCalender extends Component {
 
 
         if (nextProps.bookingId !== this.props.bookingId) {
-                        console.log("componentReceiveProps2")
 
             getCalenderEvents(nextProps.bookingId).then((events) => {
                 for (let i =0; i<events.length;i++){
@@ -96,15 +94,15 @@ class BookingCalender extends Component {
 
     handleSelectEvent(event) {
 
-            let context = this;
+        let context = this;
         if (event.bookedBy === null){
 
             Popup.create({
                 title: <h2>{event.title}</h2>,
                 content: <div><b>Are you sure you want to book the following bookable?</b>
-                <br/><br/><p><b>Description: </b>{event.descr}</p>
-                <br/><p><b>Start: </b>{`${event.start}`}</p>
-                <br/><p><b>End: </b>{`${event.end}`}</p>
+                    <br/><br/><p><b>Description: </b>{event.descr}</p>
+                    <br/><p><b>Start: </b>{`${event.start}`}</p>
+                    <br/><p><b>End: </b>{`${event.end}`}</p>
                 </div>,
                 buttons: {
                     left: [{
@@ -127,59 +125,83 @@ class BookingCalender extends Component {
 
                                             events[i].start=new Date(events[i].start);
                                             events[i].end=new Date(events[i].end);
-
                                         }
+                                        Popup.close();
                                         context.setState({events: events})
                                     })
+                                }else {
+                                    Popup.close();
+                                    getCalenderEvents(context.props.bookingId).then((events) => {
+                                                        for (let i =0; i<events.length;i++){
+
+                                                            events[i].start=new Date(events[i].start);
+                                                            events[i].end=new Date(events[i].end);
+                                                        }
+                                                        context.setState({events: events})
+                                                    })
+                                    Popup.create({
+                                        title: <h2>{event.title}</h2>,
+                                        content: <b>This booking unfortunately just got booked.</b>,
+                                        buttons: {
+                                            right: [{
+                                                text: 'Ok',
+                                                action: function () {
+                                                    Popup.close();
+                                                }
+                                            }]
+                                        }
+                                    });
+
+
                                 }
                             });
-                            Popup.close();
+
                         }
                     }]
                 }
             });
         } else{
 
-            if (event.bookedBy === 1){
+            if (event.bookedBy == Auth.getUserId()){
                 Popup.create({
-                title: <h2>{event.title}</h2>,
-                content: <div><b>Are you sure you want to cancel the following bookable?</b>
-                <br/><br/><p><b>Description: </b>{event.descr}</p>
-                <br/><p><b>Start: </b>{`${event.start}`}</p>
-                <br/><p><b>End: </b>{`${event.end}`}</p>
-                </div>,
-                buttons: {
-                    left: [{
-                        text: 'Cancel',
-                        className: 'danger',
-                        action: function () {
-                            Popup.close();
-                        }
-                    }],
-                    right: [{
-                        text: 'Cancel booking',
-                        className: 'success',
-                        action: function () {
-                            unBookEvent(event.bookableAlias,moment(event.start).format("x"),Auth.getEmail()).then(response=>{
-                                if (response.success){
-                                    TODO: "UPPDATERA BARA DET VALADA ELEMENTET MED UPDATE FROM REACT-ADDONS-UPDATE"
+                    title: <h2>{event.title}</h2>,
+                    content: <div><b>Are you sure you want to cancel the following bookable?</b>
+                        <br/><br/><p><b>Description: </b>{event.descr}</p>
+                        <br/><p><b>Start: </b>{`${event.start}`}</p>
+                        <br/><p><b>End: </b>{`${event.end}`}</p>
+                    </div>,
+                    buttons: {
+                        left: [{
+                            text: 'Cancel',
+                            className: 'danger',
+                            action: function () {
+                                Popup.close();
+                            }
+                        }],
+                        right: [{
+                            text: 'Cancel booking',
+                            className: 'success',
+                            action: function () {
+                                unBookEvent(event.bookableAlias,moment(event.start).format("x"),Auth.getEmail()).then(response=>{
+                                    if (response.success){
+                                        TODO: "UPPDATERA BARA DET VALADA ELEMENTET MED UPDATE FROM REACT-ADDONS-UPDATE"
 
-                                    getCalenderEvents(context.props.bookingId).then((events) => {
-                                        for (let i =0; i<events.length;i++){
+                                        getCalenderEvents(context.props.bookingId).then((events) => {
+                                            for (let i =0; i<events.length;i++){
 
-                                            events[i].start=new Date(events[i].start);
-                                            events[i].end=new Date(events[i].end);
+                                                events[i].start=new Date(events[i].start);
+                                                events[i].end=new Date(events[i].end);
 
-                                        }
-                                        context.setState({events: events})
-                                    })
-                                }
-                            });
-                            Popup.close();
-                        }
-                    }]
-                }
-            });
+                                            }
+                                            context.setState({events: events})
+                                        })
+                                    }
+                                });
+                                Popup.close();
+                            }
+                        }]
+                    }
+                });
             }else {
                 Popup.create({
                     title: <h2>{event.title}</h2>,
@@ -229,7 +251,7 @@ class BookingCalender extends Component {
         //var backgroundColor = '#' + event.hexColor;
         if (event.bookedBy !== null) {
             if (isSelected){
-                    let style = {
+                let style = {
                     backgroundColor: "#b30000",
                     borderColor: "#e60000"
 
@@ -271,7 +293,11 @@ class BookingCalender extends Component {
                 };
             }
         }
-}
+    }
+
+    onSelecting({}){
+        return false;
+    }
 
     render() {
         return (
@@ -281,6 +307,7 @@ class BookingCalender extends Component {
                     events={this.state.events}
                     onSelectEvent={this.handleSelectEvent}
                     eventPropGetter={this.eventPropGetter}
+                    onSelecting={this.onSelecting}
                     defaultView='week'
                     defaultDate={new Date(2017, 4, 31)}
                     scrollToTime={new Date(2017, 4, 31, 15)}
