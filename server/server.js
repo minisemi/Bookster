@@ -49,17 +49,28 @@ app.get(`/api/companies/:companyAlias`,authenticate, (req,res)=> {
     })
 })
 
-app.get(`/api/companies/:companyAlias/bookables/:bookableAlias`,authenticate, (req,res)=> {
+app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/:user`,authenticate, (req,res)=> {
     connection.query('select A.bookableAlias, A.name, A.info, A.type, B.companyAlias from bookables as A inner join companies as B on A.company = B.id and A.bookableAlias=?', [req.params.bookableAlias], function (err, rows){
         if(err){
             return res.json({success:false, message: "error in database"})
         }
         else {
-            let booking = JSON.parse(JSON.stringify(rows))[0];
+            var booking = JSON.parse(JSON.stringify(rows))[0];
             booking["image"] = `http://localhost:3333/bookables/profile/${booking.bookableAlias}.png`
             booking["cover"] = `http://localhost:3333/bookables/cover/${booking.bookableAlias}.png`
+            booking["favourite"] = false;
+            connection.query('select * from favourites inner join bookables on bookables.bookableAlias=? and bookables.id=favourites.bookable and favourites.user=?;', [req.params.bookableAlias, req.params.user], function(err, rows2){
+                if(err) {
+                    return res.json({success: false, message: "error in database favourites"})
+                }
 
-            res.json(booking);
+                else if(rows2.length>0){
+                    booking["favourite"]= true;
+                     //res.json(booking)
+                }
+                res.json(booking);
+            })
+
         }
     })
 
@@ -140,7 +151,37 @@ app.get('/api/users/:email/favourites',authenticate, (req, res) => {
 
         res.json(current);
     })
-});
+})
+
+TODO: "ADD CHECK OF USER AND REQUESTERS EMAIL"
+app.post('/api/addFavourite', authenticate, (req, res)=>{
+    connection.query('INSERT IGNORE INTO favourites VALUES (?,(select id from bookables where bookableAlias=? and company=(select id from companies where companyAlias=?)));', [req.body.user, req.body.bookable, req.body.company], function (err, rows){
+        if (err)
+            return res.json("error in database")
+        if (rows.affectedRows===0)
+            return res.json({message: "duplicate or unavailable object"})
+        return res.json({message:"success"})
+    })
+})
+
+app.post('/api/deleteFavourite', authenticate, (req, res)=>{
+    connection.query('DELETE FROM favourites WHERE user=? AND bookable=(select id from bookables where bookableAlias=? and company=(select id from companies where companyAlias=?));', [req.body.user, req.body.bookable, req.body.company], function(err, rows){
+        if (err) {
+            console.log(err)
+            return res.json({message: "error in database"})
+        }
+        if (rows.affectedRows===0)
+            return res.json({message: "Unavailable object"})
+        return res.json({message: "success"})
+
+    })
+})
+
+app.get('/api/checkFav/:id/:bookable', authenticate, (res, req)=>{
+    connection.query('SELECT * FROM favourites WHERE user=? AND bookable=?', [req.param.id, req.param.bookable], function(err, rows){
+
+    })
+})
 
 TODO: "ADD TABLE OR SOMETHING WITH RECOMMENDATIONS. CURRENTLY FETCHING FROM FAOURITES"
 app.get('/api/users/:email/recommendations',authenticate, (req, res) => {

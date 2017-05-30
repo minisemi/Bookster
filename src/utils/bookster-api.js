@@ -7,7 +7,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${Auth.getToken()}`;
 
 
 export {getCurrentBookings, getServerSuggestions, getCompany, getBookable, getCompanyBookables, getFavourites,
-    getRecommendations, getCalenderEvents, bookEvent, unBookEvent,  getUserInfo, updateUserInfo, updateToken};
+    getRecommendations, getCalenderEvents, bookEvent, unBookEvent,  getUserInfo, updateUserInfo, updateToken, addFavourite, deleteFavourite};
 
 function updateToken(){
     axios.defaults.headers.common['Authorization'] = `Bearer ${Auth.getToken()}`;
@@ -26,6 +26,31 @@ function getCurrentBookings(id) {
 function getFavourites(id) {
   const url = `${BASE_URL}/api/users/${id}/favourites`;
   return axios.get(url).then(response => response.data)
+      .catch(function (error) {
+    console.log(error);
+  });
+}
+
+function addFavourite(id, bookable, company){
+    const url = `${BASE_URL}/api/addFavourite`;
+  return axios.post(url, {
+    user: id,
+    bookable: bookable,
+      company:company
+  }).then(response => response.data)
+      .catch(function (error) {
+    console.log(error);
+  });
+}
+
+
+function deleteFavourite(id, bookable, company){
+    const url = `${BASE_URL}/api/deleteFavourite`;
+  return axios.post(url, {
+    user: id,
+    bookable: bookable,
+      company: company
+  }).then(response => response.data)
       .catch(function (error) {
     console.log(error);
   });
@@ -55,8 +80,8 @@ function getCompany(id) {
     console.log(error);
   });
 }
-function getBookable(compId, bookId) {
-  const url = `${BASE_URL}/api/companies/${compId}/bookables/${bookId}`;
+function getBookable(compId, bookId, user) {
+  const url = `${BASE_URL}/api/companies/${compId}/bookables/${bookId}/${user}`;
   return axios.get(url).then(response => response.data)
       .catch(function (error) {
     console.log(error);
