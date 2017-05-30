@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import '../static/BookingPage.css';
 import NotFoundPage from './NotFoundPage';
-import { getBookable } from '../utils/bookster-api';
+import { getBookable , addFavourite, deleteFavourite} from '../utils/bookster-api';
 import BookingCalender from './BookingCalender';
 import Popup from 'react-popup';
-import {Button} from 'react-bootstrap';
+import {Button, Glyphicon} from 'react-bootstrap';
+import Auth from '../Auth'
 
 
 
@@ -12,21 +13,53 @@ class BookingPage extends Component {
 
     constructor() {
     super();
-    this.state = { bookings: []};
+    this.state = { bookings: []}
   }
 
   componentWillReceiveProps(nextProps){
         if (nextProps.params.id !== this.props.params.id) {
-            getBookable(nextProps.params.compId, nextProps.params.id).then((objects) => {
+            getBookable(nextProps.params.compId, nextProps.params.id, Auth.getUserId()).then((objects) => {
       this.setState({ bookings:objects });
     });
     }
   }
 
   componentDidMount(){
-    getBookable(this.props.params.compId, this.props.params.id).then((objects) => {
-      this.setState({ bookings:objects });
+    getBookable(this.props.params.compId, this.props.params.id, Auth.getUserId()).then((objects) => {
+      let favourite=true,
+      buttonText="Remove from favourites",
+          buttonClass="heart";
+      if (!objects.favourite){
+          favourite=false;
+          buttonText= "Add to favourites"
+          buttonClass= "heart-empty";
+      }
+      this.setState({ bookings:objects, favourite:favourite, buttonText:buttonText, buttonClass:buttonClass });
     });
+  }
+
+  addFavourite(){
+      console.log(this.props.params.compId)
+      if(!this.state.favourite)
+          addFavourite(Auth.getUserId(), this.props.params.id, this.props.params.compId).then((response)=>{
+              if (response.message=="success") {
+                  this.setState({
+                      favourite: true,
+                      buttonText: "Remove from favourites",
+                      buttonClass: "heart"
+                  })
+              }
+          })
+      else
+          deleteFavourite(Auth.getUserId(), this.props.params.id, this.props.params.compId).then((response)=>{
+              if(response.message=="success") {
+                  this.setState({
+                      favourite: false,
+                      buttonText: "Add to favourites",
+                      buttonClass: "heart-empty"
+                  })
+              }
+          })
   }
 
 render() {
@@ -45,6 +78,7 @@ render() {
           <div className="picture-container">
             <img alt="" src={booking.image}/>
             <h2 className="name">{booking.name}</h2>
+              <Button bsStyle="warning" onClick={this.addFavourite.bind(this)}>{this.state.buttonText} <Glyphicon glyph={this.state.buttonClass} /> </Button>
           </div>
           <section className="description">
               {booking.info}
