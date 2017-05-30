@@ -18,7 +18,7 @@ const BASE_URL = 'http://localhost:3333/auth';
  });
  }
  */
-export {signUpUser, logInUser, changePassword};
+export {signUpUser, logInUser, changePassword, facebookLogin};
 
 function signUpUser(formValues){
     const url = `${BASE_URL}/signup`;
@@ -51,6 +51,17 @@ function logInUser(form){
         .catch(function (error) {
             console.log(error);
         });
+}
+
+function facebookLogin(){
+    const url = 'http://127.0.0.1:3333/auth/facebook';
+    return axios.get(url).then(response =>{
+    console.log("Hej" + response)})
+      .catch(function (error) {
+
+    console.log(error);
+  });
+
 }
 
 function changePassword(oldPassword, newPassword, token){

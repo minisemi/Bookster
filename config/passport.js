@@ -1,5 +1,6 @@
-var passport = require('passport')
-    , LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy,
+    FacebookStrategy = require('passport-facebook').Strategy;
 var mysql = require('mysql');
 var connection = mysql.createConnection(require('./database').connection);
 var passportJWT = require('passport-jwt')
@@ -12,15 +13,19 @@ var parameters = {
     jwtFromRequest: ExtractJwt.fromAuthHeader()
 }
 
+var configAuth = require('./auth');
+
 
 module.exports = function (passport){
     passport.serializeUser(function(user, done){
-        done (null, user.email)
+        console.log(user)
+        done (null, user)
     })
     passport.deserializeUser(function (email, done) {
-        connection.query("select * from users where email =" + email, function(err, rows){
-            done(err, rows[0])
-        })
+        //connection.query("select * from users where email =" + email, function(err, rows){
+            //done(err, rows[0])
+        done(null,email)
+        //})
     })
 
 
@@ -55,6 +60,19 @@ module.exports = function (passport){
             });
         }
     ))
+
+    passport.use(new FacebookStrategy({
+
+            // pull in our app id and secret from our auth.js file
+            clientID        : configAuth.facebookAuth.clientID,
+            clientSecret    : configAuth.facebookAuth.clientSecret,
+            callbackURL     : configAuth.facebookAuth.callbackURL
+
+        },  function(accessToken, refreshToken, profile, cb) {
+        console.log("using fb passport!!")
+            return cb(null, profile);
+        }
+    ));
 
     passport.use('local-login', new LocalStrategy({
             usernameField: 'email',

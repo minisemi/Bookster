@@ -18,11 +18,12 @@ var moment = require('moment');
 moment().format();
 
 var conf = require('../config/jwt')
-
+const authenticate = jwt({secret : conf.jwtSecret});
 app.use(express.static(path.join(__dirname, 'assets')));
 
 
-const authenticate = jwt({secret : conf.jwtSecret});
+
+
 
 
 require('./../config/passport')(passport);
@@ -273,6 +274,19 @@ app.get('/auth/auth',passport.authenticate('jwt', { session: false}),
         res.json({message: "Success! You can not see this without a token"});
     }
 );
+
+app.get('/auth/facebook', passport.authenticate('facebook',{
+        display: 'popup'
+    }),function(req, res){});
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook'),
+  function(req, res) {
+    res.redirect('http://127.0.0.1:3000')
+  });
+
+
+
 
 app.listen(3333);
 console.log('Listening on localhost:3333');

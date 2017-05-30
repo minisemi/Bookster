@@ -49,6 +49,7 @@ export default class LogInForm extends Component {
 
     render() {
         return (
+
             <Form inline onSubmit={ this.handleSubmit.bind(this)}>
                 <FormGroup controlId="formInlineEmail">
                     <ControlLabel>Email: </ControlLabel>

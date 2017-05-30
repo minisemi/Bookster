@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import {Row, Col} from 'react-bootstrap';
+import {Row, Col, Button} from 'react-bootstrap';
 import { Link } from 'react-router';
 import '../static/Nav.css';
 import LogInForm from './loginPage/LogInForm';
 import BookingsSearch from './BookingsSearch';
 import Auth from '../Auth'
 import {browserHistory} from 'react-router';
+import {facebookLogin} from '../utils/auth-api'
 
 export default class Nav extends Component {
 
@@ -34,6 +35,11 @@ export default class Nav extends Component {
         this.setState({loggedIn:false});
     }
 
+    facebookLogin(event){
+        event.preventDefault();
+        facebookLogin();
+    }
+
   render() {
     let bookingsSearchClass, loginFormClass;
     TODO: "Borde egentligen skapa elementen om man loggas in, istället för att dölja dem (säkerhet, prestanda osv)"
@@ -49,6 +55,10 @@ export default class Nav extends Component {
 
         <div>
             <header >
+                <Button onClick={this.facebookLogin.bind(this)}>
+                    Sign in with Facebook
+                </Button>
+                 <a href="http://127.0.0.1:3333/auth/facebook">Facebook login</a>
 <Row>
                 <Col xs={12} sm={4} md={3} lg={2}>
               <Link to={"/"} >
