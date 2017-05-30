@@ -37,13 +37,13 @@ render() {
     if (!booking) {
       return <NotFoundPage/>;
     }
-    const headerStyle = { backgroundImage: `url(/assets/bookingPage/${booking.cover})` };
+    const headerStyle = { backgroundImage: `url(${booking.cover})` };
     return (
       <div className="booking-full">
         <div className="booking">
           <header style={headerStyle}/>
           <div className="picture-container">
-            <img alt="" src={`/assets/bookingThumbnails/${booking.image}`}/>
+            <img alt="" src={booking.image}/>
             <h2 className="name">{booking.name}</h2>
           </div>
           <section className="description">

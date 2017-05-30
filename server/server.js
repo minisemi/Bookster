@@ -42,8 +42,8 @@ app.get(`/api/companies/:companyAlias`,authenticate, (req,res)=> {
         } else {
 
             let company = JSON.parse(JSON.stringify(rows))[0];
-            console.log(company.image)
-            company.image = `http://localhost:3333/companyProfilePictures/${company.image}`
+            company["image"] = `http://localhost:3333/companies/profile/${company.companyAlias}.png`
+            company["cover"] = `http://localhost:3333/companies/cover/${company.companyAlias}.png`
 
             res.json(company);
         }
@@ -57,6 +57,8 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias`,authenticate, (r
         }
         else {
             let booking = JSON.parse(JSON.stringify(rows))[0];
+            booking["image"] = `http://localhost:3333/bookables/profile/${booking.bookableAlias}.png`
+            booking["cover"] = `http://localhost:3333/bookables/cover/${booking.bookableAlias}.png`
 
             res.json(booking);
         }
@@ -66,7 +68,7 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias`,authenticate, (r
 
 TODO: "SE TILL SÅ ATT INGA KAN BOKA SAMMA OBJEKT SAMTIDIGT. DVS IMPLEMENTERA TRANSACTION OSV"
 app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/book`,authenticate, (req,res)=> {
-    connection.query('update facilitybookings set bookedBy=(select id from users where email=?) where bookable=(select id from bookables where bookableAlias=?) and start=?', [req.body.user, req.body.bookableAlias, req.body.start], function (err, rows){
+    connection.query('update bookables set bookedBy=(select id from users where email=?) where bookable=(select id from bookables where bookableAlias=?) and start=?', [req.body.user, req.body.bookableAlias, req.body.start], function (err, rows){
 
         if(err){
             return res.json({success:false, message: "error in database"})
@@ -79,7 +81,7 @@ app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/
 
 TODO: "SE TILL SÅ ATT INGA KAN BOKA SAMMA OBJEKT SAMTIDIGT. DVS IMPLEMENTERA TRANSACTION OSV"
 app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/unBook`,authenticate, (req,res)=> {
-    connection.query('update facilitybookings set bookedBy=? where bookable=(select id from bookables where bookableAlias=?) and start=? and bookedBy=(select id from users where email=?)', [null, req.body.bookableAlias, req.body.start, req.body.user], function (err, rows){
+    connection.query('update bookables set bookedBy=? where bookable=(select id from bookables where bookableAlias=?) and start=? and bookedBy=(select id from users where email=?)', [null, req.body.bookableAlias, req.body.start, req.body.user], function (err, rows){
         if(err){
             return res.json({success:false, message: "error in database"})
         }
@@ -89,7 +91,7 @@ app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/
 })
 
 app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events`,authenticate, (req,res)=> {
-    connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from facilitybookings as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err, rows){
+    connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from bookables as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err, rows){
          if (err)
             return res.json("error in database")
         let events = JSON.parse(JSON.stringify(rows));
