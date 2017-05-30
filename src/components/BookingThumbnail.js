@@ -5,11 +5,20 @@ import {Grid, Col, Row, Image} from 'react-bootstrap';
 
 export default class BookingThumbnail extends Component {
 
+
     render() {
+        const backgroundStyle = { backgroundImage: `url(${this.props.image})` };
         return (
 
             <Link to={`/${this.props.companyAlias}/${this.props.bookableAlias}`}>
-                <div className="bookingThumbnail2">
+                <div className="thumbnailContainer">
+                <div  style={backgroundStyle} className="bookingThumbnail">
+                    <div className="bookingTextBox">
+                        <a>{this.props.name}</a>
+                        <a>{this.props.start}</a>
+                        <a>"\n"+{this.props.end}</a>
+                    </div>
+                </div>
                 </div>
             </Link>
 
