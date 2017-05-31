@@ -17,7 +17,7 @@ class BookingsSlideBar extends Component {
 
   loadBookings(id){
         if (id!==undefined) {
-            switch (this.props.type) {
+            switch (this.props.barType) {
                 case "company":
                     getCompanyBookables(id).then((objects) => {
                         this.setState({bookings: objects});

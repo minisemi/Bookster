@@ -290,6 +290,7 @@ app.post('/api/update_user', authenticate, function(req, res) {
             }
             else {
 
+                TODO: "BYT UT EMAIL MOT USER ID"
                 var token = jwtGen.sign({email: req.body.email}, conf.jwtSecret)
                 return res.json({message: "success", token: token})
 

@@ -14,14 +14,14 @@ export default class App extends Component {
       <div className="App">
           <Grid>
           <Row>
-              <BookingsSlideBar title="My bookings" type="current" id={Auth.getEmail()}/>
+              <BookingsSlideBar title="My bookings" barType="current" id={Auth.getEmail()}/>
 
           </Row>
           <Row>
-              <BookingsSlideBar title="My Favourites" type="favourites" id={Auth.getEmail()}/>
+              <BookingsSlideBar title="My Favourites" barType="favourites" id={Auth.getEmail()}/>
           </Row>
           <Row>
-              <BookingsSlideBar title="Recommendations" type="recommendations" id={Auth.getEmail()}/>
+              <BookingsSlideBar title="Recommendations" barType="recommendations" id={Auth.getEmail()}/>
 
           </Row>
           </Grid>

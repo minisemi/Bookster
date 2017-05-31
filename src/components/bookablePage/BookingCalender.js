@@ -244,6 +244,7 @@ class BookingCalender extends Component {
 
 
     }
+    TODO: "LÄGG TILL EGEN FÄRG FÖR DINA BOKADE EVENTS"
 
     eventPropGetter (event, start, end, isSelected) {
         //var backgroundColor = '#' + event.hexColor;
@@ -259,6 +260,17 @@ class BookingCalender extends Component {
                 };
 
             }else{
+                if (event.bookedBy == Auth.getUserId()){
+                    let style = {
+                    backgroundColor: "#ffd688",
+                    borderColor: "#ffdda8"
+
+                };
+                return {
+                    style: style
+                };
+
+                }else{
                 let style = {
                     backgroundColor: "#ff4d4d",
                     borderColor: "#ff6666"
@@ -267,6 +279,8 @@ class BookingCalender extends Component {
                 return {
                     style: style
                 };
+
+                }
 
             }
         } else{
@@ -291,6 +305,7 @@ class BookingCalender extends Component {
                 };
             }
         }
+
     }
 
     onSelecting({}){
