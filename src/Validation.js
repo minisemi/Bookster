@@ -7,6 +7,9 @@ import Auth from './Auth'
 
 class Validation{
 
+    /*
+    Clear all validationStatus values in form
+     */
     static clearVals(formValid){
         for (let key in formValid){
             formValid[key]=null
@@ -40,8 +43,8 @@ class Validation{
             return false;
         let birthDate = new Date(date),
             currentDate = new Date();
-        console.log(birthDate)
-        if (birthDate>currentDate || birthDate < new Date('1900/01/01')) {
+
+        if (isNaN(birthDate.getTime()) || birthDate>currentDate || birthDate < new Date('1900/01/01')) {
             return false;
         }
         else return true;
@@ -84,6 +87,10 @@ class Validation{
         return (email.match(regex))
     }
 
+    /*
+    Sets feedback to user based on what field is filled in (context.target.name)
+    sets alarm text and success/error based on this.
+     */
     static feedback(context, event){
         let formValid = context.state.formValidation;
 

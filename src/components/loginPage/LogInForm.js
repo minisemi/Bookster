@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import {Form, FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
 import Modal from './SignUpModal'
 import { logInUser } from '../../utils/auth-api';
-import {updateToken} from '../../utils/bookster-api'
 
 export default class LogInForm extends Component {
     constructor(props){
@@ -33,7 +32,7 @@ export default class LogInForm extends Component {
             this.setState({loggedIn:response.success})
             if (response.success){
                 this.props.handleLogin(response.token, this.state.formValues.email, response.userId);
-                updateToken();
+
             }
             else{
                 this.setState({showModal:true})

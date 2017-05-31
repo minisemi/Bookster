@@ -21,7 +21,7 @@ var conf = require('../config/jwt')
 
 app.use(express.static(path.join(__dirname, 'assets')));
 
-
+//JWT function tat decodes tokens of format "Bearer [token]" with specified key
 const authenticate = jwt({secret : conf.jwtSecret});
 
 
@@ -59,6 +59,7 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/:user`,authentica
             booking["image"] = `http://localhost:3333/bookables/profile/${booking.bookableAlias}.png`
             booking["cover"] = `http://localhost:3333/bookables/cover/${booking.bookableAlias}.png`
             booking["favourite"] = false;
+            //Check if user had bookable as favourite already
             connection.query('select * from favourites inner join bookables on bookables.bookableAlias=? and bookables.id=favourites.bookable and favourites.user=?;', [req.params.bookableAlias, req.params.user], function(err, rows2){
                 if(err) {
                     return res.json({success: false, message: "error in database favourites"})
@@ -280,9 +281,7 @@ app.post('/api/update_user', authenticate, function(req, res) {
 
     connection.query(sqlQuery,
         parameters, function(err, rows){
-            console.log(req.body.address)
             if(err){
-                console.log(err)
                 if(err.errno==1062){
                     res.json({message: "Email already taken", token: null})
                 }else

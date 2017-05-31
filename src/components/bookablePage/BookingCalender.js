@@ -93,6 +93,7 @@ class BookingCalender extends Component {
     handleSelectEvent(event) {
 
         let context = this;
+        //For unbooked events
         if (event.bookedBy === null){
 
             Popup.create({
@@ -158,6 +159,7 @@ class BookingCalender extends Component {
                     }]
                 }
             });
+            //Events booked by current user
         } else{
 
             if (event.bookedBy == Auth.getUserId()){
@@ -200,10 +202,11 @@ class BookingCalender extends Component {
                         }]
                     }
                 });
+                //Booked by other user
             }else {
                 Popup.create({
                     title: <h2>{event.title}</h2>,
-                    content: "This bookable is already  booked for this timeslot.",
+                    content: "This bookable is already booked for this timeslot.",
                     buttons: {
                         right: [{
                             text: 'Ok',
