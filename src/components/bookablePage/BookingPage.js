@@ -29,6 +29,7 @@ class BookingPage extends Component {
       let favourite=true,
       buttonText="Remove from favourites",
           buttonClass="heart";
+      //toggle favourite boolean if necessary
       if (!objects.favourite){
           favourite=false;
           buttonText= "Add to favourites"
@@ -38,7 +39,7 @@ class BookingPage extends Component {
     });
   }
 
-  addFavourite(){
+  handleClick(){
       console.log(this.props.params.compId)
       if(!this.state.favourite)
           addFavourite(Auth.getUserId(), this.props.params.id, this.props.params.compId).then((response)=>{
@@ -78,7 +79,7 @@ render() {
           <div className="picture-container">
             <img alt="" src={booking.image}/>
             <h2 className="name">{booking.name}</h2>
-              <Button bsStyle="warning" onClick={this.addFavourite.bind(this)}>{this.state.buttonText} <Glyphicon glyph={this.state.buttonClass} /> </Button>
+              <Button bsStyle="warning" onClick={this.handleClick.bind(this)}>{this.state.buttonText} <Glyphicon glyph={this.state.buttonClass} /> </Button>
           </div>
           <section className="description">
               {booking.info}

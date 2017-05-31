@@ -52,7 +52,7 @@ function logInUser(form){
             console.log(error);
         });
 }
-
+TODO: "MOVE TO BOOKSTER API SINCE IT REQUIRES AUTHORIZATION"
 function changePassword(oldPassword, newPassword, token){
     const url = `${BASE_URL}/change_pw`;
     return axios.post(url,{oldPassword:oldPassword, newPassword:newPassword}, {headers:{

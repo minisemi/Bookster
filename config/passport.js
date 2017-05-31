@@ -14,14 +14,14 @@ var parameters = {
 
 
 module.exports = function (passport){
-    passport.serializeUser(function(user, done){
+   /* passport.serializeUser(function(user, done){
         done (null, user.email)
     })
     passport.deserializeUser(function (email, done) {
         connection.query("select * from users where email =" + email, function(err, rows){
             done(err, rows[0])
         })
-    })
+    })*/
 
 
     passport.use('local-signup', new LocalStrategy({
@@ -75,6 +75,7 @@ module.exports = function (passport){
         )
     )
 
+    //Function to check if token is valid, only used during development
     passport.use(new JWTStrategy (parameters, function(payload, done) {
             connection.query('select * from users where email = ?', [payload.email], function (err,  rows){
                 if (err) {
