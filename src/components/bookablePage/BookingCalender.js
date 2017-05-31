@@ -172,15 +172,14 @@ class BookingCalender extends Component {
                     </div>,
                     buttons: {
                         left: [{
-                            text: 'Cancel',
-                            className: 'danger',
+                            text: 'Close',
                             action: function () {
                                 Popup.close();
                             }
                         }],
                         right: [{
                             text: 'Cancel booking',
-                            className: 'success',
+                            className: 'danger',
                             action: function () {
                                 unBookEvent(event.bookableAlias,moment(event.start).format("x"),Auth.getEmail()).then(response=>{
                                     if (response.success){
@@ -247,40 +246,41 @@ class BookingCalender extends Component {
 
 
     }
-    TODO: "LÄGG TILL EGEN FÄRG FÖR DINA BOKADE EVENTS"
 
     eventPropGetter (event, start, end, isSelected) {
         //var backgroundColor = '#' + event.hexColor;
+        let style;
         if (event.bookedBy !== null) {
             if (isSelected){
-                let style = {
-                    backgroundColor: "#b30000",
-                    borderColor: "#e60000"
+                if (event.bookedBy == Auth.getUserId()) {
+                    style = {
+                    backgroundColor: "#00c600",
+                    borderColor: "#2fee40"
 
-                };
-                return {
-                    style: style
-                };
-
-            }else{
-                if (event.bookedBy == Auth.getUserId()){
-                    let style = {
-                    backgroundColor: "#ffd688",
-                    borderColor: "#ffdda8"
-
-                };
-                return {
-                    style: style
                 };
 
                 }else{
-                let style = {
+
+                    style = {
+                        backgroundColor: "#b30000",
+                        borderColor: "#e60000"
+
+                    };
+                }
+
+            }else{
+                if (event.bookedBy == Auth.getUserId()){
+                     style = {
+                    backgroundColor: "#59f800",
+                    borderColor: "#5fff5e"
+
+                };
+
+                }else{
+                 style = {
                     backgroundColor: "#ff4d4d",
                     borderColor: "#ff6666"
 
-                };
-                return {
-                    style: style
                 };
 
                 }
@@ -288,26 +288,23 @@ class BookingCalender extends Component {
             }
         } else{
             if (isSelected){
-                let style = {
+                 style = {
                     backgroundColor: "#224f77",
                     borderColor:"#2d6a9f"
 
                 };
-                return {
-                    style: style
-                };
 
             }else {
-                let style = {
+                 style = {
                     backgroundColor: "#3174ad",
                     borderColor:"#3884c7"
 
                 };
-                return {
-                    style: style
-                };
             }
         }
+        return {
+                    style: style
+                };
 
     }
 

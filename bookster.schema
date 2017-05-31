@@ -7,6 +7,7 @@ CREATE TABLE users(
 	familyName varchar(20) NOT NULL ,
 	password varchar (255) NOT NULL ,
 	birth varchar (10) NOT NULL ,
+    address varchar(70),
 	PRIMARY KEY (id)
 );
 
@@ -130,12 +131,13 @@ INSERT INTO bookables (bookableAlias, name, company, info, type)VALUES(
     'bookable'
     );
 
-INSERT INTO users (email, firstName, familyName, password, birth) VALUES(
+INSERT INTO users (email, firstName, familyName, password, birth, address) VALUES(
     'matildasoderholm@gmail.com',
     'Matilda',
     'Soderholm',
     'password',
-    '1993/05/21'
+    '1993/05/21',
+    'Studievägen 5'
     );
 
 INSERT INTO facilityBookings VALUES(

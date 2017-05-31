@@ -12,7 +12,10 @@ class BookingsSlideBar extends Component {
 
     constructor() {
     super()
-    this.state = { bookings: []};
+    this.state = {
+        bookings: [],
+        slideBarText:""
+    };
   }
 
   loadBookings(id){
@@ -20,22 +23,22 @@ class BookingsSlideBar extends Component {
             switch (this.props.barType) {
                 case "company":
                     getCompanyBookables(id).then((objects) => {
-                        this.setState({bookings: objects});
+                        this.setState({bookings: objects, slideBarText:"This company doesn't have any bookables yet."});
                     });
                     break;
                 case "favourites" :
                     getFavourites(id).then((objects) => {
-                        this.setState({bookings: objects});
+                        this.setState({bookings: objects, slideBarText:"You don't have any favourites. Press the favourite button on your favourite bookables to save them here!"});
                     });
                     break;
                 case "current":
                     getCurrentBookings(id).then((objects) => {
-                        this.setState({bookings: objects});
+                        this.setState({bookings: objects, slideBarText:"You don't have any bookings. Search for bookables/companies above and book them to see them here!"});
                     });
                     break;
                 case "recommendations":
                     getRecommendations(id).then((objects) => {
-                        this.setState({bookings: objects});
+                        this.setState({bookings: objects, slideBarText:"You don't have any recommendations. Start booking to get some from us!"});
                     });
                     break;
 
@@ -56,7 +59,12 @@ class BookingsSlideBar extends Component {
   }
 
     render() {
-        const { bookings }  = this.state;
+        const { bookings,slideBarText }  = this.state;
+        let text="";
+        if (bookings.length===0){
+            text=slideBarText;
+        }
+
         return (
 
             <div className="BookingsSlideBar">
@@ -67,6 +75,7 @@ class BookingsSlideBar extends Component {
                                 <BookingThumbnail {...booking} />
                             </Col>
                         ))}
+                        <a>{text}</a>
                     </Row>
                 </Panel>
 
