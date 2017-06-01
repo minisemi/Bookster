@@ -54,7 +54,12 @@ export default class InfoBar extends Component {
                         this.setState({visibility:"alert-danger", message: message.message, formValid})
                     }
                 });
+            }else{
+                this.setState({buttonText:"Edit", editable:!this.state.editable})
             }
+
+
+
         }
     }
 
