@@ -97,7 +97,7 @@ export default class SignUpForm extends Component {
                     </FormGroup>
                     <FormGroup validationState={this.state.formValidation.birth}>
                         <Col sm={10}>
-                            <FormControl type="date" name="birth" placeholder="Birth (YYYY/MM/DD)" required={true} value={this.state.formValues["birth"]} onChange={this.instantCheck.bind(this)}/><FormControl.Feedback />
+                            <FormControl type="text" name="birth" placeholder="Birth (YYYY-MM-DD)" required={true} value={this.state.formValues["birth"]} onChange={this.instantCheck.bind(this)}/><FormControl.Feedback />
                         </Col>
                     </FormGroup>
                     <FormGroup controlId="">
