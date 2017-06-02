@@ -23,8 +23,11 @@ header {
 }
 
 .btn{
-  margin:7px;
-  float:right;
+  margin-left: 5px;
+}
+
+.marginRight{
+  margin-right: 30px;
 }
 
 .noMargin {

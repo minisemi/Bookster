@@ -8,17 +8,19 @@ export default class BookingThumbnail extends Component {
 
 
     render() {
-        /*let start;
+        let startDate;
+        let endTime;
+        let startTime;
         console.log(this.props.barType)
         if (this.props.barType==="current"){
+            console.log("true")
 
-         start=this.props.start;
-        let end=this.props.end;
-        start = new Date(this.props.end).toDateString();
-        end = new Date(this.props.start).toDateString();
+        startDate = new Date(this.props.start).toDateString();
+        startTime = new Date(this.props.start).toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
+        endTime = new Date(this.props.end).toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
         }else {
-             start =""
-        }*/
+             startDate =""
+        }
 
         const backgroundStyle = { backgroundImage: `url(${this.props.image})` };
 
@@ -29,6 +31,8 @@ export default class BookingThumbnail extends Component {
                 <div  style={backgroundStyle} className="bookingThumbnail">
                     <div className="bookingTextBox">
                         <br/><a>{this.props.name}</a>
+                        <br/><a>{startDate}</a>
+                        <br/><a>{startTime}-{endTime}</a>
                     </div>
                 </div>
                 </div>

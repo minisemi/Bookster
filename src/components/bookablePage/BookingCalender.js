@@ -94,14 +94,18 @@ class BookingCalender extends Component {
 
         let context = this;
         //For unbooked events
+            let startDate = new Date(event.start).toDateString();;
+            let endDate = new Date(event.end).toDateString();;
+            let startTime = new Date(event.start).toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
+        let endTime = new Date(event.end).toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
         if (event.bookedBy === null){
 
             Popup.create({
                 title: <h2>{event.title}</h2>,
                 content: <div><b>Are you sure you want to book the following bookable?</b>
                     <br/><br/><p><b>Description: </b>{event.descr}</p>
-                    <br/><p><b>Start: </b>{`${event.start}`}</p>
-                    <br/><p><b>End: </b>{`${event.end}`}</p>
+                    <br/><p><b>Start: </b>{`${startDate}, ${startTime}`}</p>
+                    <br/><p><b>End: </b>{`${endDate}, ${endTime}`}</p>
                 </div>,
                 buttons: {
                     left: [{
@@ -167,8 +171,8 @@ class BookingCalender extends Component {
                     title: <h2>{event.title}</h2>,
                     content: <div><b>Are you sure you want to cancel the following bookable?</b>
                         <br/><br/><p><b>Description: </b>{event.descr}</p>
-                        <br/><p><b>Start: </b>{`${event.start}`}</p>
-                        <br/><p><b>End: </b>{`${event.end}`}</p>
+                        <br/><p><b>Start: </b>{`${startDate}, ${startTime}`}</p>
+                        <br/><p><b>End: </b>{`${endDate}, ${endTime}`}</p>
                     </div>,
                     buttons: {
                         left: [{
@@ -254,8 +258,8 @@ class BookingCalender extends Component {
             if (isSelected){
                 if (event.bookedBy == Auth.getUserId()) {
                     style = {
-                    backgroundColor: "#00c600",
-                    borderColor: "#2fee40"
+                    backgroundColor: "#ffd688",
+                    borderColor: "#ffdda8"
 
                 };
 
@@ -271,8 +275,8 @@ class BookingCalender extends Component {
             }else{
                 if (event.bookedBy == Auth.getUserId()){
                      style = {
-                    backgroundColor: "#59f800",
-                    borderColor: "#5fff5e"
+                    backgroundColor: "#ffd688",
+                    borderColor: "#ffdda8"
 
                 };
 
@@ -324,6 +328,7 @@ class BookingCalender extends Component {
                     defaultView='week'
                     defaultDate={new Date(2017, 4, 31)}
                     scrollToTime={new Date(2017, 4, 31, 15)}
+                    culture="en-GB"
                 />
             </div>
 

@@ -67,9 +67,9 @@ export default class Nav extends Component {
                             <BookingsSearch cleared={this.state.loggedIn} />
                         </Col>
                         <Col xs={12} sm={3}  md={3} lg={3} className={`${bookingsSearchClass} buttons`}>
-                            <Link onClick={this.handleLogout} className="btn btn-danger" role="button" to={"/"} > Log out
+                            <Link onClick={this.handleLogout} className="btn btn-danger floatRight marginRight" role="button" to={"/"} > Log out
                             </Link>
-                            <Link className="btn btn-info" role="button" to={"/profile"} > Profile
+                            <Link className="btn btn-info floatRight" role="button" to={"/profile"} > Profile
                             </Link>
                         </Col>
                         <Col xs={12} sm={10} md={10} lg={10} className={loginFormClass}>

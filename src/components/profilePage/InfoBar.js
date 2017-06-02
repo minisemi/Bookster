@@ -90,7 +90,6 @@ export default class InfoBar extends Component {
 
         return (
 
-            <div className="BookingsSlideBar">
                 <Panel header="Information" bsStyle="default"><Form  onSubmit={ this.handleEdit.bind(this)}>
                     <FormGroup validationState={this.state.formValidation.firstName}>First name<FormControl type="text" required={true} className="formControl" disabled={this.state.editable} value={this.state.info.firstName} name="firstName"
                                                                   onChange={this.handleChange.bind(this)}/></FormGroup>
@@ -102,12 +101,11 @@ export default class InfoBar extends Component {
                                                                onChange={this.handleChange.bind(this)}/></FormGroup>
                     <FormGroup validationState={this.state.formValidation.birth}>Birthday<FormControl className="formControl" required={true} type="text" disabled={this.state.editable} value={this.state.info.birth} name="birth"
                                                                 onChange={this.handleValidation.bind(this)}/><FormControl.Feedback /></FormGroup>
-                    <Button bsStyle="warning" type="submit" disabled={!this.state.buttonEnabled} >{this.state.buttonText}</Button>
+                    <Button className="floatRight" bsStyle="warning" type="submit" disabled={!this.state.buttonEnabled} >{this.state.buttonText}</Button>
                 </Form>
                     <Alert className={`formAlert ${this.state.visibility}`} > {this.state.message}</Alert>
                 </Panel>
 
-            </div>
         );
     }
 }

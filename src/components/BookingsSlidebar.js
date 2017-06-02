@@ -72,7 +72,7 @@ class BookingsSlideBar extends Component {
                     <Row>
                         { bookings.map((booking,index )=> (
                             <Col key={index} sm={6} md={3} lg={2}>
-                                <BookingThumbnail {...booking} />
+                                <BookingThumbnail barType={this.props.barType} {...booking} />
                             </Col>
                         ))}
                         <a>{text}</a>

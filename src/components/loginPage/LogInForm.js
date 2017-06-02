@@ -50,6 +50,7 @@ export default class LogInForm extends Component {
 
     render() {
         return (
+            <div className="loginForm">
             <Form inline onSubmit={ this.handleSubmit.bind(this)}>
                 <FormGroup controlId="formInlineEmail">
                     <ControlLabel>Email: </ControlLabel>
@@ -69,6 +70,7 @@ export default class LogInForm extends Component {
                 <Modal showBol = {this.state.showModal} handler = {this.handler.bind(this)} email = {this.state.formValues.email}/>
 
             </Form>
+            </div>
         );
     }
 }

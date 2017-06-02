@@ -136,7 +136,7 @@ INSERT INTO users (email, firstName, familyName, password, birth, address) VALUE
     'Matilda',
     'Soderholm',
     'password',
-    '1993/05/21',
+    '1993-05-21',
     'Studievägen 5'
     );
 

@@ -79,7 +79,7 @@ render() {
           <div className="picture-container">
             <img alt="" src={booking.image}/>
             <h2 className="name">{booking.name}</h2>
-              <Button bsStyle="warning" onClick={this.handleClick.bind(this)}>{this.state.buttonText} <Glyphicon glyph={this.state.buttonClass} /> </Button>
+              <Button className="floatRight" bsStyle="warning" onClick={this.handleClick.bind(this)}>{this.state.buttonText} <Glyphicon glyph={this.state.buttonClass} /> </Button>
           </div>
           <section className="description">
               {booking.info}

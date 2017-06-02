@@ -14,6 +14,7 @@ export default class ProfilePage extends Component {
 
     return (
 
+        <div className="profilePage">
       <Row >
         <Col xs={12} sm={12} md={6} lg={6}>
           <InfoBar/>
@@ -22,6 +23,7 @@ export default class ProfilePage extends Component {
               <AccountBar/>
         </Col>
       </Row>
+        </div>
 
 
     );
