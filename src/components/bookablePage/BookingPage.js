@@ -3,7 +3,6 @@ import '../../static/BookingPage.css';
 import NotFoundPage from '../layout/NotFoundPage';
 import { getBookable, addFavourite, deleteFavourite } from '../../utils/bookster-api';
 import BookingCalender from '../bookablePage/BookingCalender';
-import Popup from 'react-popup';
 import {Button, Glyphicon} from 'react-bootstrap';
 import Auth from '../../Auth'
 
@@ -13,7 +12,7 @@ class BookingPage extends Component {
 
     constructor() {
     super();
-    this.state = { bookings: []}
+    this.state = { bookings: [], buttonClass:""}
   }
 
   componentWillReceiveProps(nextProps){
@@ -40,10 +39,9 @@ class BookingPage extends Component {
   }
 
   handleClick(){
-      console.log(this.props.params.compId)
       if(!this.state.favourite)
           addFavourite(Auth.getUserId(), this.props.params.id, this.props.params.compId).then((response)=>{
-              if (response.message=="success") {
+              if (response.message==="success") {
                   this.setState({
                       favourite: true,
                       buttonText: "Remove from favourites",
@@ -53,7 +51,7 @@ class BookingPage extends Component {
           })
       else
           deleteFavourite(Auth.getUserId(), this.props.params.id, this.props.params.compId).then((response)=>{
-              if(response.message=="success") {
+              if(response.message==="success") {
                   this.setState({
                       favourite: false,
                       buttonText: "Add to favourites",
@@ -64,9 +62,7 @@ class BookingPage extends Component {
   }
 
 render() {
-    //const id = this.props.params.id;
     const { bookings }  = this.state;
-    //const booking = bookings.filter((booking) => booking.id===id )[0];
     const booking = bookings;
     if (!booking) {
       return <NotFoundPage/>;

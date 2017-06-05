@@ -4,9 +4,7 @@ import Autosuggest from 'react-autosuggest';
 //import match from 'autosuggest-highlight/match';
 //import parse from 'autosuggest-highlight/parse';
 import { getServerSuggestions } from '../utils/bookster-api';
-import Auth from '../Auth';
 import { browserHistory } from 'react-router';
-//import {Image} from 'react-bootstrap';
 
 
   // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
@@ -21,12 +19,10 @@ import { browserHistory } from 'react-router';
       return [];
     }
 
-
     return escapedValue;
   }
 
   function onSuggestionSelected(event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }){
-
 
       switch (suggestion.type){
           case 'bookable':
@@ -49,14 +45,13 @@ function getSuggestionValue(suggestion) {
     //const matches = match(suggestionText, query);
     //const parts = parse(suggestionText, matches);
       let pic;
-      if (suggestion.type=="bookable"){
+      if (suggestion.type==="bookable"){
           pic = { backgroundImage: `url(${suggestion.image})` };
 
       } else{
           pic = { backgroundImage: `url(${suggestion.image})` };
 
       }
-      console.log(pic)
     return (
       <span className={'suggestion-content '} style={pic}>
         <span className="name">
@@ -64,6 +59,8 @@ function getSuggestionValue(suggestion) {
         </span>
       </span>
     );
+
+      //SAVING THIS FOR FUTURE IMPLEMENTATION OF HIGHLIGHTING FEATURES OF SEARCHES
     /*return (
       <span className={'suggestion-content ' + suggestion.id}>
         <span className="name">

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import '../static/BookingThumbnail.css';
-import {Grid, Col, Row, Image} from 'react-bootstrap';
-import moment from 'moment';
 
 export default class BookingThumbnail extends Component {
 
@@ -11,10 +9,7 @@ export default class BookingThumbnail extends Component {
         let startDate;
         let endTime;
         let startTime;
-        console.log(this.props.barType)
         if (this.props.barType==="current"){
-            console.log("true")
-
         startDate = new Date(this.props.start).toDateString();
         startTime = new Date(this.props.start).toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
         endTime = new Date(this.props.end).toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
@@ -40,6 +35,8 @@ export default class BookingThumbnail extends Component {
 
         );
     }
+
+    // ALTERNATE LAYOUT. SAVING FOR FUTURE REBUILD OF CURRENT LAYOUT
     /*render() {
         return (
 

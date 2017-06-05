@@ -1,20 +1,17 @@
 // @flow
 import React, { Component } from 'react';
-import ReactDom from 'react-dom';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-//import events from '../data/events';
 //import HTML5Backend from 'react-dnd-html5-backend'
 //import { DragDropContext } from 'react-dnd'
-import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+//import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import '../../static/BookingCalender.css'
 //import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
 import {getCalenderEvents, bookEvent, unBookEvent} from '../../utils/bookster-api'
-import {Button} from 'react-bootstrap';
 import Popup from 'react-popup';
 import Auth from '../../Auth'
-import update from 'react-addons-update';
+//import update from 'react-addons-update';
 
 
 // Setup the localizer by providing the moment (or globalize) Object
@@ -101,7 +98,7 @@ class BookingCalender extends Component {
         if (event.bookedBy === null){
 
             Popup.create({
-                title: <h2>{event.title}</h2>,
+                title: event.title,
                 content: <div><b>Are you sure you want to book the following bookable?</b>
                     <br/><br/><p><b>Description: </b>{event.descr}</p>
                     <br/><p><b>Start: </b>{`${startDate}, ${startTime}`}</p>
@@ -121,7 +118,6 @@ class BookingCalender extends Component {
                         action: function () {
                             bookEvent(event.bookableAlias,moment(event.start).format("x"),Auth.getEmail()).then(response=>{
                                 if (response.success){
-                                    TODO: "UPPDATERA BARA DET VALADA ELEMENTET MED UPDATE FROM REACT-ADDONS-UPDATE"
 
                                     getCalenderEvents(context.props.bookingId).then((events) => {
                                         for (let i =0; i<events.length;i++){
@@ -143,7 +139,7 @@ class BookingCalender extends Component {
                                                         context.setState({events: events})
                                                     })
                                     Popup.create({
-                                        title: <h2>{event.title}</h2>,
+                                        title: event.title,
                                         content: <b>This booking unfortunately just got booked.</b>,
                                         buttons: {
                                             right: [{
@@ -168,7 +164,7 @@ class BookingCalender extends Component {
 
             if (event.bookedBy == Auth.getUserId()){
                 Popup.create({
-                    title: <h2>{event.title}</h2>,
+                    title: event.title,
                     content: <div><b>Are you sure you want to cancel the following bookable?</b>
                         <br/><br/><p><b>Description: </b>{event.descr}</p>
                         <br/><p><b>Start: </b>{`${startDate}, ${startTime}`}</p>
@@ -187,7 +183,6 @@ class BookingCalender extends Component {
                             action: function () {
                                 unBookEvent(event.bookableAlias,moment(event.start).format("x"),Auth.getEmail()).then(response=>{
                                     if (response.success){
-                                        TODO: "UPPDATERA BARA DET VALADA ELEMENTET MED UPDATE FROM REACT-ADDONS-UPDATE"
 
                                         getCalenderEvents(context.props.bookingId).then((events) => {
                                             for (let i =0; i<events.length;i++){
@@ -208,7 +203,7 @@ class BookingCalender extends Component {
                 //Booked by other user
             }else {
                 Popup.create({
-                    title: <h2>{event.title}</h2>,
+                    title: event.title,
                     content: "This bookable is already booked for this timeslot.",
                     buttons: {
                         right: [{
@@ -222,37 +217,9 @@ class BookingCalender extends Component {
                 });
             }
         }
-
-        /*allDay
-         :
-         0
-         bookedBy
-         :
-         "null"
-         descr
-         :
-         "Laundry for residents at Byggvesta Stockholm"
-         end
-         :
-         Mon May 15 2017 15:10:44 GMT+0200 (Västeuropa, sommartid)
-         facility
-         :
-         "laundromat1"
-         start
-         :
-         Mon May 15 2017 14:49:04 GMT+0200 (Västeuropa, sommartid)
-         title
-         :
-         "Laundry"
-         __proto__
-         :
-         Object*/
-
-
     }
 
     eventPropGetter (event, start, end, isSelected) {
-        //var backgroundColor = '#' + event.hexColor;
         let style;
         if (event.bookedBy !== null) {
             if (isSelected){
@@ -312,7 +279,7 @@ class BookingCalender extends Component {
 
     }
 
-    onSelecting({}){
+    onSelecting(){
         return false;
     }
 
@@ -334,6 +301,8 @@ class BookingCalender extends Component {
 
         );
     }
+
+    //SAVING THIS AND OTHER DRAG AND DROP COMMENTED CODE FOR LATER IMPLEMENTATION OF DND FEATURES
     /*render() {
      return (
      <DragAndDropCalendar

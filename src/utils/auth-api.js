@@ -2,22 +2,6 @@ import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3333/auth';
 
-
-/*
- export function signUp({ email, firstName, familyName, password, age}){
- const url = `${BASE_URL}/auth/signup`
- return function (dispatch){
- axios.post(url, { email, firstName, familyName, password, age})
- .then(response => {
- cookie.set('token', response.data.token, { path: '/' });
- //dispatch({ type: 'auth_user' });
- window.location.href = 'http://localhost:3000/special';
- })
- .catch((error) => {
- console.log('Error!' + error.response)
- });
- }
- */
 export {signUpUser, logInUser, changePassword};
 
 function signUpUser(formValues){
@@ -42,23 +26,20 @@ function logInUser(form){
     }).then(response =>{
         var loggedIn = response.data.message
         var token = response.data.token
-        if (loggedIn=='signedIn' && token!=null){
+        if (loggedIn==='signedIn' && token!=null){
             return {success: true, token: token, userId: response.data.id}
         }
         else return {success: false, token: null};
-
     })
         .catch(function (error) {
             console.log(error);
         });
 }
-TODO: "MOVE TO BOOKSTER API SINCE IT REQUIRES AUTHORIZATION"
 function changePassword(oldPassword, newPassword, token){
     const url = `${BASE_URL}/change_pw`;
     return axios.post(url,{oldPassword:oldPassword, newPassword:newPassword}, {headers:{
         Authorization: `Bearer ${token}`
     }}).then(response =>response.data
-
     )
         .catch(function (error) {
             console.log(error);

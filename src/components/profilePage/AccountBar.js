@@ -65,7 +65,7 @@ export default class AccountBar extends Component {
 
             changePassword(oldPassword, password, Auth.getToken()).then(response => {
                 this.setState({message: response});
-                if (this.state.message == "Password successfully changed") {
+                if (this.state.message === "Password successfully changed") {
                     this.setState({visibility: "alert-success"})
                     this.setState(Validation.clearVals(formValid))
                 }

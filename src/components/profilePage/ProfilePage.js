@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col  } from 'react-bootstrap';
 import '../../static/ProfilePage.css';
-import { getCompany } from '../../utils/bookster-api';
-import BookingsSlideBar from '../BookingsSlidebar';
 import InfoBar from './InfoBar';
 import AccountBar from './AccountBar'
 

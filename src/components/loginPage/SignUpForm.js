@@ -51,12 +51,12 @@ export default class SignUpForm extends Component {
         event.preventDefault();
         signUpUser(this.state.formValues).then((message) => {
             var vis = "";
-            if (message=="Signed up!") {
+            if (message==="Signed up!") {
                 Validation.clearVals(this.state.formValidation)
                 vis="alert-success"
             }else{
                 vis="alert-danger"
-                if (message="User already exists") {
+                if (message==="User already exists") {
                     let formVal = this.state.formValidation
                     formVal["email"]= "error";
 

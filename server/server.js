@@ -41,8 +41,10 @@ app.get(`/api/companies/:companyAlias`,authenticate, (req,res)=> {
         } else {
 
             let company = JSON.parse(JSON.stringify(rows))[0];
-            company["image"] = `http://localhost:3333/companies/profile/${company.companyAlias}.png`
-            company["cover"] = `http://localhost:3333/companies/cover/${company.companyAlias}.png`
+            if (company){
+                company["image"] = `http://localhost:3333/companies/profile/${company.companyAlias}.png`
+                company["cover"] = `http://localhost:3333/companies/cover/${company.companyAlias}.png`
+            }
 
             res.json(company);
         }
@@ -50,27 +52,31 @@ app.get(`/api/companies/:companyAlias`,authenticate, (req,res)=> {
 })
 
 app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/:user`,authenticate, (req,res)=> {
-    connection.query('select A.bookableAlias, A.name, A.info, A.type, B.companyAlias from bookables as A inner join companies as B on A.company = B.id and A.bookableAlias=?', [req.params.bookableAlias], function (err, rows){
+    connection.query('select A.bookableAlias, A.name, A.info, A.type, B.companyAlias from bookables as A inner join companies as B on A.company = B.id and A.bookableAlias=? and B.companyAlias=?', [req.params.bookableAlias, req.params.companyAlias], function (err, rows){
         if(err){
             return res.json({success:false, message: "error in database"})
         }
         else {
             var booking = JSON.parse(JSON.stringify(rows))[0];
-            booking["image"] = `http://localhost:3333/bookables/profile/${booking.bookableAlias}.png`
-            booking["cover"] = `http://localhost:3333/bookables/cover/${booking.bookableAlias}.png`
-            booking["favourite"] = false;
-            //Check if user had bookable as favourite already
-            connection.query('select * from favourites inner join bookables on bookables.bookableAlias=? and bookables.id=favourites.bookable and favourites.user=?;', [req.params.bookableAlias, req.params.user], function(err, rows2){
-                if(err) {
-                    return res.json({success: false, message: "error in database favourites"})
-                }
+            if (booking){
+                booking["image"] = `http://localhost:3333/bookables/profile/${booking.bookableAlias}.png`
+                booking["cover"] = `http://localhost:3333/bookables/cover/${booking.bookableAlias}.png`
+                booking["favourite"] = false;
+                //Check if user had bookable as favourite already
+                connection.query('select * from favourites inner join bookables on bookables.bookableAlias=? and bookables.id=favourites.bookable and favourites.user=?;', [req.params.bookableAlias, req.params.user], function(err, rows2){
+                    if(err) {
+                        return res.json({success: false, message: "error in database favourites"})
+                    }
 
-                else if(rows2.length>0){
-                    booking["favourite"]= true;
-                     //res.json(booking)
-                }
+                    else if(rows2.length>0){
+                        booking["favourite"]= true;
+                        //res.json(booking)
+                    }
+                    res.json(booking);
+                })
+            }else{
                 res.json(booking);
-            })
+            }
 
         }
     })

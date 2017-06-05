@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import '../../static/BookingsSlideBar.css';
-import {Alert, Panel, Form, FormGroup, ControlLabel, FormControl, Button} from 'react-bootstrap';
+import {Alert, Panel, Form, FormGroup, FormControl, Button} from 'react-bootstrap';
 import { getUserInfo, updateUserInfo, updateToken } from '../../utils/bookster-api';
 import Auth from '../../Auth'
 import Validation from '../../Validation'
 import '../../static/ProfilePage.css'
-var buttonText = "Edit";
 var changeOccured = false;
 var timeout = null;
 
@@ -40,7 +39,7 @@ export default class InfoBar extends Component {
                 var email = this.state.info.email;
                 updateUserInfo(this.state.info).then((message) => {
                     var formValid = this.state.formValidation
-                    if (message.message=="success") {
+                    if (message.message==="success") {
                         Auth.switchCred(message.token, email)
                         updateToken();
                         Validation.clearVals(formValid)

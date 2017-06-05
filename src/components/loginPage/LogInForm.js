@@ -67,7 +67,7 @@ export default class LogInForm extends Component {
                 <Button type="submit" value="Submit">
                     Sign in
                 </Button>
-                <Modal showBol = {this.state.showModal} handler = {this.handler.bind(this)} email = {this.state.formValues.email}/>
+                <Modal showBol={this.state.showModal} handler={this.handler.bind(this)} email={this.state.formValues.email}/>
 
             </Form>
             </div>

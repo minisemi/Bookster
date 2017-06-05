@@ -42,7 +42,6 @@ export default class Nav extends Component {
 
     render() {
         let bookingsSearchClass, loginFormClass;
-        TODO: "Borde egentligen skapa elementen om man loggas in, istället för att dölja dem (säkerhet, prestanda osv)"
         if (!this.state.loggedIn){
             bookingsSearchClass="noDisplay"
             loginFormClass="formDisplay"

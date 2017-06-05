@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, IndexRoute, browserHistory } from 'react-router'
+import { Route, IndexRoute } from 'react-router'
 import App from './components/App';
 import LogIn from './components/loginPage/LogIn';
 import BookingPage from './components/bookablePage/BookingPage';
@@ -14,7 +14,7 @@ import Auth from './Auth';
 
 var checkAuth = function(location, callback, component){
     if (Auth.checkIfAuthenticated()) {
-        if (component == App){
+        if (component === App){
              history.replaceState(null, null, "/")
         }
         callback(null, component);

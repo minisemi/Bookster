@@ -1,10 +1,3 @@
-/**
- * Created by Matilda on 2017-05-18.
- */
-
-import {checkPassword} from './utils/auth-api'
-import Auth from './Auth'
-
 class Validation{
 
     /*
@@ -24,7 +17,7 @@ class Validation{
 
         var errors= false;
         for (let key in formValid){
-            if(formValid[key]!="success")
+            if(formValid[key]!=="success")
                 errors=true;
         }
         if (!errors)
@@ -38,7 +31,7 @@ class Validation{
     }
 
     static CheckBirth(date){
-        let regex = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/
+        let regex = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/
         if (!date.match(regex))
             return false;
         let birthDate = new Date(date),
@@ -52,18 +45,18 @@ class Validation{
     }
 
     static CheckNotEmpty(str){
-        return (str!="")
+        return (str!=="")
     }
 
 
     static checkRepeated(context, formValid, value, name){
-        if(context.state.formValues.password!=value){
+        if(context.state.formValues.password!==value){
                     Validation.changeToError(formValid,name, context, "Repeated password does not match")
 
                 }
                 else{
                     if(!Validation.CheckPassword(value)){
-                        Validation.changeToError(formValid,name, context, "Password must be at least 6 characters and contain upper and lower case letters")
+                        Validation.changeToError(formValid,name, context, "Password must be at least 6 characters and contain upper/lower case letters and numbers")
                     }else
                         Validation.changeToSuccess(formValid, name, context)
 
@@ -97,13 +90,12 @@ class Validation{
         switch (event.target.name) {
             case "password":
                 if(!Validation.CheckPassword(event.target.value)){
-                    Validation.changeToError(formValid, event.target.name, context, "Password must be at least 6 characters and contain upper and lower case letters")
+                    Validation.changeToError(formValid, event.target.name, context, "Password must be at least 6 characters and contain upper/lower case letters and numbers")
                     break;
                 }else{
                     Validation.changeToSuccess(formValid, event.target.name, context)
-                    break;
                 }
-                if(context.state.formValues.repeatPassword!=undefined || context.state.formValues.repeatPassword!="")
+                if(context.state.formValues.repeatPassword!==undefined || context.state.formValues.repeatPassword!=="")
                     Validation.checkRepeated(context, formValid, context.state.formValues.repeatPassword, "repeatPassword");
 
                 break;
