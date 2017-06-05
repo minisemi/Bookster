@@ -13,7 +13,7 @@ export default class SignUpModal extends Component {
             >
                 <Modal.Header >
                     <Modal.Title id="contained-modal-title"> Wrong Credentials</Modal.Title>
-                    </Modal.Header>
+                </Modal.Header>
                 <Modal.Body>
                     You are trying to log in as <b>{this.props.email}</b>. Please try again with a different email address
                     and/or password.

@@ -83,7 +83,6 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/:user`,authentica
 
 })
 
-TODO: "SE TILL SÅ ATT INGA KAN BOKA SAMMA OBJEKT SAMTIDIGT. DVS IMPLEMENTERA TRANSACTION OSV"
 app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/book`,authenticate, (req,res)=> {
     connection.query('select bookedBy from facilitybookings where bookable=(select id from bookables where bookableAlias=?) and start=?', [req.body.bookableAlias, req.body.start], function (err, rows) {
 
@@ -111,7 +110,6 @@ app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/
 
 })
 
-TODO: "SE TILL SÅ ATT INGA KAN BOKA SAMMA OBJEKT SAMTIDIGT. DVS IMPLEMENTERA TRANSACTION OSV"
 app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/unBook`,authenticate, (req,res)=> {
     connection.query('update facilitybookings set bookedBy=? where bookable=(select id from bookables where bookableAlias=?) and start=? and bookedBy=(select id from users where email=?)', [null, req.body.bookableAlias, req.body.start, req.body.user], function (err, rows){
         if(err){
@@ -257,13 +255,9 @@ app.get('/api/suggestions', authenticate, (req, res) => {
                         response[key].suggestions[sug]["image"]=`http://localhost:3333/searchResult/${response[key].suggestions[sug].bookableAlias}.png`
                     else
                         response[key].suggestions[sug]["image"]=`http://localhost:3333/searchResult/${response[key].suggestions[sug].companyAlias}.png`
-
-
                 }
-
             }
             res.json(response);
-            //res.json(companies.filter(suggestion => regex.test(`${suggestion.name} ${suggestion.city}`)));
 
         })
     })
@@ -324,7 +318,6 @@ app.post('/auth/change_pw', authenticate, function(req, res) {
             res.json("Password successfully changed")
 
         }
-
 
     );
 });

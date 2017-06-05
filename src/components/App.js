@@ -7,28 +7,25 @@ import Auth from '../Auth';
 
 export default class App extends Component {
 
-  render() {
+    render() {
 
-    return (
+        return (
+            <div className="App">
+                <Grid>
+                    <Row>
+                        <BookingsSlideBar title="My bookings" barType="current" id={Auth.getEmail()}/>
 
-      <div className="App">
-          <Grid>
-          <Row>
-              <BookingsSlideBar title="My bookings" barType="current" id={Auth.getEmail()}/>
+                    </Row>
+                    <Row>
+                        <BookingsSlideBar title="My Favourites" barType="favourites" id={Auth.getEmail()}/>
+                    </Row>
+                    <Row>
+                        <BookingsSlideBar title="Recommendations" barType="recommendations" id={Auth.getEmail()}/>
 
-          </Row>
-          <Row>
-              <BookingsSlideBar title="My Favourites" barType="favourites" id={Auth.getEmail()}/>
-          </Row>
-          <Row>
-              <BookingsSlideBar title="Recommendations" barType="recommendations" id={Auth.getEmail()}/>
-
-          </Row>
-          </Grid>
-      </div>
-
-
-    );
-  }
+                    </Row>
+                </Grid>
+            </div>
+        );
+    }
 
 }

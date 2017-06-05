@@ -9,13 +9,10 @@ import NotFoundPage from './components/layout/NotFoundPage';
 import ProfilePage from './components/profilePage/ProfilePage'
 import Auth from './Auth';
 
-
-
-
 var checkAuth = function(location, callback, component){
     if (Auth.checkIfAuthenticated()) {
         if (component === App){
-             history.replaceState(null, null, "/")
+            history.replaceState(null, null, "/")
         }
         callback(null, component);
     } else {

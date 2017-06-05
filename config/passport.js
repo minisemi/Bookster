@@ -14,14 +14,14 @@ var parameters = {
 
 
 module.exports = function (passport){
-   /* passport.serializeUser(function(user, done){
-        done (null, user.email)
-    })
-    passport.deserializeUser(function (email, done) {
-        connection.query("select * from users where email =" + email, function(err, rows){
-            done(err, rows[0])
-        })
-    })*/
+    /* passport.serializeUser(function(user, done){
+     done (null, user.email)
+     })
+     passport.deserializeUser(function (email, done) {
+     connection.query("select * from users where email =" + email, function(err, rows){
+     done(err, rows[0])
+     })
+     })*/
 
 
     passport.use('local-signup', new LocalStrategy({

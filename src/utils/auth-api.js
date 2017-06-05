@@ -13,9 +13,9 @@ function signUpUser(formValues){
         passw: formValues.password.toString(),
         birth: formValues.birth.toString()
     }).then(response => response.data.message)
-      .catch(function (error) {
-    console.log(error);
-  });
+        .catch(function (error) {
+            console.log(error);
+        });
 }
 
 function logInUser(form){

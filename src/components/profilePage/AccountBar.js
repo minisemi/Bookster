@@ -1,6 +1,3 @@
-/**
- * Created by Matilda on 2017-05-17.
- */
 import React, { Component } from 'react';
 import { Row, Panel, Form, FormControl, Button, FormGroup, Alert} from 'react-bootstrap';
 import '../../static/ProfilePage.css'
@@ -31,28 +28,18 @@ export default class AccountBar extends Component {
 
 
     handleChange(event){
-
         let formValues = this.state.formValues;
         let name = event.target.name;
         let value = event.target.value;
-
         formValues[name] = value;
-
         this.setState({formValues, message:this.state.message});
-
-
-
     }
 
     instantCheck(event){
         event.persist();
         this.handleChange(event);
-
         clearTimeout(timeout);
         timeout = setTimeout(Validation.feedback, 500,this, event);
-
-
-
     }
 
 
@@ -63,29 +50,22 @@ export default class AccountBar extends Component {
             oldPassword = this.state.formValues.oldPassword,
             formValid = this.state.formValidation;
 
-            changePassword(oldPassword, password, Auth.getToken()).then(response => {
-                this.setState({message: response});
-                if (this.state.message === "Password successfully changed") {
-                    this.setState({visibility: "alert-success"})
-                    this.setState(Validation.clearVals(formValid))
-                }
-                else {
-                    this.setState({visibility: "alert-danger"})
-                    formValid["oldPassword"] = "error"
-                    this.setState(formValid)
-                }
-            })
-
-
-
-
+        changePassword(oldPassword, password, Auth.getToken()).then(response => {
+            this.setState({message: response});
+            if (this.state.message === "Password successfully changed") {
+                this.setState({visibility: "alert-success"})
+                this.setState(Validation.clearVals(formValid))
+            }
+            else {
+                this.setState({visibility: "alert-danger"})
+                formValid["oldPassword"] = "error"
+                this.setState(formValid)
+            }
+        })
     }
 
-
     render() {
-
         return (
-
             <Panel header="Account Settings" bsStyle="default">
                 <Form horizontal onSubmit={ this.handleSubmit.bind(this)}>
                     <FormGroup validationState={this.state.formValidation.oldPassword}>
@@ -113,8 +93,6 @@ export default class AccountBar extends Component {
                     </Row>
                 </Form>
             </Panel>
-
         );
     }
-
 }

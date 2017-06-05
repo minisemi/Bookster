@@ -26,8 +26,6 @@ export default class InfoBar extends Component {
             };
     }
 
-
-
     handleEdit(event){
         event.preventDefault()
         if (this.state.editable){
@@ -44,9 +42,6 @@ export default class InfoBar extends Component {
                         updateToken();
                         Validation.clearVals(formValid)
                         this.setState({info:this.state.info,buttonText:"Edit", editable:!this.state.editable, formValid})
-
-
-
                     }
                     else{
                         formValid["email"]= "error"
@@ -56,9 +51,6 @@ export default class InfoBar extends Component {
             }else{
                 this.setState({buttonText:"Edit", editable:!this.state.editable})
             }
-
-
-
         }
     }
 
@@ -90,25 +82,23 @@ export default class InfoBar extends Component {
     }
 
     render() {
-
-
         return (
 
-                <Panel header="Information" bsStyle="default"><Form  onSubmit={ this.handleEdit.bind(this)}>
-                    <FormGroup validationState={this.state.formValidation.firstName}>First name<FormControl type="text" required={true} className="formControl" disabled={this.state.editable} value={this.state.info.firstName} name="firstName"
-                                                                  onChange={this.handleChange.bind(this)}/></FormGroup>
-                    <FormGroup validationState={this.state.formValidation.familyName}>Last name<FormControl className="formControl" required={true} type="text" disabled={this.state.editable} value={this.state.info.familyName} name="familyName"
-                                                                 onChange={this.handleChange.bind(this)}/></FormGroup>
-                    <FormGroup  validationState={this.state.formValidation.email}>Email<FormControl className="formControl" required={true} type="email" disabled={this.state.editable} value={this.state.info.email} name="email"
-                                                             onChange={this.handleValidation.bind(this)}/><FormControl.Feedback /></FormGroup>
-                    <FormGroup validationState={this.state.formValidation.address}>Address<FormControl type="text" required={true} disabled={this.state.editable} className="formControl" value={this.state.info.address} name="address"
-                                                               onChange={this.handleChange.bind(this)}/></FormGroup>
-                    <FormGroup validationState={this.state.formValidation.birth}>Birthday<FormControl className="formControl" required={true} type="text" disabled={this.state.editable} value={this.state.info.birth} name="birth"
-                                                                onChange={this.handleValidation.bind(this)}/><FormControl.Feedback /></FormGroup>
-                    <Button className="floatRight" bsStyle="warning" type="submit" disabled={!this.state.buttonEnabled} >{this.state.buttonText}</Button>
-                </Form>
-                    <Alert className={`formAlert ${this.state.visibility}`} > {this.state.message}</Alert>
-                </Panel>
+            <Panel header="Information" bsStyle="default"><Form  onSubmit={ this.handleEdit.bind(this)}>
+                <FormGroup validationState={this.state.formValidation.firstName}>First name<FormControl type="text" required={true} className="formControl" disabled={this.state.editable} value={this.state.info.firstName} name="firstName"
+                                                                                                        onChange={this.handleChange.bind(this)}/></FormGroup>
+                <FormGroup validationState={this.state.formValidation.familyName}>Last name<FormControl className="formControl" required={true} type="text" disabled={this.state.editable} value={this.state.info.familyName} name="familyName"
+                                                                                                        onChange={this.handleChange.bind(this)}/></FormGroup>
+                <FormGroup  validationState={this.state.formValidation.email}>Email<FormControl className="formControl" required={true} type="email" disabled={this.state.editable} value={this.state.info.email} name="email"
+                                                                                                onChange={this.handleValidation.bind(this)}/><FormControl.Feedback /></FormGroup>
+                <FormGroup validationState={this.state.formValidation.address}>Address<FormControl type="text" required={true} disabled={this.state.editable} className="formControl" value={this.state.info.address} name="address"
+                                                                                                   onChange={this.handleChange.bind(this)}/></FormGroup>
+                <FormGroup validationState={this.state.formValidation.birth}>Birthday<FormControl className="formControl" required={true} type="text" disabled={this.state.editable} value={this.state.info.birth} name="birth"
+                                                                                                  onChange={this.handleValidation.bind(this)}/><FormControl.Feedback /></FormGroup>
+                <Button className="floatRight" bsStyle="warning" type="submit" disabled={!this.state.buttonEnabled} >{this.state.buttonText}</Button>
+            </Form>
+                <Alert className={`formAlert ${this.state.visibility}`} > {this.state.message}</Alert>
+            </Panel>
 
         );
     }

@@ -11,14 +11,14 @@ class BookingsSlideBar extends Component {
 
 
     constructor() {
-    super()
-    this.state = {
-        bookings: [],
-        slideBarText:""
-    };
-  }
+        super()
+        this.state = {
+            bookings: [],
+            slideBarText:""
+        };
+    }
 
-  loadBookings(id){
+    loadBookings(id){
         if (id!==undefined) {
             switch (this.props.barType) {
                 case "company":
@@ -46,17 +46,17 @@ class BookingsSlideBar extends Component {
                     break;
             }
         }
-  }
+    }
 
-  componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps){
         if (nextProps.id !== this.props.id) {
             this.loadBookings(nextProps.id);
+        }
     }
-  }
 
-  componentDidMount() {
+    componentDidMount() {
         this.loadBookings(this.props.id);
-  }
+    }
 
     render() {
         const { bookings,slideBarText }  = this.state;

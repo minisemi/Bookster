@@ -21,7 +21,7 @@ export default class Nav extends Component {
     }
 
     /*
-    Authenticates user, updates token in bookster-api and pushes to index page
+     Authenticates user, updates token in bookster-api and pushes to index page
      */
 
     handleLogin(token, email, userId){
@@ -32,7 +32,7 @@ export default class Nav extends Component {
     }
 
     /*
-    deauthenticates user and redirects to /sign_in page.
+     deauthenticates user and redirects to /sign_in page.
      */
     handleLogout(){
         Auth.deauthenticateUser()
@@ -42,6 +42,7 @@ export default class Nav extends Component {
 
     render() {
         let bookingsSearchClass, loginFormClass;
+        // Shows the login form if not logged in, and searchbar/profilebutton/logoutbutton if logged in
         if (!this.state.loggedIn){
             bookingsSearchClass="noDisplay"
             loginFormClass="formDisplay"

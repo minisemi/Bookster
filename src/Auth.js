@@ -5,7 +5,7 @@ class Auth {
     static authenticateUser(token, email, userId) {
         cookie.set('token', token);
         cookie.set('email', email);
-         cookie.set('userId', userId)
+        cookie.set('userId', userId)
     }
 
     static switchCred(token, email){
@@ -20,12 +20,10 @@ class Auth {
         return cookie.get('token') != null;
     }
 
-
     static deauthenticateUser() {
         cookie.remove("token")
         cookie.remove('userId')
     }
-
 
     static getToken() {
         return cookie.get('token');

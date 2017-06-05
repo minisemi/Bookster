@@ -91,9 +91,9 @@ class BookingCalender extends Component {
 
         let context = this;
         //For unbooked events
-            let startDate = new Date(event.start).toDateString();;
-            let endDate = new Date(event.end).toDateString();;
-            let startTime = new Date(event.start).toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
+        let startDate = new Date(event.start).toDateString();;
+        let endDate = new Date(event.end).toDateString();;
+        let startTime = new Date(event.start).toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
         let endTime = new Date(event.end).toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
         if (event.bookedBy === null){
 
@@ -131,13 +131,13 @@ class BookingCalender extends Component {
                                 }else {
                                     Popup.close();
                                     getCalenderEvents(context.props.bookingId).then((events) => {
-                                                        for (let i =0; i<events.length;i++){
+                                        for (let i =0; i<events.length;i++){
 
-                                                            events[i].start=new Date(events[i].start);
-                                                            events[i].end=new Date(events[i].end);
-                                                        }
-                                                        context.setState({events: events})
-                                                    })
+                                            events[i].start=new Date(events[i].start);
+                                            events[i].end=new Date(events[i].end);
+                                        }
+                                        context.setState({events: events})
+                                    })
                                     Popup.create({
                                         title: event.title,
                                         content: <b>This booking unfortunately just got booked.</b>,
@@ -225,10 +225,10 @@ class BookingCalender extends Component {
             if (isSelected){
                 if (event.bookedBy == Auth.getUserId()) {
                     style = {
-                    backgroundColor: "#ffd688",
-                    borderColor: "#ffdda8"
+                        backgroundColor: "#ffd688",
+                        borderColor: "#ffdda8"
 
-                };
+                    };
 
                 }else{
 
@@ -241,32 +241,32 @@ class BookingCalender extends Component {
 
             }else{
                 if (event.bookedBy == Auth.getUserId()){
-                     style = {
-                    backgroundColor: "#ffd688",
-                    borderColor: "#ffdda8"
+                    style = {
+                        backgroundColor: "#ffd688",
+                        borderColor: "#ffdda8"
 
-                };
+                    };
 
                 }else{
-                 style = {
-                    backgroundColor: "#ff4d4d",
-                    borderColor: "#ff6666"
+                    style = {
+                        backgroundColor: "#ff4d4d",
+                        borderColor: "#ff6666"
 
-                };
+                    };
 
                 }
 
             }
         } else{
             if (isSelected){
-                 style = {
+                style = {
                     backgroundColor: "#224f77",
                     borderColor:"#2d6a9f"
 
                 };
 
             }else {
-                 style = {
+                style = {
                     backgroundColor: "#3174ad",
                     borderColor:"#3884c7"
 
@@ -274,8 +274,8 @@ class BookingCalender extends Component {
             }
         }
         return {
-                    style: style
-                };
+            style: style
+        };
 
     }
 

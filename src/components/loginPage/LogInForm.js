@@ -32,7 +32,6 @@ export default class LogInForm extends Component {
             this.setState({loggedIn:response.success})
             if (response.success){
                 this.props.handleLogin(response.token, this.state.formValues.email, response.userId);
-
             }
             else{
                 this.setState({showModal:true})
@@ -51,25 +50,25 @@ export default class LogInForm extends Component {
     render() {
         return (
             <div className="loginForm">
-            <Form inline onSubmit={ this.handleSubmit.bind(this)}>
-                <FormGroup controlId="formInlineEmail">
-                    <ControlLabel>Email: </ControlLabel>
+                <Form inline onSubmit={ this.handleSubmit.bind(this)}>
+                    <FormGroup controlId="formInlineEmail">
+                        <ControlLabel>Email: </ControlLabel>
+                        {' '}
+                        <FormControl type="email" name="email" placeholder="Enter your email" value={this.state.formValues["email"]} required={true} onChange={this.handleChange.bind(this)} />
+                    </FormGroup>
                     {' '}
-                    <FormControl type="email" name="email" placeholder="Enter your email" value={this.state.formValues["email"]} required={true} onChange={this.handleChange.bind(this)} />
-                </FormGroup>
-                {' '}
-                <FormGroup controlId="formInlinePassword">
-                    <ControlLabel>Password: </ControlLabel>
+                    <FormGroup controlId="formInlinePassword">
+                        <ControlLabel>Password: </ControlLabel>
+                        {' '}
+                        <FormControl type="password" name="password" value={this.state.formValues["password"]} required={true} onChange={this.handleChange.bind(this)}/>
+                    </FormGroup>
                     {' '}
-                    <FormControl type="password" name="password" value={this.state.formValues["password"]} required={true} onChange={this.handleChange.bind(this)}/>
-                </FormGroup>
-                {' '}
-                <Button type="submit" value="Submit">
-                    Sign in
-                </Button>
-                <Modal showBol={this.state.showModal} handler={this.handler.bind(this)} email={this.state.formValues.email}/>
+                    <Button type="submit" value="Submit">
+                        Sign in
+                    </Button>
+                    <Modal showBol={this.state.showModal} handler={this.handler.bind(this)} email={this.state.formValues.email}/>
 
-            </Form>
+                </Form>
             </div>
         );
     }

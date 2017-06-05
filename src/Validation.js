@@ -1,7 +1,7 @@
 class Validation{
 
     /*
-    Clear all validationStatus values in form
+     Clear all validationStatus values in form
      */
     static clearVals(formValid){
         for (let key in formValid){
@@ -51,16 +51,16 @@ class Validation{
 
     static checkRepeated(context, formValid, value, name){
         if(context.state.formValues.password!==value){
-                    Validation.changeToError(formValid,name, context, "Repeated password does not match")
+            Validation.changeToError(formValid,name, context, "Repeated password does not match")
 
-                }
-                else{
-                    if(!Validation.CheckPassword(value)){
-                        Validation.changeToError(formValid,name, context, "Password must be at least 6 characters and contain upper/lower case letters and numbers")
-                    }else
-                        Validation.changeToSuccess(formValid, name, context)
+        }
+        else{
+            if(!Validation.CheckPassword(value)){
+                Validation.changeToError(formValid,name, context, "Password must be at least 6 characters and contain upper/lower case letters and numbers")
+            }else
+                Validation.changeToSuccess(formValid, name, context)
 
-                }
+        }
     }
 
     static CheckPassword(password){
@@ -81,8 +81,8 @@ class Validation{
     }
 
     /*
-    Sets feedback to user based on what field is filled in (context.target.name)
-    sets alarm text and success/error based on this.
+     Sets feedback to user based on what field is filled in (context.target.name)
+     sets alarm text and success/error based on this.
      */
     static feedback(context, event){
         let formValid = context.state.formValidation;
@@ -128,7 +128,5 @@ class Validation{
     }
 
 }
-
-
 
 export default Validation;
