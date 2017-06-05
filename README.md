@@ -44,5 +44,5 @@ framework. We will use MySQL for storing data, which will mostly be used for
 storage of end-user data and organization user data. End-user data includes profile
 information and preferences, login info etc. Organization user data includes
 bookables, schedules and as well as login info for the organizations. We will use
-postman to make the backend development efficient, and jenkins for continiuous
-integration (perhaps in combination with Selenium).
+postman to make the backend development efficient, and jenkins (not yet implemented) for continiuous
+integration in combination with Selenium and Mocha/Jasmine (not yet implemented).
