@@ -3,6 +3,19 @@
 This is the specification of our web project Bookster. It is a part of the
 course TDDD27 Advances Web Programming at Linköping University.
 
+## Screencast
+
+A screencast can be found here: https://youtu.be/zNHUDc4boT4
+
+## Running this project
+
+This project is implemented with a locally hosted database. If you wish to run 
+it with full features you may alter the database.js-file in the config repo to
+your own mysql-database and run the database.schema in it to initialize and
+create all necessary tables.
+
+
+
 ## Functional Specification
 
 We will develop a web application called Bookster. It is a centralized booking
