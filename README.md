@@ -1,7 +1,6 @@
 # Bookster
 
-This is the specification of our web project Bookster. It is a part of the
-course TDDD27 Advances Web Programming at Linköping University.
+This is the specification of our web project Bookster.
 
 ## Screencast
 
@@ -15,7 +14,6 @@ your own mysql-database and run the database.schema in it to initialize and
 create all necessary tables.
 
 
-
 ## Functional Specification
 
 We will develop a web application called Bookster. It is a centralized booking
@@ -23,8 +21,7 @@ platform for venuesand facilities such as laundry rooms, barbeque places and
 sport halls. Several organizations and corporations are meant to be able to
 post different locations to the site. End-customers will be able to register,
 log in and book venues and facilities from different orginizations in one
-application. We developed this as a business idea in the course TDDE02 Software
-Entrepreneurship.
+application. 
 
 The idea is to have two frontend customer interfaces; one for the end-customers
 booking objects, and one for organizations posting bookables. We have chosen
