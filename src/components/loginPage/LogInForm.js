@@ -54,13 +54,13 @@ export default class LogInForm extends Component {
                     <FormGroup controlId="formInlineEmail">
                         <ControlLabel>Email: </ControlLabel>
                         {' '}
-                        <FormControl type="email" name="email" placeholder="Enter your email" value={this.state.formValues["email"]} required={true} onChange={this.handleChange.bind(this)} />
+                        <FormControl type="email" name="email" placeholder="Enter your email" value={this.state.formValues["email"] || ""} required={true} onChange={this.handleChange.bind(this)} />
                     </FormGroup>
                     {' '}
                     <FormGroup controlId="formInlinePassword">
                         <ControlLabel>Password: </ControlLabel>
                         {' '}
-                        <FormControl type="password" name="password" value={this.state.formValues["password"]} required={true} onChange={this.handleChange.bind(this)}/>
+                        <FormControl type="password" name="password" value={this.state.formValues["password"] || ""} required={true} onChange={this.handleChange.bind(this)}/>
                     </FormGroup>
                     {' '}
                     <Button type="submit" value="Submit">
