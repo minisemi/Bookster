@@ -5,14 +5,12 @@ import '../../static/CarouselShower.css';
 export default class CarouselShower extends Component{
 
     render(){
-
         return (
             <Carousel className="car">
                 <Carousel.Item>
                     <img alt="" className="carImage" src="/assets/bookingThumbnails/tennisCourt.png"/>
                     <Carousel.Caption>
                         <h3>Get exercised!</h3>
-
                         <p>Easily explore and book nearby sports facilities with the push of a button</p>
                     </Carousel.Caption>
                 </Carousel.Item>
@@ -31,7 +29,6 @@ export default class CarouselShower extends Component{
                     </Carousel.Caption>
                 </Carousel.Item>
             </Carousel>
-
         );
     }
 }

@@ -1,4 +1,4 @@
-var passport = require('passport')
+    var passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 var mysql = require('mysql');
 var connection = mysql.createConnection(require('./database').connection);
