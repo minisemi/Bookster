@@ -1,7 +1,9 @@
 //KAN BEHÖVA KOLLA PÅ JUDOATHLETES EXEMPEL FÖR SERVER-SIDE ROUTING OM 404 FÅS VID REFRESH AV SIDA
 
 'use strict';
-
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').load();
+}
 const express = require('express');
 const app = express();
 const jwt = require('express-jwt');
