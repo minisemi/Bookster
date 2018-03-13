@@ -1,17 +1,17 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
-import App from './components/App';
+import HomePageContainer from './containers/HomePageContainer';
 import LogIn from './components/loginPage/LogIn';
-import BookingPage from './components/bookablePage/BookingPage';
+import BookablePageContainer from './containers/BookablePageContainer';
 import Layout from './components/layout/Layout'
 import CompanyPage from './components/companyPage/CompanyPage';
 import NotFoundPage from './components/layout/NotFoundPage';
 import ProfilePage from './components/profilePage/ProfilePage'
 import Auth from './Auth';
 
-var checkAuth = function(location, callback, component){
+let checkAuth = function(location, callback, component){
     if (Auth.checkIfAuthenticated()) {
-        if (component === App){
+        if (component === HomePageContainer){
             history.replaceState(null, null, "/")
         }
         callback(null, component);
@@ -24,11 +24,11 @@ var checkAuth = function(location, callback, component){
 const routes = (
     <Route path="/" component={Layout}>
         <IndexRoute getComponent={(location, callback) => {
-            checkAuth(location, callback, App)
+            checkAuth(location, callback, HomePageContainer)
         }
         }/>
         <Route path="/sign_in" getComponent={(location, callback) => {
-            checkAuth(location, callback, App)
+            checkAuth(location, callback, HomePageContainer)
         }
         }/>
 
@@ -41,7 +41,7 @@ const routes = (
         }
         }/>
         <Route path="/:compId/:id" getComponent={(location, callback) => {
-            checkAuth(location, callback, BookingPage)
+            checkAuth(location, callback, BookablePageContainer)
         }
         }/>
         <Route path="*" getComponent={(location, callback) => {

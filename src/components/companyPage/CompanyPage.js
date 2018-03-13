@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../../static/BookingPage.css';
+import '../../static/BookablePage.css';
 import NotFoundPage from '../layout/NotFoundPage';
 import { getCompany } from '../../utils/bookster-api';
 import BookingSlidebar from '../BookingsSlidebar';
