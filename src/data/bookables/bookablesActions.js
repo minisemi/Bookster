@@ -6,6 +6,7 @@ export const GET_RECOMMENDATIONS = 'GET_RECOMMENDATIONS';
 export const GET_BOOKABLE = 'GET_BOOKABLE';
 export const ADD_FAVOURITE = 'ADD_FAVOURITE';
 export const DELETE_FAVOURITE = 'DELETE_FAVOURITE';
+export const GET_COMPANY_BOOKABLES = 'GET_COMPANY_BOOKABLES';
 const id = "a.ulander@live.se";
 const userID = 4;
 
@@ -108,12 +109,17 @@ export function getRecommendations() {
 }
 
 export function getCompanyBookables(id){
-    const url = `${BASE_URL}/api/companies/${id}/bookables`;
-    return axios.get(url).then(response => response.data)
-        .catch(function (error) {
+    return (dispatch, getState) => {
+        const url = `${BASE_URL}/api/companies/${id}/bookables`;
+        axios.get(url).then(response => {
+            dispatch({
+                type: GET_COMPANY_BOOKABLES,
+                payload: response.data
+            })
+        }).catch(function (error) {
             console.log(error);
         });
-
+    };
 }
 
 export function getBookable(compId, bookId) {

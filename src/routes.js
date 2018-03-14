@@ -1,10 +1,10 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 import HomePageContainer from './containers/HomePageContainer';
-import LogIn from './components/loginPage/LogIn';
+import LoginPageContainer from './containers/LoginPageContainer';
 import BookablePageContainer from './containers/BookablePageContainer';
 import Layout from './components/layout/Layout'
-import CompanyPage from './components/companyPage/CompanyPage';
+import CompanyPageContainer from './containers/CompanyPageContainer';
 import NotFoundPage from './components/layout/NotFoundPage';
 import ProfilePage from './components/profilePage/ProfilePage'
 import Auth from './Auth';
@@ -17,7 +17,7 @@ let checkAuth = function(location, callback, component){
         callback(null, component);
     } else {
         history.replaceState( null, null, "sign_in");
-        callback(null, LogIn);
+        callback(null, LoginPageContainer);
     }
 }
 
@@ -37,7 +37,7 @@ const routes = (
         }
         }/>
         <Route path="/:id" getComponent={(location, callback) => {
-            checkAuth(location, callback, CompanyPage)
+            checkAuth(location, callback, CompanyPageContainer)
         }
         }/>
         <Route path="/:compId/:id" getComponent={(location, callback) => {

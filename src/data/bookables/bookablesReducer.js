@@ -5,6 +5,7 @@ import {
     GET_BOOKABLE,
     ADD_FAVOURITE,
     DELETE_FAVOURITE,
+    GET_COMPANY_BOOKABLES,
 } from './bookablesActions';
 
 const INITIAL_STATE = {
@@ -37,13 +38,16 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 bookable: action.payload,
-                //favourite: true,
             };
         case DELETE_FAVOURITE:
             return {
                 ...state,
                 bookable: action.payload,
-              //  favourite: false,
+            };
+        case GET_COMPANY_BOOKABLES:
+            return {
+                ...state,
+                companyBookables: action.payload,
             };
         default:
             return state;

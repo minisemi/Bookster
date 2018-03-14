@@ -48,10 +48,10 @@ class BookablePageContainer extends Component {
 
     render() {
         const { bookable }  = this.state;
-        const headerStyle = { backgroundImage: `url(${bookable.cover})` };
         if (!bookable) {
             return <NotFoundPage/>;
         }
+        const headerStyle = { backgroundImage: `url(${bookable.cover})` };
 
         return (
             <div className="booking-full">

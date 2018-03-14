@@ -6,29 +6,11 @@ import Auth from '../Auth';
 axios.defaults.headers.common['Authorization'] = `Bearer ${Auth.getToken()}`;
 
 
-export { getServerSuggestions, getCompany, getCompanyBookables,
+export { getServerSuggestions,
      getCalenderEvents, bookEvent, unBookEvent,  getUserInfo, updateUserInfo, updateToken };
 
 function updateToken(){
     axios.defaults.headers.common['Authorization'] = `Bearer ${Auth.getToken()}`;
-}
-
-
-function getCompanyBookables(id){
-    const url = `${BASE_URL}/api/companies/${id}/bookables`;
-    return axios.get(url).then(response => response.data)
-        .catch(function (error) {
-            console.log(error);
-        });
-
-}
-
-function getCompany(id) {
-    const url = `${BASE_URL}/api/companies/${id}`;
-    return axios.get(url).then(response => response.data)
-        .catch(function (error) {
-            console.log(error);
-        });
 }
 
 function getCalenderEvents(bookId) {

@@ -29,11 +29,10 @@ class BookingsSlideBar extends Component {
         let slideBarText;
         let title;
             switch (props.barType) {
-                /*case "company":
-                    getCompanyBookables(id).then((objects) => {
-                        this.setState({bookables: objects, slideBarText:"This company doesn't have any bookables yet."});
-                    });
-                    break;*/
+                case "company":
+                        slideBarText = "This company doesn't have any bookables yet.";
+                        title = "Bookable objects";
+                    break;
                 case "favourites" :
                         slideBarText = "You don't have any favourites. Press the favourite button on your favourite bookables to save them here!";
                         title = "My Favourites";
