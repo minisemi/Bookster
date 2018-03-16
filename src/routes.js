@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 import HomePageContainer from './containers/HomePageContainer';
-import LoginPageContainer from './containers/LoginPageContainer';
+import LoginPage from './components/loginPage/LoginPage';
 import BookablePageContainer from './containers/BookablePageContainer';
 import Layout from './components/layout/Layout'
 import CompanyPageContainer from './containers/CompanyPageContainer';
@@ -17,7 +17,7 @@ let checkAuth = function(location, callback, component){
         callback(null, component);
     } else {
         history.replaceState( null, null, "sign_in");
-        callback(null, LoginPageContainer);
+        callback(null, LoginPage);
     }
 }
 

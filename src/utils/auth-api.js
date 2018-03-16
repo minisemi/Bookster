@@ -1,10 +1,11 @@
 import axios from 'axios';
+import {SubmissionError} from 'redux-form'
 
 const BASE_URL = 'http://localhost:3333/auth';
 
 export {signUpUser, logInUser, changePassword};
 
-function signUpUser(formValues){
+/*function signUpUser(formValues){
     const url = `${BASE_URL}/signup`;
     return axios.post(url,{
         email: formValues.email.toString(),
@@ -16,6 +17,34 @@ function signUpUser(formValues){
         .catch(function (error) {
             console.log(error);
         });
+}*/
+
+function signUpUser(formValues){
+        console.log(formValues);
+        const url = `${BASE_URL}/signup`;
+
+        return axios.post(url,{
+            email: formValues.email.toString(),
+            firstName: formValues.firstName.toString(),
+            surName: formValues.surName.toString(),
+            passw: formValues.passw.toString(),
+            birth: formValues.birth.toString()
+        }).then(response => {
+            console.log(response.data);
+
+        }).catch(error => {
+      // how you pass server-side validation errors back is up to you
+      if(error.validationErrors) {
+        throw new SubmissionError(error.validationErrors)
+          /*throw new SubmissionError({
+        password: 'Wrong password',
+        _error: 'Login failed!'
+      })*/
+      } else {
+        // what you do about other communication errors is up to you
+      }
+    });
+
 }
 
 function logInUser(form){

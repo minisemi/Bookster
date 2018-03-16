@@ -7,6 +7,11 @@
     margin-right: 12px;
 }
 
+.datePicker {
+    float: left;
+    width: 60%;
+}
+
 .hiddenAlert{
     display: none;
 }

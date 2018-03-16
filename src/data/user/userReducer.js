@@ -11,9 +11,11 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case SIGN_UP_USER:
+            console.log("action.payload");
+            console.log(action.payload);
             return {
                 ...state,
-                currentBookings: action.payload
+                user: action.payload
             };
         case LOG_IN_USER:
             return {
