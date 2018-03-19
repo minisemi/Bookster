@@ -15,13 +15,18 @@ export function signUpUser(formValues) {
             firstName: formValues.firstName.toString(),
             surName: formValues.surName.toString(),
             passw: formValues.passw.toString(),
-            birth: formValues.birth.toString()
+            birth: formValues.birthdate.toString()
         }).then(response => {
             console.log(response.data);
-            dispatch({
-                type: SIGN_UP_USER,
-                payload: response.data
-            })
+            if(response.data.message){
+                dispatch({
+                    type: SIGN_UP_USER,
+                    payload: response.data.message
+                })
+            } else if(response.data.email) {
+                console.log("throw");
+                throw new SubmissionError({ email: 'User already exists', _error: 'Signup failed' })
+            }
 
         }).catch(error => {
             // how you pass server-side validation errors back is up to you

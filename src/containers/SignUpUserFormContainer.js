@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
 import {Row, Col, Form, FormGroup, Button, FormControl, Alert} from 'react-bootstrap';
 import '../static/SignUpForm.css'
-import { signUpUser } from '../utils/auth-api';
 import {signUpValidate} from '../components/forms/Validation';
 import { reduxForm, Field } from 'redux-form';
 import PropTypes from 'prop-types';
-import Moment from 'moment';
-import momentLocalizer from 'react-widgets-moment';
-import DateTimePicker from 'react-widgets/lib/DateTimePicker';
-import 'react-widgets/dist/css/react-widgets.css';
 import { userActions } from '../data/user';
 import { connect } from 'react-redux';
 import FormInput  from '../components/forms/FormInput';
 var timeout= null;
 
-Moment.locale('en');
-momentLocalizer(Moment);
+
 
 class SignUpUserFormContainer extends Component {
 
@@ -57,25 +51,6 @@ class SignUpUserFormContainer extends Component {
      })
      }*/
 
-    handleSubmit(event) {
-        //this.signUpUser();
-
-        /*event.preventDefault();
-         signUpUser(this.state.formValues).then((message) => {
-         var vis = "";
-         if (message==="Signed up!") {
-         Validation.clearVals(this.state.formValidation)
-         vis="alert-success"
-         }else{
-         vis="alert-danger"
-         if (message==="User already exists") {
-         let formVal = this.state.formValidation
-         formVal["email"]= "error";
-         }
-         }
-         this.setState({visibility: vis, message: message});
-         });*/
-    }
 
     renderField ({input, label, type, meta: {touched, error, warning}}) {
         return (
@@ -98,20 +73,10 @@ class SignUpUserFormContainer extends Component {
         </FormGroup>
     );
 
-    renderDateTimePicker = ({ input: { onChange, value }, showTime }) => {
-        return <DateTimePicker
-            onChange={onChange}
-            format="YYYY-MM-DD"
-            time={showTime}
-            value={!value ? null : new Date(value)}
-            className="datePicker"
-        />;
-    };
-
-
-
     render() {
         const {error, handleSubmit, pristine, reset, submitting} = this.props;
+        console.log("error");
+        console.log(error);
         return (
             <div>
                 <Form horizontal className="form" onSubmit={ handleSubmit(this.props.signUpUser)}>
@@ -122,6 +87,7 @@ class SignUpUserFormContainer extends Component {
                             type="text"
                             placeholder="First Name"
                             required={true}
+                            child={"editText"}
                         />
                     </Col>
                     <Col sm={6}>
@@ -131,6 +97,7 @@ class SignUpUserFormContainer extends Component {
                             type="text"
                             placeholder="Last Name"
                             required={true}
+                            child={"editText"}
                         />
                     </Col>
                     <Col sm={12}>
@@ -140,6 +107,7 @@ class SignUpUserFormContainer extends Component {
                             type="email"
                             placeholder="Email"
                             required={true}
+                            child={"editText"}
                         />
                     </Col>
                     <Col sm={12}>
@@ -149,31 +117,37 @@ class SignUpUserFormContainer extends Component {
                             type="password"
                             placeholder="Password"
                             required={true}
+                            child={"editText"}
                         />
                     </Col>
                     <Col sm={12}>
                         <Field
-                            name="repeatPassword"
+                            name="repeatPassw"
                             component={FormInput}
                             type="password"
                             placeholder="Repeat Password"
                             required={true}
+                            child={"editText"}
                         />
                     </Col>
                     <Row>
+                        <Col sm={8} style={{ paddingLeft: "0" }}>
                         <Field
-                            name="birth"
-                            showTime={false}
-                            component={this.renderDateTimePicker}
+                            name="birthdate"
+                            component={FormInput}
                             required={true}
+                            child={"dateTimePicker"}
                         />
+                        </Col>
+                        <Col sm={4} style={{ paddingRight: "0" }}>
                         <Button
-                            className="signUpButton"
+                            style={{ float: "right" }}
                             type="submit"
                             value="Submit"
                             disabled={submitting}>
                             Create account
                         </Button>
+                        </Col>
                     </Row>
                     <Row>
                         {error && <strong>{error}</strong>}
@@ -185,45 +159,9 @@ class SignUpUserFormContainer extends Component {
     }
 }
 
-//FLYTTA VALIDATE, WARN, RENDERFIELD OSV TILL CONSTANTS.
-// IMPORTERA DESSA SEDAN TILL BÅDE SIGNUPUSERFORM OCH SIGNUPCOMPANYFORM
-
-const validate = values => {
-    const errors = {};
-    if (!values.username) {
-        errors.username = 'Required'
-    } else if (values.username.length > 15) {
-        errors.username = 'Must be 15 characters or less'
-    }
-    if (!values.email) {
-        errors.email = 'Required'
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = 'Invalid email address'
-    }
-    if (!values.age) {
-        errors.age = 'Required'
-    } else if (isNaN(Number(values.age))) {
-        errors.age = 'Must be a number'
-    } else if (Number(values.age) < 18) {
-        errors.age = 'Sorry, you must be at least 18 years old'
-    }
-    return errors
-};
-
-const warn = values => {
-    const warnings = {};
-    if (values.age < 19) {
-        warnings.age = 'Hmm, you seem a bit young...'
-    }
-    return warnings
-};
-
-// Decorate with reduxForm(). It will read the initialValues prop provided by connect()
 SignUpUserFormContainer = reduxForm({
     form: 'signIn',
-    validate: signUpValidate, // <--- validation function given to redux-form
-    //asyncBlurFields: ['email'],
-    //warn // <--- warning function given to redux-form // a unique identifier for this form
+    validate: signUpValidate,
 })(SignUpUserFormContainer);
 
 const mapStateToProps = (state) => ({
@@ -234,16 +172,7 @@ const mapDispatchToProps = {
     signUpUser: userActions.signUpUser,
 };
 
-
-// You have to connect() to any reducers that you wish to connect to yourself
 export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(SignUpUserFormContainer);
-
-
-/*export default reduxForm({
- form: 'signIn',
- validate, // <--- validation function given to redux-form
- warn // <--- warning function given to redux-form
- })(SignUpFormContainer);*/

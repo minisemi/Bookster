@@ -7,15 +7,6 @@
     margin-right: 12px;
 }
 
-.datePicker {
-    float: left;
-    width: 60%;
-}
-
-.hiddenAlert{
-    display: none;
-}
-
-.signUpButton {
-    float:right;
+.datePicker div:first-child{
+    border-color: #a94442;
 }

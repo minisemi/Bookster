@@ -35,8 +35,8 @@ module.exports = function (passport){
             connection.query("select * from users where email = ?",[email], function(err,rows){
                 if (err)
                     return done(err);
-                if (rows.length) {
-                    return done(null, false, { message: 'User already exists'});
+                else if (rows.length) {
+                    return done(null, false, { email: 'User already exists'});
                 } else {
                     var firstName = req.body.firstName,
                         surName = req.body.surName,

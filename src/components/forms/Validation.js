@@ -50,11 +50,11 @@ export function CheckNotEmpty(str){
 
 
 
-export function CheckEmail(email){
+/*export function CheckEmail(email){
     let regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
     return (email.match(regex))
-}
+}*/
 
 
  /*Sets feedback to user based on what field is filled in (context.target.name)
@@ -119,47 +119,65 @@ export function checkRepeated(context, formValid, value, name){
     }
 }
 
-export function CheckPassword(password, errors){
-    let passwordError = errors;
+function CheckFirstName(firstName, errors){
+    if (!firstName) {
+        errors.firstName = "Required";
+    } else if (firstName.length > 15) {
+        errors.firstName = 'Must be 15 characters or less'
+    }
+}
+
+function CheckSurName(surName, errors){
+    if (!surName) {
+        errors.surName = 'Required'
+    } else if (surName.length > 15) {
+        errors.surName = 'Must be 15 characters or less'
+    }
+}
+
+function CheckEmail(email, errors){
+    if (!email) {
+        errors.email = "Required";
+    } else {
+        if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+            errors.email = 'Invalid email address';
+        }
+    }
+}
+
+function CheckPassword(password, errors){
     if (!password) {
-        passwordError = 'Required';
-        return passwordError;
+        errors.passw = "Required";
     } else {
         // checkPassword(password, Auth.getToken());
         let regex = /(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[^a-zA-Z]).{6,}$/;
 
-        if (password.length > 5 && password.match(regex)) {
-            passwordError = 'Password must be at least 6 characters and contain upper/lower case letters and numbers'
-            return passwordError;
+        if (password.length < 6 || !password.match(regex)) {
+            errors.passw = 'Password must be at least 6 characters and contain upper/lower case letters and numbers';
         }
+    }
+}
+
+function CheckRepeatPassword(values, errors){
+    if (!errors.passw && values.passw !== values.repeatPassw) {
+        errors.repeatPassw = "Repeated password does not match";
+    }
+}
+
+function CheckBirthdate(birthdate, errors){
+    if (!birthdate) {
+        errors.birthdate = 'Required'
     }
 }
 
 export function signUpValidate (values) {
     const errors = {};
-    if (!values.firstName) {
-        errors.firstName = 'Required'
-    } else if (values.firstName.length > 15) {
-        errors.firstName = 'Must be 15 characters or less'
-    }
-    if (!values.surName) {
-        errors.surName = 'Required'
-    } else if (values.surName.length > 15) {
-        errors.surName = 'Must be 15 characters or less'
-    }
-    if (!values.email) {
-        errors.email = 'Required'
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = 'Invalid email address'
-    }
-    errors.passw = CheckPassword(values.passw, errors.passw);
-    /*if (!values.age) {
-        errors.age = 'Required'
-    } else if (isNaN(Number(values.age))) {
-        errors.age = 'Must be a number'
-    } else if (Number(values.age) < 18) {
-        errors.age = 'Sorry, you must be at least 18 years old'
-    }*/
+    CheckFirstName(values.firstName, errors);
+    CheckSurName(values.surName, errors);
+    CheckEmail(values.email, errors);
+    CheckPassword(values.passw, errors);
+    CheckRepeatPassword(values, errors);
+    CheckBirthdate(values.birthdate, errors);
     console.log(errors);
     return errors
-};
+}
