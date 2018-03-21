@@ -330,18 +330,23 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
 
-
 TODO: "HASH PASSWORD"
 app.post('/auth/signup', function(req, res, next) {
     passport.authenticate('local-signup', function(err, user, info) {
         if (err) {
             return next(err); }
-        if (!user) {
-            return res.json(info)};
-        return res.json(info);
+        else if (!user) {
+            let err = new Error('A user with that email already exists');
+            err.status = 422;
+            next(err);
+        } else {
+            return res.json(info)
+        }
     })(req, res, next);
 });
 
+
+// Lägg till så att signin skicakr tillbaka error ist för response vid fel inlogg
 app.post('/auth/signin', function(req, res, next) {
     passport.authenticate('local-login', function(err, user, info) {
         if (err) {
@@ -357,6 +362,12 @@ app.get('/auth/auth',passport.authenticate('jwt', { session: false}),
         res.json({message: "Success! You can not see this without a token"});
     }
 );
+
+app.use(function(err, req, res, next) {
+  console.error(err.message); // Log error message in our server's console
+  if (!err.status) err.status = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'
+  res.status(err.status).send(err.message); // All HTTP requests must have a response, so let's send back an error with its status code and message
+});
 
 app.listen(3333);
 console.log('Listening on localhost:3333');

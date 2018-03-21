@@ -53,6 +53,7 @@ function logInUser(form){
         email: form.email,
         password: form.password
     }).then(response =>{
+        console.log(response.data);
         var loggedIn = response.data.message
         var token = response.data.token
         if (loggedIn==='signedIn' && token!=null){

@@ -91,8 +91,8 @@ class BookingCalender extends Component {
 
         let context = this;
         //For unbooked events
-        let startDate = new Date(event.start).toDateString();;
-        let endDate = new Date(event.end).toDateString();;
+        let startDate = new Date(event.start).toDateString();
+        let endDate = new Date(event.end).toDateString();
         let startTime = new Date(event.start).toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
         let endTime = new Date(event.end).toLocaleTimeString('en-GB',{hour:'2-digit', minute:'2-digit'});
         if (event.bookedBy === null){

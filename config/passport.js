@@ -1,4 +1,4 @@
-    var passport = require('passport')
+var passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 var mysql = require('mysql');
 var connection = mysql.createConnection(require('./database').connection);
@@ -36,20 +36,36 @@ module.exports = function (passport){
                 if (err)
                     return done(err);
                 else if (rows.length) {
-                    return done(null, false, { email: 'User already exists'});
+                    return done(null, false, null);
                 } else {
-                    var firstName = req.body.firstName,
+                    const firstName = req.body.firstName,
                         surName = req.body.surName,
                         birth = req.body.birth;
 
                     //If user does not exist, create new
+                    console.log("no user, so create new");
 
-                    var insertQuery = "INSERT INTO users (email, firstName, familyName, password, birth) values (?,?,?,?,?)";
+                    const insertQuery = "INSERT INTO users (email, firstName, familyName, password, birth) values (?,?,?,?,?)";
+                    connection.query(insertQuery, [email, firstName, surName, password, birth],function(err1,rows1){
+                        if (err1)
+                            return done(err1);
+                        console.log("new user created");
+                        const idQuery = "SELECT * FROM users WHERE email = ?";
+                    console.log(email);
 
-                    connection.query(insertQuery, [email, firstName, surName, password, birth],function(err,rows){
 
 
-                        return done(null, email, { message: 'Signed up!' });
+                        //return done(null, email, { message: 'Signed up!' });
+
+                        connection.query(idQuery, [email], function (err2,rows2) {
+                            if (err2)
+                                return done(err2);
+                            console.log("fetching new user");
+                            console.log(rows2);
+                            let payload = { email };
+                            let token = jwt.sign(payload, parameters.secretOrKey);
+                            return done(null, email, { token: token, id: rows2[0].id });
+                        })
                     });
                 }
             });

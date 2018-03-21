@@ -181,3 +181,11 @@ export function signUpValidate (values) {
     console.log(errors);
     return errors
 }
+
+export function loginValidate (values) {
+    const errors = {};
+    CheckEmail(values.email, errors);
+    CheckPassword(values.passw, errors);
+    console.log(errors);
+    return errors
+}

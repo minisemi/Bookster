@@ -13,73 +13,26 @@ var timeout= null;
 
 class SignUpUserFormContainer extends Component {
 
-    static propTypes = {
-        signUpUser: PropTypes.func.isRequired,
-        bookable: PropTypes.object,
-    };
-
     constructor(props){
         super(props);
-        this.state = {
-            formValues: {},
-            formValidation:{},
-            message: "",
-            visibility:"hiddenAlert",
-            buttonEnabled:true
-        }
+        this.state = {}
     }
 
-    /*handleChange(event){
-     event.preventDefault();
-     let formValues = this.state.formValues;
-     let name = event.target.name;
-     let value = event.target.value;
-     formValues[name] = value;
-     this.setState({formValues}, "")
-     }*/
-
-    /*instantCheck(event){
-     event.persist();
-     this.handleChange(event);
-     clearTimeout(timeout);
-     timeout = setTimeout(Validation.feedback, 500,this, event);
-     }*/
-
-    /*handler(e) {
-     e.preventDefault()
-     this.setState({
-     })
-     }*/
-
-
-    renderField ({input, label, type, meta: {touched, error, warning}}) {
-        return (
-            <div>
-                <label>{label}</label>
-                <div>
-                    <input {...input} placeholder={label} type={type} />
-                    {touched &&
-                    ((error && <span>{error}</span>) ||
-                    (warning && <span>{warning}</span>))}
-                </div>
-            </div>
-        )};
-
-
-    renderFormControl = (field) => (
-        <FormGroup controlId={field.name}>
-            <FormControl {...field.input} placeholder={field.placeholder} type={field.type} name={field.name} value={field.input.value}/>
-            <FormControl.Feedback />
-        </FormGroup>
-    );
+    normalizeDate = (value) => {
+        if (!value) {
+            return value
+        }
+        const month = (value.getMonth()+1<10) ? "0"+String(value.getMonth()+1) : String(value.getMonth()+1);
+        const date = (value.getDate()<10) ? "0"+String(value.getDate()) : String(value.getDate());
+        return String(value.getFullYear())+"-"+month+"-"+date;
+    };
 
     render() {
         const {error, handleSubmit, pristine, reset, submitting} = this.props;
-        console.log("error");
+        console.log("error2");
         console.log(error);
         return (
-            <div>
-                <Form horizontal className="form" onSubmit={ handleSubmit(this.props.signUpUser)}>
+                <Form horizontal className="form" onSubmit={ handleSubmit(userActions.signUpUser)}>
                     <Col sm={6}>
                         <Field
                             name="firstName"
@@ -132,44 +85,41 @@ class SignUpUserFormContainer extends Component {
                     </Col>
                     <Row>
                         <Col sm={8} style={{ paddingLeft: "0" }}>
-                        <Field
-                            name="birthdate"
-                            component={FormInput}
-                            required={true}
-                            child={"dateTimePicker"}
-                        />
+                            <Field
+                                name="birthdate"
+                                component={FormInput}
+                                required={true}
+                                child={"dateTimePicker"}
+                                normalize={this.normalizeDate}
+                            />
                         </Col>
                         <Col sm={4} style={{ paddingRight: "0" }}>
-                        <Button
-                            style={{ float: "right" }}
-                            type="submit"
-                            value="Submit"
-                            disabled={submitting}>
-                            Create account
-                        </Button>
+                            <Button
+                                style={{ float: "right" }}
+                                type="submit"
+                                value="Submit"
+                                disabled={submitting}>
+                                Create account
+                            </Button>
                         </Col>
                     </Row>
                     <Row>
-                        {error && <strong>{error}</strong>}
-                        <Alert className={`formAlert ${this.state.visibility}`} > {this.state.message}</Alert>
+                        {error ? <Alert bsStyle="danger" style={{ marginTop: "10px" }}> {error}</Alert> : null}
                     </Row>
                 </Form>
-            </div>
         );
     }
 }
 
 SignUpUserFormContainer = reduxForm({
-    form: 'signIn',
+    form: 'signup',
     validate: signUpValidate,
 })(SignUpUserFormContainer);
 
 const mapStateToProps = (state) => ({
-    company: state.user.company,
 });
 
 const mapDispatchToProps = {
-    signUpUser: userActions.signUpUser,
 };
 
 export default connect(
