@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import '../static/BookingsSearch.css';
+import '../../static/BookingsSearch.css';
 import Autosuggest from 'react-autosuggest';
 //import match from 'autosuggest-highlight/match';
 //import parse from 'autosuggest-highlight/parse';
-import { getServerSuggestions } from '../utils/bookster-api';
+import { getServerSuggestions } from '../../utils/bookster-api';
 import { browserHistory } from 'react-router';
 
 

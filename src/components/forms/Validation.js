@@ -140,26 +140,26 @@ function CheckEmail(email, errors){
         errors.email = "Required";
     } else {
         if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-            errors.email = 'Invalid email address';
+            errors.email = 'Invalid email address format';
         }
     }
 }
 
 function CheckPassword(password, errors){
     if (!password) {
-        errors.passw = "Required";
+        errors.password = "Required";
     } else {
         // checkPassword(password, Auth.getToken());
         let regex = /(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[^a-zA-Z]).{6,}$/;
 
         if (password.length < 6 || !password.match(regex)) {
-            errors.passw = 'Password must be at least 6 characters and contain upper/lower case letters and numbers';
+            errors.password = 'Password must be at least 6 characters and contain upper/lower case letters and numbers';
         }
     }
 }
 
 function CheckRepeatPassword(values, errors){
-    if (!errors.passw && values.passw !== values.repeatPassw) {
+    if (!errors.password && values.password !== values.repeatPassw) {
         errors.repeatPassw = "Repeated password does not match";
     }
 }
@@ -175,17 +175,15 @@ export function signUpValidate (values) {
     CheckFirstName(values.firstName, errors);
     CheckSurName(values.surName, errors);
     CheckEmail(values.email, errors);
-    CheckPassword(values.passw, errors);
+    CheckPassword(values.password, errors);
     CheckRepeatPassword(values, errors);
     CheckBirthdate(values.birthdate, errors);
-    console.log(errors);
     return errors
 }
 
 export function loginValidate (values) {
     const errors = {};
     CheckEmail(values.email, errors);
-    CheckPassword(values.passw, errors);
-    console.log(errors);
+    CheckPassword(values.password, errors);
     return errors
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../static/HomePageContainer.css';
 import {Grid, Row} from 'react-bootstrap';
-import BookingsSlideBar from '../components/BookingsSlidebar';
+import BookingsSlideBar from '../components/bookables/BookingsSlidebar';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bookablesActions } from '../data/bookables';

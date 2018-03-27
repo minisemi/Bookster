@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../static/BookablePage.css';
 import NotFoundPage from '../components/layout/NotFoundPage';
-import BookingSlidebar from '../components/BookingsSlidebar';
+import BookingSlidebar from '../components/bookables/BookingsSlidebar';
 import PropTypes from 'prop-types';
 import { bookablesActions } from '../data/bookables';
 import { companyActions } from '../data/company';

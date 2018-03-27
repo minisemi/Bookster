@@ -26,7 +26,7 @@ module.exports = function (passport){
 
     passport.use('local-signup', new LocalStrategy({
             usernameField: 'email',
-            passwordField: 'passw',
+            passwordField: 'password',
             passReqToCallback: true
         },
         function(req, email, password, done) {
@@ -41,27 +41,14 @@ module.exports = function (passport){
                     const firstName = req.body.firstName,
                         surName = req.body.surName,
                         birth = req.body.birth;
-
-                    //If user does not exist, create new
-                    console.log("no user, so create new");
-
                     const insertQuery = "INSERT INTO users (email, firstName, familyName, password, birth) values (?,?,?,?,?)";
                     connection.query(insertQuery, [email, firstName, surName, password, birth],function(err1,rows1){
                         if (err1)
                             return done(err1);
-                        console.log("new user created");
-                        const idQuery = "SELECT * FROM users WHERE email = ?";
-                    console.log(email);
-
-
-
-                        //return done(null, email, { message: 'Signed up!' });
-
+                        const idQuery = "SELECT id FROM users WHERE email = ?";
                         connection.query(idQuery, [email], function (err2,rows2) {
                             if (err2)
                                 return done(err2);
-                            console.log("fetching new user");
-                            console.log(rows2);
                             let payload = { email };
                             let token = jwt.sign(payload, parameters.secretOrKey);
                             return done(null, email, { token: token, id: rows2[0].id });
@@ -70,7 +57,7 @@ module.exports = function (passport){
                 }
             });
         }
-    ))
+    ));
 
     passport.use('local-login', new LocalStrategy({
             usernameField: 'email',
@@ -83,14 +70,14 @@ module.exports = function (passport){
                 if (err)
                     return done(err);
                 if (!rows.length || rows[0].password != password)
-                    return done (null, false, {message: 'notSignedIn'});
+                    return done (null, false, null);
                 let payload = {email: rows[0].email};
                 let token = jwt.sign(payload, parameters.secretOrKey)
-                return done(null, rows[0], {message: 'signedIn', token: token, id: rows[0].id});
+                return done(null, rows[0], { token: token, id: rows[0].id});
             })
         }
         )
-    )
+    );
 
     //Function to check if token is valid, only used during development
     passport.use(new JWTStrategy (parameters, function(payload, done) {
@@ -110,4 +97,4 @@ module.exports = function (passport){
         }
     ))
 
-}
+};

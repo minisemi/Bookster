@@ -5,14 +5,14 @@ class Auth {
     static authenticateUser(token, email, userId) {
         cookie.set('token', token);
         cookie.set('email', email);
-        cookie.set('userId', userId)
+        cookie.set('userId', userId);
     }
 
     static switchCred(token, email){
-        cookie.remove('token')
-        cookie.remove('email')
-        let userId = cookie.get('userId')
-        cookie.remove('userId')
+        cookie.remove('token');
+        cookie.remove('email');
+        let userId = cookie.get('userId');
+        cookie.remove('userId');
         this.authenticateUser(token, email, userId);
     }
 
@@ -21,13 +21,12 @@ class Auth {
     }
 
     static deauthenticateUser() {
-        cookie.remove("token")
-        cookie.remove('userId')
+        cookie.remove("token");
+        cookie.remove('userId');
     }
 
     static getToken() {
         return cookie.get('token');
-        //return localStorage.getItem('token');
     }
 
     static getEmail(){
@@ -36,6 +35,13 @@ class Auth {
 
     static getUserId(){
         return cookie.get("userId");
+    }
+
+    static getUser(){
+        return this.checkIfAuthenticated() ?
+            { id: cookie.get("userId"), email: cookie.get("email"), token: cookie.get("token") }
+            :
+            undefined;
     }
 
 }

@@ -346,13 +346,17 @@ app.post('/auth/signup', function(req, res, next) {
 });
 
 
-// Lägg till så att signin skicakr tillbaka error ist för response vid fel inlogg
 app.post('/auth/signin', function(req, res, next) {
     passport.authenticate('local-login', function(err, user, info) {
         if (err) {
-            return next(err);
+            return next(err); }
+        else if (!user) {
+            let err = new Error('Incorrect email or password');
+            err.status = 403;
+            next(err);
+        } else {
+            return res.json(info)
         }
-        return res.json(info);
     })(req, res, next);
 });
 

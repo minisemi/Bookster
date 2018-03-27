@@ -6,7 +6,7 @@ header {
   width: 100%;
   overflow: visible;
   background:url(../../public/assets/booksterheader.PNG) no-repeat;
-  background-size: 100%;
+  background-size: cover;
   position: relative;
   direction: ltr;
 }
@@ -48,9 +48,6 @@ margin-right: 0 !important
   color: white;
   font-size: x-large;
 }
-.noDisplay {
-  display: none;
-}
 
 .searchDisplay {
     padding-left:0;
@@ -60,9 +57,3 @@ margin-right: 0 !important
   vertical-align: middle;
   float: none;
 }
-
-.formDisplay{
-  display: block;
-}
-
-

@@ -28,11 +28,9 @@ class SignUpUserFormContainer extends Component {
     };
 
     render() {
-        const {error, handleSubmit, pristine, reset, submitting} = this.props;
-        console.log("error2");
-        console.log(error);
+        const { error, handleSubmit, pristine, reset, submitting, signUpUser } = this.props;
         return (
-                <Form horizontal className="form" onSubmit={ handleSubmit(userActions.signUpUser)}>
+                <Form horizontal className="form" onSubmit={ handleSubmit(signUpUser)}>
                     <Col sm={6}>
                         <Field
                             name="firstName"
@@ -65,7 +63,7 @@ class SignUpUserFormContainer extends Component {
                     </Col>
                     <Col sm={12}>
                         <Field
-                            name="passw"
+                            name="password"
                             component={FormInput}
                             type="password"
                             placeholder="Password"
@@ -120,6 +118,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+    signUpUser: userActions.signUpUser,
 };
 
 export default connect(
