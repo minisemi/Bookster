@@ -39,19 +39,19 @@ module.exports = function (passport){
                     return done(null, false, null);
                 } else {
                     const firstName = req.body.firstName,
-                        surName = req.body.surName,
+                        familyName = req.body.familyName,
                         birth = req.body.birth;
                     const insertQuery = "INSERT INTO users (email, firstName, familyName, password, birth) values (?,?,?,?,?)";
-                    connection.query(insertQuery, [email, firstName, surName, password, birth],function(err1,rows1){
+                    connection.query(insertQuery, [email, firstName, familyName, password, birth],function(err1,rows1){
                         if (err1)
                             return done(err1);
-                        const idQuery = "SELECT id FROM users WHERE email = ?";
+                        const idQuery = "SELECT * FROM users WHERE email = ?";
                         connection.query(idQuery, [email], function (err2,rows2) {
                             if (err2)
                                 return done(err2);
                             let payload = { email };
                             let token = jwt.sign(payload, parameters.secretOrKey);
-                            return done(null, email, { token: token, id: rows2[0].id });
+                            return done(null, email, { token: token, user: rows2[0] });
                         })
                     });
                 }
@@ -73,7 +73,7 @@ module.exports = function (passport){
                     return done (null, false, null);
                 let payload = {email: rows[0].email};
                 let token = jwt.sign(payload, parameters.secretOrKey)
-                return done(null, rows[0], { token: token, id: rows[0].id});
+                return done(null, rows[0], { token: token, user: rows[0]});
             })
         }
         )

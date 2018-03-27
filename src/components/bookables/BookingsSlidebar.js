@@ -62,8 +62,7 @@ class BookingsSlideBar extends Component {
     render() {
         let { bookables, slideBarText, title }  = this.state;
         return (
-            <div className="BookingsSlideBar">
-                <Panel>
+                <Panel className="BookingsSlideBar">
                     <Panel.Heading>
                         <Panel.Title componentClass="h3">{title}</Panel.Title>
                     </Panel.Heading>
@@ -78,7 +77,6 @@ class BookingsSlideBar extends Component {
                         </Row>
                     </Panel.Body>
                 </Panel>
-            </div>
         );
     }
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Row, Col} from 'react-bootstrap';
 import { Link } from 'react-router';
 import '../static/Nav.css';
-import LogInForm from './LogInFormContainer';
+import LogInForm from './forms/LogInFormContainer';
 import BookingsSearch from '../components/bookables/BookingsSearch';
 import PropTypes from 'prop-types';
 import { userActions } from '../data/user';
@@ -12,27 +12,26 @@ class NavContainer extends Component {
 
     static propTypes = {
         logOutUser: PropTypes.func.isRequired,
-        user: PropTypes.object,
+        loggedIn: PropTypes.bool,
     };
 
     constructor(props) {
         super(props);
         this.state = {
-          user: props.user
+          loggedIn: props.loggedIn
         };
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.user !== this.props.user) {
+        if (nextProps.loggedIn !== this.props.loggedIn) {
             this.setState({
-                user: nextProps.user
+                loggedIn: nextProps.loggedIn
             });
         }
     }
 
     render() {
-        const { user, logOutUser } = this.props;
-
+        const { loggedIn, logOutUser } = this.props;
         return (
             <div>
                 <header >
@@ -44,10 +43,10 @@ class NavContainer extends Component {
                                 </div>
                             </Link>
                         </Col>
-                        { user ?
+                        { loggedIn ?
                             <div>
                                 <Col xs={12} smOffset={1} sm={6} mdOffset={1} md={6} lg={6} className="searchDisplay">
-                                    <BookingsSearch cleared={user}/>
+                                    <BookingsSearch cleared={loggedIn}/>
                                 </Col>
                                 <Col xs={12} sm={3} md={3} lg={3} className={"searchDisplay buttons"}>
                                     <Link onClick={logOutUser} className="btn btn-danger floatRight marginRight"
@@ -70,7 +69,7 @@ class NavContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    user: state.user.user,
+    loggedIn: !!state.user.user.token,
 });
 
 const mapDispatchToProps = {

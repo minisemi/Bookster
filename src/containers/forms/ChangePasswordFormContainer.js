@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { Row, Panel, Form, FormControl, Button, FormGroup, Alert} from 'react-bootstrap';
 import '../../static/ProfilePage.css'
 import Auth from '../../Auth'
-import Validation from '../../Validation'
+import Validation from '../../utils/Validation'
 import {changePassword} from '../../utils/auth-api'
 
 var timeout = null;
 
-export default class AccountBar extends Component {
-    constructor (){
-        super()
+export default class ChangePasswordFormContainer extends Component {
+    constructor (props){
+        super(props)
         this.state={formValues:
             {
                 oldPassword: "",

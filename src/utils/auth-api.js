@@ -3,14 +3,14 @@ import {SubmissionError} from 'redux-form'
 
 const BASE_URL = 'http://localhost:3333/auth';
 
-export { changePassword};
+export { changePassword };
 
 /*function signUpUser(formValues){
     const url = `${BASE_URL}/signup`;
     return axios.post(url,{
         email: formValues.email.toString(),
         firstName: formValues.firstName.toString(),
-        surName: formValues.surName.toString(),
+        familyName: formValues.familyName.toString(),
         password: formValues.password.toString(),
         birth: formValues.birth.toString()
     }).then(response => response.data.message)

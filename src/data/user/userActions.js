@@ -1,13 +1,13 @@
 import axios from 'axios';
 import {SubmissionError} from 'redux-form'
 const BASE_URL = 'http://localhost:3333/auth';
-export const LOG_IN_USER = 'LOG_IN_USER';
 export const LOG_OUT_USER = 'LOG_OUT_USER';
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
+export const SET_USER = 'SET_USER';
 import Auth from '../../Auth'
 import {browserHistory} from 'react-router';
 import {updateToken} from '../../utils/bookster-api'
-import {loginValidate} from '../../components/forms/Validation';
+import {loginValidate} from '../../utils/Validation';
 import _isEmpty from 'lodash/isEmpty';
 
 export function signUpUser(formValues) {
@@ -17,11 +17,11 @@ export function signUpUser(formValues) {
         return axios.post(url, {
             email: formValues.email.toString(),
             firstName: formValues.firstName.toString(),
-            surName: formValues.surName.toString(),
+            familyName: formValues.familyName.toString(),
             password: formValues.password.toString(),
-            birth: formValues.birthdate.toString()
+            birth: formValues.birth.toString()
         }).then(response => {
-            finalizeLogin(dispatch, { ...response.data, email: formValues.email })
+            finalizeLogin(dispatch, { token: response.data.token, data: response.data.user })
         }).catch(error => {
             const response = error.response || {};
             if (response.status === 422) {
@@ -45,7 +45,7 @@ export function logInUser(form){
                 email: form.email,
                 password: form.password
             }).then(response => {
-                finalizeLogin(dispatch, { ...response.data, email: form.email });
+                finalizeLogin(dispatch, { token: response.data.token, data: response.data.user });
             }).catch(function (error) {
                 const response = error.response || {};
                 if(response.status === 403) {
@@ -69,10 +69,10 @@ export function logOutUser(){
 }
 
 function finalizeLogin(dispatch, user) {
-    Auth.authenticateUser(user.token, user.email, user.id)
+    Auth.authenticateUser(user.token, user.data.email, user.data.id)
     updateToken();
     dispatch({
-        type: LOG_IN_USER,
+        type: SET_USER,
         payload: user
     });
     browserHistory.push('/');
@@ -94,6 +94,47 @@ export function changePassword(oldPassword, newPassword, token) {
             })
         }).catch(function (error) {
             console.log(error);
+        });
+    }
+}
+
+export function updateUserInfo (formValues){
+    return (dispatch, getState) => {
+        const url = `${BASE_URL}/api/update_user`;
+        return axios.post(url,formValues).then(response => {
+            dispatch({
+                type: SET_USER,
+                payload: response.data.user
+            })
+        }).catch(function (error) {
+            const response = error.response || {};
+            if(response.status === 403) {
+                throw new SubmissionError({ _error: error.response.data })
+            } else {
+                throw new SubmissionError({ _error: 'Error logging in. Please contact customer support.' })
+            }
+        });
+    }
+}
+
+export function getUserInfo (){
+    return (dispatch, getState) => {
+        const url = `${BASE_URL}/api/get_user`;
+        return axios.get(url,
+            {headers:{
+                Authorization: `JWT ${Auth.getToken()}`
+            }}).then(response => {
+            dispatch({
+                type: SET_USER,
+                payload: response.data.user
+            })
+        }).catch(function (error) {
+            const response = error.response || {};
+            if(response.status === 403) {
+                throw new SubmissionError({ _error: error.response.data })
+            } else {
+                throw new SubmissionError({ _error: 'Error logging in. Please contact customer support.' })
+            }
         });
     }
 }

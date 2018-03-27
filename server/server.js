@@ -17,6 +17,8 @@ const path = require('path');
 var flash = require('connect-flash');
 var moment = require('moment');
 
+// IMPLEMENT A CHECK THAT THE TOKEN SENT WITH EVERY REQUEST BELONGS TO THE USER
+
 moment().format();
 
 var conf = require('../config/jwt')
@@ -25,7 +27,6 @@ app.use(express.static(path.join(__dirname, 'assets')));
 
 //JWT function tat decodes tokens of format "Bearer [token]" with specified key
 const authenticate = jwt({secret : conf.jwtSecret});
-
 
 require('./../config/passport')(passport);
 

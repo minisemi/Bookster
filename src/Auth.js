@@ -39,9 +39,9 @@ class Auth {
 
     static getUser(){
         return this.checkIfAuthenticated() ?
-            { id: cookie.get("userId"), email: cookie.get("email"), token: cookie.get("token") }
+            { token: cookie.get("token") }
             :
-            undefined;
+            {};
     }
 
 }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {Form, Button} from 'react-bootstrap';
-import Modal from '../components/layout/MessageModal'
-import { userActions } from '../data/user';
+import Modal from '../../components/layout/MessageModal'
+import { userActions } from '../../data/user';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
-import FormInput  from '../components/forms/FormInput';
+import FormInput  from '../../components/forms/FormInput';
 
 class LogInFormContainer extends Component {
     constructor(props){

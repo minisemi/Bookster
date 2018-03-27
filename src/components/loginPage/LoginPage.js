@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CarouselShower from './CarouselShower';
-import SignUpForm from '../../containers/SignUpUserFormContainer'
+import SignUpForm from '../../containers/forms/SignUpUserFormContainer'
 import {Row, Col} from 'react-bootstrap';
 import '../../static/Login.css'
 

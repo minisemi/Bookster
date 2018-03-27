@@ -6,7 +6,7 @@ import BookablePageContainer from './containers/BookablePageContainer';
 import Layout from './components/layout/Layout'
 import CompanyPageContainer from './containers/CompanyPageContainer';
 import NotFoundPage from './components/layout/NotFoundPage';
-import ProfilePage from './components/profilePage/ProfilePage'
+import ProfilePage from './containers/ProfilePageContainer'
 import Auth from './Auth';
 
 let checkAuth = function(location, callback, component){
