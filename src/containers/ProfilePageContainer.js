@@ -5,12 +5,9 @@ import { Panel } from 'react-bootstrap';
 import UserInfoFormContainer from './forms/UserInfoFormContainer';
 import ChangePasswordFormContainer from './forms/ChangePasswordFormContainer'
 
-
-
 export default class ProfilePageContainer extends Component {
 
     render() {
-
         return (
             <div className="profilePage">
                 <Row >
@@ -25,7 +22,14 @@ export default class ProfilePageContainer extends Component {
                         </Panel>
                     </Col>
                     <Col xs={12} sm={12} md={6} lg={6}>
-                        <ChangePasswordFormContainer/>
+                        <Panel>
+                            <Panel.Heading>
+                                <Panel.Title componentClass="h3">Change password</Panel.Title>
+                            </Panel.Heading>
+                            <Panel.Body>
+                                <ChangePasswordFormContainer/>
+                            </Panel.Body>
+                        </Panel>
                     </Col>
                 </Row>
             </div>

@@ -47,15 +47,15 @@ function CheckEmail(email, errors){
     }
 }
 
-function CheckPassword(password, errors){
+function CheckPassword(password, errors, name){
     if (!password) {
-        errors.password = "Required";
+        errors[name] = "Required";
     } else {
         // checkPassword(password, Auth.getToken());
         let regex = /(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[^a-zA-Z]).{6,}$/;
 
         if (password.length < 6 || !password.match(regex)) {
-            errors.password = 'Password must be at least 6 characters and contain upper/lower case letters and numbers';
+            errors[name] = 'Password must be at least 6 characters and contain upper/lower case letters and numbers';
         }
     }
 }
@@ -77,7 +77,7 @@ export function signUpValidate (values) {
     CheckFirstName(values.firstName, errors);
     CheckSurName(values.familyName, errors);
     CheckEmail(values.email, errors);
-    CheckPassword(values.password, errors);
+    CheckPassword(values.password, errors, "password");
     CheckRepeatPassword(values, errors);
     CheckBirthdate(values.birth, errors);
     return errors
@@ -86,6 +86,14 @@ export function signUpValidate (values) {
 export function loginValidate (values) {
     const errors = {};
     CheckEmail(values.email, errors);
-    CheckPassword(values.password, errors);
+    CheckPassword(values.password, errors, "password");
+    return errors
+}
+
+export function changePasswordValidate (values) {
+    const errors = {};
+    CheckPassword(values.password, errors, "password");
+    CheckPassword(values.oldPassword, errors, "oldPassword");
+    CheckRepeatPassword(values, errors);
     return errors
 }

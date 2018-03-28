@@ -7,12 +7,11 @@ export const GET_BOOKABLE = 'GET_BOOKABLE';
 export const ADD_FAVOURITE = 'ADD_FAVOURITE';
 export const DELETE_FAVOURITE = 'DELETE_FAVOURITE';
 export const GET_COMPANY_BOOKABLES = 'GET_COMPANY_BOOKABLES';
-const id = "a.ulander@live.se";
-const userID = 4;
+import Auth from '../../Auth'
 
 export function getCurrentBookings() {
     return (dispatch, getState) => {
-        const url = `${BASE_URL}/api/users/${id}/current`;
+        const url = `${BASE_URL}/api/users/${Auth.getEmail()}/current`;
         axios.get(url).then(response => {
             dispatch({
                 type: GET_CURRENT_BOOKINGS,
@@ -26,7 +25,7 @@ export function getCurrentBookings() {
 
 export function getFavourites() {
     return (dispatch, getState) => {
-        const url = `${BASE_URL}/api/users/${id}/favourites`;
+        const url = `${BASE_URL}/api/users/${Auth.getEmail()}/favourites`;
         axios.get(url).then(response => {
             dispatch({
                 type: GET_FAVOURITES,
@@ -42,7 +41,7 @@ export function addFavourite(bookableID, companyID){
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/addFavourite`;
         axios.post(url,{
-            user: userID,
+            user: Auth.getUserId(),
             bookable: bookableID,
             company:companyID
         }).then(response => {
@@ -70,7 +69,7 @@ export function deleteFavourite(bookableID, companyID){
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/deleteFavourite`;
         axios.post(url,{
-            user: userID,
+            user: Auth.getUserId(),
             bookable: bookableID,
             company:companyID
         }).then(response => {
@@ -96,7 +95,7 @@ export function deleteFavourite(bookableID, companyID){
 
 export function getRecommendations() {
     return (dispatch, getState) => {
-        const url = `${BASE_URL}/api/users/${id}/recommendations`;
+        const url = `${BASE_URL}/api/users/${Auth.getEmail()}/recommendations`;
         axios.get(url).then(response => {
             dispatch({
                 type: GET_RECOMMENDATIONS,
@@ -124,7 +123,7 @@ export function getCompanyBookables(id){
 
 export function getBookable(compId, bookId) {
     return (dispatch, getState) => {
-        const url = `${BASE_URL}/api/companies/${compId}/bookables/${bookId}/${userID}`;
+        const url = `${BASE_URL}/api/companies/${compId}/bookables/${bookId}/${Auth.getUserId()}`;
         axios.get(url).then(response => {
             dispatch({
                 type: GET_BOOKABLE,

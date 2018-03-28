@@ -1,9 +1,9 @@
 import axios from 'axios';
 import {SubmissionError} from 'redux-form'
-const BASE_URL = 'http://localhost:3333/auth';
+const BASE_URL = 'http://localhost:3333';
 export const LOG_OUT_USER = 'LOG_OUT_USER';
-export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const SET_USER = 'SET_USER';
+export const SET_USER_INFO_MESSAGE = 'SET_USER_INFO_MESSAGE';
 import Auth from '../../Auth'
 import {browserHistory} from 'react-router';
 import {updateToken} from '../../utils/bookster-api'
@@ -12,8 +12,7 @@ import _isEmpty from 'lodash/isEmpty';
 
 export function signUpUser(formValues) {
     return (dispatch, getState) => {
-        console.log(formValues);
-        const url = `${BASE_URL}/signup`;
+        const url = `${BASE_URL}/auth/signup`;
         return axios.post(url, {
             email: formValues.email.toString(),
             firstName: formValues.firstName.toString(),
@@ -40,7 +39,7 @@ export function logInUser(form){
             throw new SubmissionError({ _error: validationErrors.email || validationErrors.password })
         } else {
 
-            const url = `${BASE_URL}/signin`;
+            const url = `${BASE_URL}/auth/signin`;
             return axios.post(url,{
                 email: form.email,
                 password: form.password
@@ -78,40 +77,53 @@ function finalizeLogin(dispatch, user) {
     browserHistory.push('/');
 }
 
-export function changePassword(oldPassword, newPassword, token) {
+export function changePassword(formValues) {
     return (dispatch, getState) => {
-        const url = `${BASE_URL}/change_pw`;
-        axios.post(url, {
-                oldPassword: oldPassword,
-                newPassword: newPassword
+        const url = `${BASE_URL}/auth/change_pw`;
+        return axios.post(url, {
+                oldPassword: formValues.oldPassword,
+                newPassword: formValues.password
             },
             {
-                headers: {Authorization: `Bearer ${token}`}
+                headers: {Authorization: `Bearer ${getState().user.user.token}`}
             }).then(response => {
-            dispatch({
-                type: CHANGE_PASSWORD,
-                payload: response.data
-            })
+                console.log(response.data);
         }).catch(function (error) {
-            console.log(error);
+            console.log(error.response);
+            const response = error.response || {};
+            if(response.status === 403) {
+                console.log("403");
+                throw new SubmissionError({ oldPassword: error.response.data })
+            } else {
+                throw new SubmissionError({ _error: 'Error updating password. Please contact customer support.' })
+            }
         });
     }
 }
 
 export function updateUserInfo (formValues){
     return (dispatch, getState) => {
+        dispatch({
+                type: SET_USER_INFO_MESSAGE,
+                payload: undefined
+            });
         const url = `${BASE_URL}/api/update_user`;
         return axios.post(url,formValues).then(response => {
+            Auth.authenticateUser(response.data.token, response.data.data.email);
             dispatch({
                 type: SET_USER,
-                payload: response.data.user
+                payload: response.data
+            });
+            dispatch({
+                type: SET_USER_INFO_MESSAGE,
+                payload: { type: "success", message: "Update successful!" }
             })
         }).catch(function (error) {
             const response = error.response || {};
-            if(response.status === 403) {
+            if(response.status === 422) {
                 throw new SubmissionError({ _error: error.response.data })
             } else {
-                throw new SubmissionError({ _error: 'Error logging in. Please contact customer support.' })
+                throw new SubmissionError({ _error: 'Error updating user info. Please contact customer support.' })
             }
         });
     }
@@ -120,21 +132,20 @@ export function updateUserInfo (formValues){
 export function getUserInfo (){
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/get_user`;
+        const token = Auth.getToken();
         return axios.get(url,
             {headers:{
-                Authorization: `JWT ${Auth.getToken()}`
+                Authorization: `JWT ${token}`
             }}).then(response => {
-            dispatch({
+            return dispatch({
                 type: SET_USER,
-                payload: response.data.user
+                payload: {token, data: response.data}
             })
         }).catch(function (error) {
-            const response = error.response || {};
-            if(response.status === 403) {
-                throw new SubmissionError({ _error: error.response.data })
-            } else {
-                throw new SubmissionError({ _error: 'Error logging in. Please contact customer support.' })
-            }
+            return dispatch({
+                type: SET_USER_INFO_MESSAGE,
+                payload: { type: "danger", message: "Error retrieving info."}
+            })
         });
     }
 }

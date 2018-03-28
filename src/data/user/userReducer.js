@@ -1,7 +1,7 @@
 import {
     LOG_OUT_USER,
-    CHANGE_PASSWORD,
     SET_USER,
+    SET_USER_INFO_MESSAGE,
 } from './userActions';
 import Auth from '../../Auth';
 
@@ -16,15 +16,15 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 user: {}
             };
-        case CHANGE_PASSWORD:
-            return {
-                ...state,
-                currentBookings: action.payload
-            };
         case SET_USER:
             return {
                 ...state,
                 user: action.payload
+            };
+        case SET_USER_INFO_MESSAGE:
+            return {
+                ...state,
+                userInfoMessage: action.payload
             };
         default:
             return state;

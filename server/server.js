@@ -2,7 +2,7 @@
 
 'use strict';
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').load();
+    require('dotenv').load();
 }
 const express = require('express');
 const app = express();
@@ -35,6 +35,11 @@ var connection = mysql.createConnection(require('./../config/database').connecti
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+
+app.use(session({ secret: 'alexluktar' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash());
 
 
 app.get(`/api/companies/:companyAlias`,authenticate, (req,res)=> {
@@ -272,12 +277,11 @@ app.get('/api/get_user',
         let response = res.req.user;
         let user = {email: response.email, firstName:response.firstName, familyName:response.familyName,
             birth: response.birth, address: response.address}
-
-        res.json(user)
+        return res.json(user)
     }
 )
 
-app.post('/api/update_user', authenticate, function(req, res) {
+app.post('/api/update_user', authenticate, function(req, res, next) {
     var sqlQuery ='UPDATE users SET firstName=?, familyName=?, birth=?, address=?, email=? WHERE email=?',
         parameters = [req.body.firstName, req.body.familyName,
             req.body.birth, req.body.address, req.body.email, req.user.email];
@@ -286,20 +290,18 @@ app.post('/api/update_user', authenticate, function(req, res) {
         parameters, function(err, rows){
             if(err){
                 if(err.errno==1062){
-                    res.json({message: "Email already taken", token: null})
+                    let err = new Error('Email already taken');
+                    err.status = 422;
+                    next(err);
                 }else
-                    res.json({message:"error in database", token:null})
+                    return next(err);
             }
             else {
-
                 TODO: "BYT UT EMAIL MOT USER ID"
                 var token = jwtGen.sign({email: req.body.email}, conf.jwtSecret)
-                return res.json({message: "success", token: token})
-
+                return res.json({ token: token, data: req.body })
             }
         }
-
-
     );
 });
 
@@ -308,28 +310,25 @@ app.get('/image/:type/:company', authenticate, function(req, res){
 
 })
 
-app.post('/auth/change_pw', authenticate, function(req, res) {
+app.post('/auth/change_pw', authenticate, function(req, res, next) {
 
     connection.query('UPDATE users SET password=? WHERE email=? AND password=?',
         [req.body.newPassword, req.user.email, req.body.oldPassword], function(err, rows){
-            if(err){
-                return res.json("error in database")
+            if (err) {
+                return next(err); }
+            else if (rows.affectedRows == 0) {
+                let err = new Error('Wrong password');
+                err.status = 403;
+                next(err);
+            } else {
+                return res.json("Password successfully changed")
             }
-
-            if (rows.affectedRows == 0)
-                return res.json("Wrong password")
-            res.json("Password successfully changed")
-
         }
-
     );
 });
 
 
-app.use(session({ secret: 'alexluktar' })); // session secret
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash());
+
 
 TODO: "HASH PASSWORD"
 app.post('/auth/signup', function(req, res, next) {
@@ -369,9 +368,9 @@ app.get('/auth/auth',passport.authenticate('jwt', { session: false}),
 );
 
 app.use(function(err, req, res, next) {
-  console.error(err.message); // Log error message in our server's console
-  if (!err.status) err.status = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'
-  res.status(err.status).send(err.message); // All HTTP requests must have a response, so let's send back an error with its status code and message
+    console.error(err.message); // Log error message in our server's console
+    if (!err.status) err.status = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'
+    res.status(err.status).send(err.message); // All HTTP requests must have a response, so let's send back an error with its status code and message
 });
 
 app.listen(3333);

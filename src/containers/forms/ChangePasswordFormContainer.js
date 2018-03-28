@@ -1,98 +1,104 @@
 import React, { Component } from 'react';
-import { Row, Panel, Form, FormControl, Button, FormGroup, Alert} from 'react-bootstrap';
+import { Row, Col, Form, Button, Alert, ProgressBar } from 'react-bootstrap';
 import '../../static/ProfilePage.css'
-import Auth from '../../Auth'
-import Validation from '../../utils/Validation'
-import {changePassword} from '../../utils/auth-api'
+import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
+import PasswordFields  from '../../components/forms/PasswordFields';
+import FormInput  from '../../components/forms/FormInput';
+import PropTypes from 'prop-types';
+import { userActions } from '../../data/user';
+import { changePasswordValidate } from '../../utils/Validation';
 
-var timeout = null;
 
-export default class ChangePasswordFormContainer extends Component {
-    constructor (props){
-        super(props)
-        this.state={formValues:
-            {
-                oldPassword: "",
-                password: "",
-                repeatPassword:""},
-            formValidation:{
-            },
-            message:"",
-            visibility: "hiddenAlert",
-            buttonEnabled:true
+class ChangePasswordFormContainer extends Component {
+
+    static propTypes = {
+        changePassword: PropTypes.func,
+    };
+
+    constructor (props) {
+        super(props);
+        this.state = {
+            showSuccessAlert: false,
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.instantCheck = this.instantCheck.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-
-    handleChange(event){
-        let formValues = this.state.formValues;
-        let name = event.target.name;
-        let value = event.target.value;
-        formValues[name] = value;
-        this.setState({formValues, message:this.state.message});
-    }
-
-    instantCheck(event){
-        event.persist();
-        this.handleChange(event);
-        clearTimeout(timeout);
-        timeout = setTimeout(Validation.feedback, 500,this, event);
-    }
-
-
-    handleSubmit(event) {
-        event.preventDefault()
-
-        let password = this.state.formValues.password,
-            oldPassword = this.state.formValues.oldPassword,
-            formValid = this.state.formValidation;
-
-        changePassword(oldPassword, password, Auth.getToken()).then(response => {
-            this.setState({message: response});
-            if (this.state.message === "Password successfully changed") {
-                this.setState({visibility: "alert-success"})
-                this.setState(Validation.clearVals(formValid))
-            }
-            else {
-                this.setState({visibility: "alert-danger"})
-                formValid["oldPassword"] = "error"
-                this.setState(formValid)
-            }
-        })
+    componentWillReceiveProps(nextProps){
+        if(nextProps.userInfoMessage !== this.props.userInfoMessage && nextProps.userInfoMessage){
+            this.setState({
+                showSuccessAlert: true,
+            });
+        }
     }
 
     render() {
+        const { error, handleSubmit, reset, pristine, submitting, changePassword, submitSucceeded } = this.props;
+        console.log();
         return (
-            <Panel header="Account Settings" bsStyle="default">
-                <Form horizontal onSubmit={ this.handleSubmit.bind(this)}>
-                    <FormGroup validationState={this.state.formValidation.oldPassword}>
-                        <FormControl required={true} type="password" value={this.state.formValues.oldPassword} name="oldPassword"
-                                     placeholder="Old password" onChange={this.handleChange} />
-                        <FormControl.Feedback />
-                    </FormGroup>
-                    <FormGroup validationState={this.state.formValidation.password}>
-                        <FormControl type="password" value={this.state.formValues.password} name="password"
-                                     placeholder="New password" onChange={this.instantCheck}/>
-                        <FormControl.Feedback />
-                    </FormGroup>
-                    <FormGroup validationState={this.state.formValidation.repeatPassword}>
-                        <FormControl type="password" value={this.state.formValues.repeatPassword} name="repeatPassword"
-                                     placeholder="Repeat new password" onChange={this.instantCheck}/>
-                        <FormControl.Feedback />
-                    </FormGroup>
-                    <Row>
-                        <Alert className={`formAlert ${this.state.visibility}`} > {this.state.message}</Alert>
-                    </Row>
-                    <Row>
-                        <Button disabled={!this.state.buttonEnabled} type="submit" >
-                            Change password
+            <Form horizontal className="form" onSubmit={handleSubmit(changePassword)}>
+                <Col sm={12}>
+                    <Field
+                        name="oldPassword"
+                        component={FormInput}
+                        required={true}
+                        type="password"
+                        placeholder="Old password"
+                        child={"editText"}
+                    />
+                </Col>
+                <PasswordFields />
+                {submitting ?
+                    <ProgressBar active now={50} />
+                    :
+                    pristine ||
+                    <div>
+                        <Button
+                            style={{ float: "right" }}
+                            type="submit"
+                            bsStyle="success"
+                            disabled={submitting}
+                            onClick={()=>{this.setState({ showSuccessAlert: false })}}
+                        >
+                            Update
                         </Button>
-                    </Row>
-                </Form>
-            </Panel>
+                        <Button
+                            style={{ float: "right" }}
+                            disabled={submitting}
+                            bsStyle="warning"
+                            onClick={reset}
+                        >
+                            Cancel
+                        </Button>
+                    </div>
+                }
+                {error ? <Alert bsStyle="danger" style={{ marginTop: "10px" }}> {error}</Alert> : null}
+                {submitSucceeded ?
+                    <Alert bsStyle="success" style={{ marginTop: "10px" }}>
+                        Password changed!
+                    </Alert>
+                    :
+                    null
+                }
+            </Form>
         );
     }
 }
+
+ChangePasswordFormContainer = reduxForm({
+    form: 'userPassword',
+    validate: changePasswordValidate,
+})(ChangePasswordFormContainer);
+
+const mapStateToProps = (state) => ({
+});
+
+const mapDispatchToProps = {
+    changePassword: userActions.changePassword,
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ChangePasswordFormContainer);
+
+
