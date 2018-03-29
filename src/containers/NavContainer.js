@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col} from 'react-bootstrap';
+import {Row, Col, Button} from 'react-bootstrap';
 import { Link } from 'react-router';
 import '../static/Nav.css';
 import LogInForm from './forms/LogInFormContainer';
@@ -49,9 +49,9 @@ class NavContainer extends Component {
                                     <BookingsSearch cleared={loggedIn}/>
                                 </Col>
                                 <Col xs={12} sm={3} md={3} lg={3} className={"searchDisplay buttons"}>
-                                    <Link onClick={logOutUser} className="btn btn-danger floatRight marginRight"
-                                          role="button" to={"/"}> Log out
-                                    </Link>
+                                    <Button onClick={logOutUser} className="btn btn-danger floatRight marginRight">
+                                        Log out
+                                    </Button>
                                     <Link className="btn btn-info floatRight" role="button" to={"/profile"}> Profile
                                     </Link>
                                 </Col>

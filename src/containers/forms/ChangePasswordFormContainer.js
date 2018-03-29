@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Form, Button, Alert, ProgressBar } from 'react-bootstrap';
+import { Col, Form, Button, Alert, ProgressBar } from 'react-bootstrap';
 import '../../static/ProfilePage.css'
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
@@ -33,7 +33,6 @@ class ChangePasswordFormContainer extends Component {
 
     render() {
         const { error, handleSubmit, reset, pristine, submitting, changePassword, submitSucceeded } = this.props;
-        console.log();
         return (
             <Form horizontal className="form" onSubmit={handleSubmit(changePassword)}>
                 <Col sm={12}>

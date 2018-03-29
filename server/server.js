@@ -91,39 +91,63 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/:user`,authentica
 
 })
 
-app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/book`,authenticate, (req,res)=> {
-    connection.query('select bookedBy from facilitybookings where bookable=(select id from bookables where bookableAlias=?) and start=?', [req.body.bookableAlias, req.body.start], function (err, rows) {
+app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/book`,authenticate, (req,res,next)=> {
+        connection.query('select bookedBy from facilitybookings where bookable=(select id from bookables where bookableAlias=?) and start=?', [req.body.bookableAlias, req.body.start], function (err, rows) {
 
-        if (err) {
-            return res.json({success: false, message: "error in database"})
-        }
-        else{
-            let bookedBy = JSON.parse(JSON.stringify(rows));
-            if (bookedBy[0].bookedBy === null) {
-
-                connection.query('update facilitybookings set bookedBy=(select id from users where email=?) where bookable=(select id from bookables where bookableAlias=?) and start=?', [req.body.user, req.body.bookableAlias, req.body.start], function (err, rows) {
-
-                    if (err) {
-                        return res.json({success: false, message: "error in database"})
-                    }
-                    else
-                        return res.json({success: true})
-                })
-            }else {
-                return res.json({success: false, message: "Bookable already booked"})
+            if (err) {
+                next(err);
             }
-        }
-    })
+            else{
+                let bookedBy = JSON.parse(JSON.stringify(rows));
+                if (bookedBy[0].bookedBy === null) {
+
+                    connection.query('update facilitybookings set bookedBy=(select id from users where email=?) where bookable=(select id from bookables where bookableAlias=?) and start=?', [req.body.user, req.body.bookableAlias, req.body.start], function (err1, rows) {
+
+                        if (err1) {
+                            next(err1);
+                        }
+                        else {
+                            //GÖR OM TILL FUNKTION EFTERSOM KALLAS PÅ AV SÅ MÅNGA STÄLLEN
+                            connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from facilitybookings as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err2, rows2) {
+                                if (err2) {
+                                    next(err2);
+                                }
+                                let events = JSON.parse(JSON.stringify(rows2));
+                                return res.json({events});
+                            })
+                        }
+                    })
+
+                }else {
+                    connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from facilitybookings as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err2, rows2) {
+                                if (err2) {
+                                    next(err2);
+                                }
+                                let events = JSON.parse(JSON.stringify(rows2));
+                                return res.json({events, errorMessage: 'Sorry, this time slot just got booked!'});
+                            })
+                }
+            }
+        })
+
 
 
 })
 
-app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/unBook`,authenticate, (req,res)=> {
+app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/unBook`,authenticate, (req,res,next)=> {
     connection.query('update facilitybookings set bookedBy=? where bookable=(select id from bookables where bookableAlias=?) and start=? and bookedBy=(select id from users where email=?)', [null, req.body.bookableAlias, req.body.start, req.body.user], function (err, rows){
         if(err){
-            return res.json({success:false, message: "error in database"})
+            next(err);
+        } else {
+            // GÖR EN FUNKTION AV DETTA EFTERSOM DET ÄVEN KALLAS PÅ AV UNBOOK OCH GET EVENTS
+            connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from facilitybookings as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err2, rows2){
+                if(err2){
+                    next(err2);
+                }
+                let events = JSON.parse(JSON.stringify(rows2));
+                return res.json(events);
+            })
         }
-        return res.json({success:true})
     })
 
 })

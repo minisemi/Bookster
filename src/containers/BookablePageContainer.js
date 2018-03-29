@@ -14,7 +14,12 @@ class BookablePageContainer extends Component {
         getBookable: PropTypes.func.isRequired,
         addFavourite: PropTypes.func.isRequired,
         deleteFavourite: PropTypes.func.isRequired,
+        getBookableEvents: PropTypes.func.isRequired,
+        bookEvent: PropTypes.func.isRequired,
+        unBookEvent: PropTypes.func.isRequired,
         bookable: PropTypes.object,
+        bookableEvents: PropTypes.array,
+        eventsErrorMessage: PropTypes.object,
     };
 
     constructor(props) {
@@ -29,6 +34,10 @@ class BookablePageContainer extends Component {
             this.setState({
                bookable: nextProps.bookable,
             });
+        } else if (nextProps.bookableEvents !== this.props.bookableEvents) {
+            this.setState({
+               bookableEvents: nextProps.bookableEvents,
+            });
         }
         else if (nextProps.params.id !== this.props.params.id) {
             this.props.getBookable(nextProps.params.compId, nextProps.params.id)
@@ -37,6 +46,7 @@ class BookablePageContainer extends Component {
 
     componentDidMount(){
         this.props.getBookable(this.props.params.compId, this.props.params.id);
+        this.props.getBookableEvents(this.props.params.id);
     }
 
     handleClick(){
@@ -47,12 +57,11 @@ class BookablePageContainer extends Component {
     }
 
     render() {
-        const { bookable }  = this.state;
+        const { bookable, bookableEvents }  = this.state;
         if (!bookable) {
             return <NotFoundPage/>;
         }
         const headerStyle = { backgroundImage: `url(${bookable.cover})` };
-
         return (
             <div className="booking-full">
                 <div className="booking">
@@ -68,7 +77,12 @@ class BookablePageContainer extends Component {
                     <section className="description">
                         {bookable.info}
                     </section>
-                    <BookingCalender bookingId={this.props.params.id}/>
+                    <BookingCalender
+                        events={bookableEvents}
+                        bookEvent={this.props.bookEvent}
+                        unBookEvent={this.props.unBookEvent}
+                        error={this.props.eventsErrorMessage}
+                    />
                 </div>
             </div>
         );
@@ -76,12 +90,17 @@ class BookablePageContainer extends Component {
 }
 const mapStateToProps = (state) => ({
     bookable: state.bookables.bookable,
+    bookableEvents: state.bookables.bookableEvents,
+    eventsErrorMessage: state.bookables.eventsErrorMessage,
 });
 
 const mapDispatchToProps = {
     getBookable: bookablesActions.getBookable,
     addFavourite: bookablesActions.addFavourite,
     deleteFavourite: bookablesActions.deleteFavourite,
+    getBookableEvents: bookablesActions.getBookableEvents,
+    bookEvent: bookablesActions.bookEvent,
+    unBookEvent: bookablesActions.unBookEvent,
 };
 
 export default connect(

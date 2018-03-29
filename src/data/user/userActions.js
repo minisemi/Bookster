@@ -19,12 +19,12 @@ export function signUpUser(formValues) {
             familyName: formValues.familyName.toString(),
             password: formValues.password.toString(),
             birth: formValues.birth.toString()
-        }).then(response => {
+        }).then(response => (
             finalizeLogin(dispatch, { token: response.data.token, data: response.data.user })
-        }).catch(error => {
+            )).catch(error => {
             const response = error.response || {};
             if (response.status === 422) {
-                throw new SubmissionError({email: error.response.data})
+                throw new SubmissionError({email: response.data})
             } else {
                 throw new SubmissionError({_error: 'Error creating account. Please contact customer support.'})
             }
@@ -43,12 +43,12 @@ export function logInUser(form){
             return axios.post(url,{
                 email: form.email,
                 password: form.password
-            }).then(response => {
-                finalizeLogin(dispatch, { token: response.data.token, data: response.data.user });
-            }).catch(function (error) {
+            }).then(response => (
+                finalizeLogin(dispatch, { token: response.data.token, data: response.data.user })
+                )).catch(function (error) {
                 const response = error.response || {};
                 if(response.status === 403) {
-                    throw new SubmissionError({ _error: error.response.data })
+                    throw new SubmissionError({ _error: response.data })
                 } else {
                     throw new SubmissionError({ _error: 'Error logging in. Please contact customer support.' })
                 }
@@ -87,13 +87,10 @@ export function changePassword(formValues) {
             {
                 headers: {Authorization: `Bearer ${getState().user.user.token}`}
             }).then(response => {
-                console.log(response.data);
         }).catch(function (error) {
-            console.log(error.response);
             const response = error.response || {};
             if(response.status === 403) {
-                console.log("403");
-                throw new SubmissionError({ oldPassword: error.response.data })
+                throw new SubmissionError({ oldPassword: response.data })
             } else {
                 throw new SubmissionError({ _error: 'Error updating password. Please contact customer support.' })
             }
@@ -114,14 +111,14 @@ export function updateUserInfo (formValues){
                 type: SET_USER,
                 payload: response.data
             });
-            dispatch({
+            return dispatch({
                 type: SET_USER_INFO_MESSAGE,
                 payload: { type: "success", message: "Update successful!" }
             })
         }).catch(function (error) {
             const response = error.response || {};
             if(response.status === 422) {
-                throw new SubmissionError({ _error: error.response.data })
+                throw new SubmissionError({ _error: response.data })
             } else {
                 throw new SubmissionError({ _error: 'Error updating user info. Please contact customer support.' })
             }

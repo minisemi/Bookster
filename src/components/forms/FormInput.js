@@ -53,6 +53,7 @@ export default class FormInput extends Component {
                 />
                 { message }</div>;
                 break;
+            default: break;
         }
 
         return (

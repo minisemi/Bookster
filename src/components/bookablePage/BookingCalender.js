@@ -8,11 +8,10 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 //import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import '../../static/BookingCalender.css'
 //import 'react-big-calendar/lib/addons/dragAndDrop/styles.less';
-import {getCalenderEvents, bookEvent, unBookEvent} from '../../utils/bookster-api'
 import Popup from 'react-popup';
 import Auth from '../../Auth'
+import PropTypes from 'prop-types';
 //import update from 'react-addons-update';
-
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -22,73 +21,45 @@ BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
 class BookingCalender extends Component {
 
+    static propTypes = {
+        events: PropTypes.array,
+        bookEvent: PropTypes.func.isRequired,
+        unBookEvent: PropTypes.func.isRequired,
+        error: PropTypes.object,
+    };
+
     constructor (props) {
         super(props);
-
         this.state = {
-            events: [],
+            events: props.events || []
         };
-
 
         //this.moveEvent = this.moveEvent.bind(this)
         this.handleSelectEvent = this.handleSelectEvent.bind(this);
         this.eventPropGetter = this.eventPropGetter.bind(this);
     }
 
-
-    componentDidMount(){
-
-        if (this.props.bookingId!==undefined) {
-            getCalenderEvents(this.props.bookingId).then((events) => {
-                for (let i =0; i<events.length;i++){
-
-                    //events[i].start=Math.round(new Date().getTime()/1000.0);
-                    events[i].start=new Date(events[i].start);
-                    events[i].end=new Date(events[i].end);
-
-                }
-                this.setState({events: events})
-            })
-        }
-
-    }
-
     componentWillReceiveProps(nextProps){
-
-
-        if (nextProps.bookingId !== this.props.bookingId) {
-
-            getCalenderEvents(nextProps.bookingId).then((events) => {
-                for (let i =0; i<events.length;i++){
-
-                    events[i].start=new Date(events[i].start);
-                    events[i].end=new Date(events[i].end);
-
+        if (nextProps.events !== this.props.events) {
+            this.setState({events: nextProps.events})
+        }
+        if (nextProps.error !== this.props.error && nextProps.error !== undefined) {
+            Popup.create({
+                title: "Booking failed",
+                content: <b>{nextProps.error.message}</b>,
+                buttons: {
+                    right: [{
+                        text: 'Ok',
+                        action: function () {
+                            Popup.close();
+                        }
+                    }]
                 }
-                this.setState({events:events})
-            })
+            });
         }
     }
-
-
-    /*moveEvent({ event, start, end }) {
-     const { events } = this.state;
-
-     const idx = events.indexOf(event);
-     const updatedEvent = { ...event, start, end };
-
-     const nextEvents = [...events]
-     nextEvents.splice(idx, 1, updatedEvent)
-
-     this.setState({
-     events: nextEvents
-     })
-
-     alert(`${event.title} was dropped onto ${event.start}`);
-     }*/
 
     handleSelectEvent(event) {
-
         let context = this;
         //For unbooked events
         let startDate = new Date(event.start).toDateString();
@@ -116,45 +87,8 @@ class BookingCalender extends Component {
                         text: 'Book',
                         className: 'success',
                         action: function () {
-                            bookEvent(event.bookableAlias,moment(event.start).format("x"),Auth.getEmail()).then(response=>{
-                                if (response.success){
-
-                                    getCalenderEvents(context.props.bookingId).then((events) => {
-                                        for (let i =0; i<events.length;i++){
-
-                                            events[i].start=new Date(events[i].start);
-                                            events[i].end=new Date(events[i].end);
-                                        }
-                                        Popup.close();
-                                        context.setState({events: events})
-                                    })
-                                }else {
-                                    Popup.close();
-                                    getCalenderEvents(context.props.bookingId).then((events) => {
-                                        for (let i =0; i<events.length;i++){
-
-                                            events[i].start=new Date(events[i].start);
-                                            events[i].end=new Date(events[i].end);
-                                        }
-                                        context.setState({events: events})
-                                    })
-                                    Popup.create({
-                                        title: event.title,
-                                        content: <b>This booking unfortunately just got booked.</b>,
-                                        buttons: {
-                                            right: [{
-                                                text: 'Ok',
-                                                action: function () {
-                                                    Popup.close();
-                                                }
-                                            }]
-                                        }
-                                    });
-
-
-                                }
-                            });
-
+                            context.props.bookEvent(event.bookableAlias, moment(event.start).format("x"));
+                            Popup.close();
                         }
                     }]
                 }
@@ -181,20 +115,7 @@ class BookingCalender extends Component {
                             text: 'Cancel booking',
                             className: 'danger',
                             action: function () {
-                                unBookEvent(event.bookableAlias,moment(event.start).format("x"),Auth.getEmail()).then(response=>{
-                                    if (response.success){
-
-                                        getCalenderEvents(context.props.bookingId).then((events) => {
-                                            for (let i =0; i<events.length;i++){
-
-                                                events[i].start=new Date(events[i].start);
-                                                events[i].end=new Date(events[i].end);
-
-                                            }
-                                            context.setState({events: events})
-                                        })
-                                    }
-                                });
+                                context.props.unBookEvent(event.bookableAlias,moment(event.start).format("x"));
                                 Popup.close();
                             }
                         }]
@@ -227,56 +148,42 @@ class BookingCalender extends Component {
                     style = {
                         backgroundColor: "#ffd688",
                         borderColor: "#ffdda8"
-
                     };
-
                 }else{
-
                     style = {
                         backgroundColor: "#b30000",
                         borderColor: "#e60000"
-
                     };
                 }
-
             }else{
                 if (event.bookedBy == Auth.getUserId()){
                     style = {
                         backgroundColor: "#ffd688",
                         borderColor: "#ffdda8"
-
                     };
-
                 }else{
                     style = {
                         backgroundColor: "#ff4d4d",
                         borderColor: "#ff6666"
-
                     };
-
                 }
-
             }
         } else{
             if (isSelected){
                 style = {
                     backgroundColor: "#224f77",
                     borderColor:"#2d6a9f"
-
                 };
-
             }else {
                 style = {
                     backgroundColor: "#3174ad",
                     borderColor:"#3884c7"
-
                 };
             }
         }
         return {
             style: style
         };
-
     }
 
     onSelecting(){

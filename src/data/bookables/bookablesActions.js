@@ -1,20 +1,22 @@
 import axios from 'axios';
 const BASE_URL = 'http://localhost:3333';
-export const GET_CURRENT_BOOKINGS = 'GET_CURRENT_BOOKINGS';
-export const GET_FAVOURITES = 'GET_FAVOURITES';
-export const GET_RECOMMENDATIONS = 'GET_RECOMMENDATIONS';
-export const GET_BOOKABLE = 'GET_BOOKABLE';
+export const SET_CURRENT_BOOKINGS = 'SET_CURRENT_BOOKINGS';
+export const SET_FAVOURITES = 'SET_FAVOURITES';
+export const SET_RECOMMENDATIONS = 'SET_RECOMMENDATIONS';
+export const SET_BOOKABLE = 'SET_BOOKABLE';
 export const ADD_FAVOURITE = 'ADD_FAVOURITE';
 export const DELETE_FAVOURITE = 'DELETE_FAVOURITE';
-export const GET_COMPANY_BOOKABLES = 'GET_COMPANY_BOOKABLES';
+export const SET_COMPANY_BOOKABLES = 'SET_COMPANY_BOOKABLES';
+export const SET_BOOKABLE_EVENTS = 'SET_BOOKABLE_EVENTS';
+export const SET_EVENTS_ERROR = 'SET_EVENTS_ERROR';
 import Auth from '../../Auth'
 
 export function getCurrentBookings() {
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/users/${Auth.getEmail()}/current`;
-        axios.get(url).then(response => {
-            dispatch({
-                type: GET_CURRENT_BOOKINGS,
+        return axios.get(url).then(response => {
+            return dispatch({
+                type: SET_CURRENT_BOOKINGS,
                 payload: response.data
             })
         }).catch(function (error) {
@@ -26,9 +28,9 @@ export function getCurrentBookings() {
 export function getFavourites() {
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/users/${Auth.getEmail()}/favourites`;
-        axios.get(url).then(response => {
-            dispatch({
-                type: GET_FAVOURITES,
+        return axios.get(url).then(response => {
+            return dispatch({
+                type: SET_FAVOURITES,
                 payload: response.data
             })
         }).catch(function (error) {
@@ -40,7 +42,7 @@ export function getFavourites() {
 export function addFavourite(bookableID, companyID){
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/addFavourite`;
-        axios.post(url,{
+        return axios.post(url,{
             user: Auth.getUserId(),
             bookable: bookableID,
             company:companyID
@@ -54,7 +56,7 @@ export function addFavourite(bookableID, companyID){
                     }
                 }
                 newBookable.favourite = true;
-                dispatch({
+                return dispatch({
                     type: ADD_FAVOURITE,
                     payload: newBookable
                 })
@@ -68,7 +70,7 @@ export function addFavourite(bookableID, companyID){
 export function deleteFavourite(bookableID, companyID){
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/deleteFavourite`;
-        axios.post(url,{
+        return axios.post(url,{
             user: Auth.getUserId(),
             bookable: bookableID,
             company:companyID
@@ -82,7 +84,7 @@ export function deleteFavourite(bookableID, companyID){
                     }
                 }
                 newBookable.favourite = false;
-                dispatch({
+                return dispatch({
                     type: DELETE_FAVOURITE,
                     payload: newBookable
                 })
@@ -96,12 +98,12 @@ export function deleteFavourite(bookableID, companyID){
 export function getRecommendations() {
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/users/${Auth.getEmail()}/recommendations`;
-        axios.get(url).then(response => {
+        return axios.get(url).then(response => (
             dispatch({
-                type: GET_RECOMMENDATIONS,
+                type: SET_RECOMMENDATIONS,
                 payload: response.data
             })
-        }).catch(function (error) {
+        )).catch(function (error) {
             console.log(error);
         });
     };
@@ -110,12 +112,12 @@ export function getRecommendations() {
 export function getCompanyBookables(id){
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/companies/${id}/bookables`;
-        axios.get(url).then(response => {
+        return axios.get(url).then(response => (
             dispatch({
-                type: GET_COMPANY_BOOKABLES,
+                type: SET_COMPANY_BOOKABLES,
                 payload: response.data
             })
-        }).catch(function (error) {
+        )).catch(function (error) {
             console.log(error);
         });
     };
@@ -124,13 +126,85 @@ export function getCompanyBookables(id){
 export function getBookable(compId, bookId) {
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/companies/${compId}/bookables/${bookId}/${Auth.getUserId()}`;
-        axios.get(url).then(response => {
+        return axios.get(url).then(response => (
             dispatch({
-                type: GET_BOOKABLE,
+                type: SET_BOOKABLE,
                 payload: response.data
             })
+        )).catch(function (error) {
+            console.log(error);
+        });
+    };
+}
+
+export function getBookableEvents(bookId) {
+    return (dispatch, getState) => {
+        const url = `${BASE_URL}/api/companies/compId/bookables/${bookId}/calender/events`  ;
+        return axios.get(url).then(response => {
+            return setBookableEvents(dispatch, response.data);
         }).catch(function (error) {
             console.log(error);
+        });
+    };
+}
+
+export function bookEvent(bookableAlias, start) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: SET_EVENTS_ERROR,
+            payload: undefined,
+        });
+        const url = `${BASE_URL}/api/companies/compId/bookables/${bookableAlias}/calender/events/book`;
+        return axios.post(url,{
+            user: Auth.getEmail(),
+            start: start,
+            bookableAlias: bookableAlias
+        }).then(response => {
+            if (response.data.errorMessage) {
+                dispatch({
+                    type: SET_EVENTS_ERROR,
+                    payload: { type: "danger", message: response.data.errorMessage },
+                });
+            }
+            return setBookableEvents(dispatch, response.data.events);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    };
+}
+
+function setBookableEvents(dispatch, response){
+    let events = response;
+    for (let i=0; i<events.length;i++){
+        events[i].start = new Date(events[i].start);
+        events[i].end = new Date(events[i].end);
+    }
+    return dispatch({
+        type: SET_BOOKABLE_EVENTS,
+        payload: events
+    })
+}
+
+export function unBookEvent(bookableAlias, start) {
+    return (dispatch, getState) => {
+        dispatch({
+            type: SET_EVENTS_ERROR,
+            payload: undefined,
+        });
+        const url = `${BASE_URL}/api/companies/compId/bookables/${bookableAlias}/calender/events/unBook`;
+        return axios.post(url,{
+            user: Auth.getEmail(),
+            start: start,
+            bookableAlias: bookableAlias
+        }).then(response => {
+            return setBookableEvents(dispatch, response.data);
+        }).catch(function (error) {
+            console.log(error);
+            const response = error.response || {};
+            return dispatch({
+                type: SET_EVENTS_ERROR,
+                payload: { type: "danger", message: response.data },
+            })
         });
     };
 }

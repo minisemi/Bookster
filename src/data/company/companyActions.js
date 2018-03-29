@@ -5,12 +5,12 @@ export const GET_COMPANY = 'GET_COMPANY';
 export function getCompany(id) {
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/companies/${id}`;
-        axios.get(url).then(response => {
+        return axios.get(url).then(response => (
             dispatch({
                 type: GET_COMPANY,
                 payload: response.data
             })
-        }).catch(function (error) {
+            )).catch(function (error) {
             console.log(error);
         });
     };

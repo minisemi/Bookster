@@ -3,10 +3,6 @@ import {Button, Modal} from 'react-bootstrap';
 
 export default class MessageModal extends Component {
 
-    constructor(props){
-        super(props);
-    }
-
     render() {
         const { title, body, buttonText, handler, show } = this.props;
         return (

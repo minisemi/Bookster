@@ -42,8 +42,7 @@ class UserInfoFormContainer extends Component {
     }
 
     render() {
-        const { error, handleSubmit, reset, pristine, submitting, updateUserInfo, userInfoMessage, submitSucceeded } = this.props;
-        console.log(submitSucceeded);
+        const { error, handleSubmit, reset, pristine, submitting, updateUserInfo, userInfoMessage } = this.props;
         return (
             <Form horizontal className="form" onSubmit={ handleSubmit(updateUserInfo)}>
                 <UserInfoFields />

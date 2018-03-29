@@ -8,8 +8,11 @@ import CompanyPageContainer from './containers/CompanyPageContainer';
 import NotFoundPage from './components/layout/NotFoundPage';
 import ProfilePage from './containers/ProfilePageContainer'
 import Auth from './Auth';
+import Store from './store/configureStore.dev';
 
 let checkAuth = function(location, callback, component){
+    console.log("routes");
+    console.log(Store.getState());
     if (Auth.checkIfAuthenticated()) {
         if (component === HomePageContainer){
             history.replaceState(null, null, "/")

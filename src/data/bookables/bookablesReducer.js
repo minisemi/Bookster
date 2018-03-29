@@ -1,35 +1,36 @@
 import {
-    GET_CURRENT_BOOKINGS,
-    GET_FAVOURITES,
-    GET_RECOMMENDATIONS,
-    GET_BOOKABLE,
+    SET_CURRENT_BOOKINGS,
+    SET_FAVOURITES,
+    SET_RECOMMENDATIONS,
+    SET_BOOKABLE,
     ADD_FAVOURITE,
     DELETE_FAVOURITE,
-    GET_COMPANY_BOOKABLES,
+    SET_COMPANY_BOOKABLES,
+    SET_BOOKABLE_EVENTS,
+    SET_EVENTS_ERROR,
 } from './bookablesActions';
 
 const INITIAL_STATE = {
-
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case GET_CURRENT_BOOKINGS:
+        case SET_CURRENT_BOOKINGS:
             return {
                 ...state,
                 currentBookings: action.payload
             };
-        case GET_FAVOURITES:
+        case SET_FAVOURITES:
             return {
                 ...state,
                 favourites: action.payload
             };
-        case GET_RECOMMENDATIONS:
+        case SET_RECOMMENDATIONS:
             return {
                 ...state,
                 recommendations: action.payload
             };
-        case GET_BOOKABLE:
+        case SET_BOOKABLE:
             return {
                 ...state,
                 bookable: action.payload
@@ -44,10 +45,20 @@ export default (state = INITIAL_STATE, action) => {
                 ...state,
                 bookable: action.payload,
             };
-        case GET_COMPANY_BOOKABLES:
+        case SET_COMPANY_BOOKABLES:
             return {
                 ...state,
                 companyBookables: action.payload,
+            };
+        case SET_BOOKABLE_EVENTS:
+            return {
+                ...state,
+                bookableEvents: action.payload,
+            };
+        case SET_EVENTS_ERROR:
+            return {
+                ...state,
+                eventsErrorMessage: action.payload,
             };
         default:
             return state;

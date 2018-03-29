@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Form, FormGroup, Button, FormControl, Alert} from 'react-bootstrap';
+import {Row, Col, Form, Button, Alert} from 'react-bootstrap';
 import '../../static/SignUpForm.css'
 import { signUpValidate, normalizeDate } from '../../utils/Validation';
 import { reduxForm, Field } from 'redux-form';
