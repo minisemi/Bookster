@@ -1,12 +1,13 @@
 import React from 'react';
-import { Router, browserHistory } from 'react-router';
+//import {  browserHistory } from 'react-router';
+import { ConnectedRouter } from 'react-router-redux';
 import routes from '../../routes';
 
-export default class AppRoutes extends React.Component {
+/*export default class AppRoutes extends React.Component {
 
     render() {
         return (
-            <Router history={browserHistory} routes={routes} onUpdate={() => window.scrollTo(0, 0)}/>
+            <ConnectedRouter  history={browserHistory} routes={routes} onUpdate={() => window.scrollTo(0, 0)}/>
         );
     }
-}
+}*/

@@ -10,8 +10,8 @@ import { connect } from 'react-redux';
 class CompanyPageContainer extends Component {
 
     static propTypes = {
-        getCompany: PropTypes.func.isRequired,
-        getCompanyBookables: PropTypes.func.isRequired,
+        getCompany: PropTypes.func,
+        getCompanyBookables: PropTypes.func,
         company: PropTypes.object,
         companyBookables: PropTypes.array,
     };
@@ -23,8 +23,8 @@ class CompanyPageContainer extends Component {
 
     componentDidMount() {
         // Om fler saker behöver hämtas i framtiden, så gör om till en getCompanyPage så att enbart en funktion behöver kallas på
-        this.props.getCompany(this.props.params.id);
-        this.props.getCompanyBookables(this.props.params.id);
+        this.props.getCompany(this.props.match.params.id);
+        this.props.getCompanyBookables(this.props.match.params.id);
     }
 
     componentWillReceiveProps(nextProps){
@@ -36,9 +36,9 @@ class CompanyPageContainer extends Component {
             this.setState({
                companyBookables: nextProps.companyBookables,
             });
-        } else if (nextProps.params.id !== this.props.params.id) {
-            this.props.getCompany(nextProps.params.id);
-            this.props.getCompanyBookables(nextProps.params.id);
+        } else if (nextProps.match.params.id !== this.props.match.params.id) {
+            this.props.getCompany(nextProps.match.params.id);
+            this.props.getCompanyBookables(nextProps.match.params.id);
         }
     }
 

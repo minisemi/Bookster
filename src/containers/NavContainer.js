@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Row, Col, Button} from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import '../static/Nav.css';
 import LogInForm from './forms/LogInFormContainer';
 import BookingsSearch from '../components/bookables/BookingsSearch';

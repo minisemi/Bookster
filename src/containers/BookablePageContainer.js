@@ -11,12 +11,12 @@ import { connect } from 'react-redux';
 class BookablePageContainer extends Component {
 
     static propTypes = {
-        getBookable: PropTypes.func.isRequired,
-        addFavourite: PropTypes.func.isRequired,
-        deleteFavourite: PropTypes.func.isRequired,
-        getBookableEvents: PropTypes.func.isRequired,
-        bookEvent: PropTypes.func.isRequired,
-        unBookEvent: PropTypes.func.isRequired,
+        getBookable: PropTypes.func,
+        addFavourite: PropTypes.func,
+        deleteFavourite: PropTypes.func,
+        getBookableEvents: PropTypes.func,
+        bookEvent: PropTypes.func,
+        unBookEvent: PropTypes.func,
         bookable: PropTypes.object,
         bookableEvents: PropTypes.array,
         eventsErrorMessage: PropTypes.object,
@@ -39,24 +39,25 @@ class BookablePageContainer extends Component {
                bookableEvents: nextProps.bookableEvents,
             });
         }
-        else if (nextProps.params.id !== this.props.params.id) {
-            this.props.getBookable(nextProps.params.compId, nextProps.params.id)
+        else if (nextProps.match.params.id !== this.props.match.params.id) {
+            this.props.getBookable(nextProps.match.params.compId, nextProps.match.params.id)
         }
     }
 
     componentDidMount(){
-        this.props.getBookable(this.props.params.compId, this.props.params.id);
-        this.props.getBookableEvents(this.props.params.id);
+        this.props.getBookable(this.props.match.params.compId, this.props.match.params.id);
+        this.props.getBookableEvents(this.props.match.params.id);
     }
 
     handleClick(){
         if(!this.state.bookable.favourite)
-            this.props.addFavourite(this.props.params.id, this.props.params.compId);
+            this.props.addFavourite(this.props.match.params.id, this.props.match.params.compId);
         else
-            this.props.deleteFavourite(this.props.params.id, this.props.params.compId);
+            this.props.deleteFavourite(this.props.match.params.id, this.props.match.params.compId);
     }
 
     render() {
+        console.log();
         const { bookable, bookableEvents }  = this.state;
         if (!bookable) {
             return <NotFoundPage/>;

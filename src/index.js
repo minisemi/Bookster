@@ -1,27 +1,32 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM  from 'react-dom';
 import Popup from 'react-popup';
 import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 import './static/index.css';
 import AppRoutes from './components/layout/AppRoutes'
+import createHistory from 'history/createBrowserHistory';
+import { ConnectedRouter } from 'react-router-redux';
+import routes from './routes';
+const history = createHistory();
 
-const Root = () => {
+/*const Root = () => {
     return (
-        <AppRoutes/>
+        <ConnectedRouter  history={history} routes={routes} onUpdate={() => window.scrollTo(0, 0)}/>
     )
-};
+};*/
+const store = configureStore({}, history);
 
-const store = configureStore();
-
-render(
+ReactDOM.render(
     <Provider store={store}>
-        <Root />
+        <ConnectedRouter  history={history} onUpdate={() => window.scrollTo(0, 0)}>
+            {routes}
+        </ConnectedRouter>
     </Provider>,
     document.getElementById('root')
 );
 
-render(
+ReactDOM.render(
     <Popup
         className="mm-popup"
         btnClass="mm-popup__btn"

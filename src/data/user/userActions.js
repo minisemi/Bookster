@@ -5,7 +5,6 @@ export const LOG_OUT_USER = 'LOG_OUT_USER';
 export const SET_USER = 'SET_USER';
 export const SET_USER_INFO_MESSAGE = 'SET_USER_INFO_MESSAGE';
 import Auth from '../../Auth'
-import {browserHistory} from 'react-router';
 import {updateToken} from '../../utils/bookster-api'
 import {loginValidate} from '../../utils/Validation';
 import _isEmpty from 'lodash/isEmpty';
@@ -60,21 +59,19 @@ export function logInUser(form){
 export function logOutUser(){
     return (dispatch, getState) => {
         Auth.deauthenticateUser();
-        dispatch({
+        return dispatch({
             type: LOG_OUT_USER,
         });
-        browserHistory.push('/sign_in');
     }
 }
 
 function finalizeLogin(dispatch, user) {
     Auth.authenticateUser(user.token, user.data.email, user.data.id)
     updateToken();
-    dispatch({
+    return dispatch({
         type: SET_USER,
         payload: user
     });
-    browserHistory.push('/');
 }
 
 export function changePassword(formValues) {
