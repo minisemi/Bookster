@@ -1,13 +1,13 @@
 import {
-    GET_COMPANY,
-} from './companyActions';
+    SET_SEARCH_RESULTS,
+} from './searchActions';
 
 export default (state = {}, action) => {
     switch (action.type) {
-        case GET_COMPANY:
+        case SET_SEARCH_RESULTS:
             return {
                 ...state,
-                company: action.payload
+                searchResults: action.payload
             };
         default:
             return state;

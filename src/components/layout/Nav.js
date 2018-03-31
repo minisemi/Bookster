@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import {Row, Col, Button} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import '../static/Nav.css';
-import LogInForm from './forms/LogInFormContainer';
-import BookingsSearch from '../components/bookables/BookingsSearch';
+import '../../static/Nav.css';
+import LogInForm from '../../containers/forms/LogInFormContainer';
+import BookingsSearch from '../bookables/BookingsSearch';
 import PropTypes from 'prop-types';
-import { userActions } from '../data/user';
-import { connect } from 'react-redux';
 
-class NavContainer extends Component {
+export default class Nav extends Component {
 
     static propTypes = {
         logOutUser: PropTypes.func.isRequired,
-        loggedIn: PropTypes.bool,
+        getSearchResults: PropTypes.func.isRequired,
+        changeRoute: PropTypes.func.isRequired,
+        loggedIn: PropTypes.bool.isRequired,
+        searchResults: PropTypes.array,
     };
 
     constructor(props) {
@@ -31,7 +32,7 @@ class NavContainer extends Component {
     }
 
     render() {
-        const { loggedIn, logOutUser } = this.props;
+        const { loggedIn } = this.state;
         return (
             <div>
                 <header >
@@ -46,10 +47,15 @@ class NavContainer extends Component {
                         { loggedIn ?
                             <div>
                                 <Col xs={12} smOffset={1} sm={6} mdOffset={1} md={6} lg={6} className="searchDisplay">
-                                    <BookingsSearch cleared={loggedIn}/>
+                                    <BookingsSearch
+                                        cleared={loggedIn}
+                                        getSearchResults={this.props.getSearchResults}
+                                        suggestions={this.props.searchResults}
+                                        changeRoute={this.props.changeRoute}
+                                    />
                                 </Col>
                                 <Col xs={12} sm={3} md={3} lg={3} className={"searchDisplay buttons"}>
-                                    <Button onClick={logOutUser} className="btn btn-danger floatRight marginRight">
+                                    <Button onClick={this.props.logOutUser} className="btn btn-danger floatRight marginRight">
                                         Log out
                                     </Button>
                                     <Link className="btn btn-info floatRight" role="button" to={"/profile"}> Profile
@@ -67,16 +73,3 @@ class NavContainer extends Component {
         );
     }
 }
-
-const mapStateToProps = (state) => ({
-    loggedIn: !!state.user.user.token,
-});
-
-const mapDispatchToProps = {
-    logOutUser: userActions.logOutUser,
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(NavContainer);

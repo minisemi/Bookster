@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { userActions } from '../data/user';
+import { searchActions } from '../data/search';
 import { connect } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router'
-import Nav from './NavContainer'
+import PropTypes from 'prop-types';
+import Nav from '../components/layout/Nav'
 import Footer from '../components/layout/Footer';
 import CompanyPageContainer from './CompanyPageContainer';
 import NotFoundPage from '../components/layout/NotFoundPage';
@@ -12,8 +14,15 @@ import BookablePageContainer from './BookablePageContainer';
 import LoginPage from '../components/loginPage/LoginPage';
 import '../static/Layout.css';
 
-
 class LayoutContainer extends Component {
+
+    static propTypes = {
+        loggedIn: PropTypes.bool,
+        searchResults: PropTypes.array,
+        logOutUser: PropTypes.func.isRequired,
+        getSearchResults: PropTypes.func.isRequired,
+        changeRoute: PropTypes.func.isRequired,
+    };
 
     constructor(props) {
         super(props);
@@ -30,21 +39,23 @@ class LayoutContainer extends Component {
         }
     }
 
-    checkLoggedIn(component) {
-        return this.state.loggedIn ? component : <Redirect to="/" />
-    }
-
     render() {
-        const { loggedIn, logOutUser } = this.state;
+        const { loggedIn } = this.state;
         return (
             <div>
-                <Nav />
+                <Nav
+                    loggedIn={loggedIn}
+                    logOutUser={this.props.logOutUser}
+                    getSearchResults={this.props.getSearchResults}
+                    searchResults={this.props.searchResults}
+                    changeRoute={this.props.changeRoute}
+                />
                 <div className="marginToFooter">
                     <Switch>
                         <Route exact path="/" component={loggedIn ? HomePageContainer : LoginPage} />
                         <Route path="/profile" render={() => loggedIn ? <ProfilePageContainer/> : <Redirect to="/" />} />
-                        <Route path="/:compId/:id" render={() => loggedIn ? <BookablePageContainer/> : <Redirect to="/" />} />
-                        <Route path="/:id" render={() => loggedIn ? <CompanyPageContainer/> : <Redirect to="/" />} />
+                        <Route path="/:compId/:id" render={({ match }) => loggedIn ? <BookablePageContainer match={match} /> : <Redirect to="/" />} />
+                        <Route path="/:id" render={({ match }) => loggedIn ? <CompanyPageContainer match={match} /> : <Redirect to="/" />} />
                         <Route path="*" render={() => loggedIn ? <NotFoundPage/> : <Redirect to="/" />} />
                     </Switch>
                 </div>
@@ -57,9 +68,13 @@ class LayoutContainer extends Component {
 
 const mapStateToProps = (state) => ({
     loggedIn: !!state.user.user.token,
+    searchResults: state.search.searchResults,
 });
 
 const mapDispatchToProps = {
+    logOutUser: userActions.logOutUser,
+    getSearchResults: searchActions.getSearchResults,
+    changeRoute: searchActions.changeRoute,
 };
 
 export default connect(

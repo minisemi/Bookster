@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import { bookablesActions } from '../data/bookables';
 import { connect } from 'react-redux';
 
-
 class BookablePageContainer extends Component {
 
     static propTypes = {
@@ -57,7 +56,6 @@ class BookablePageContainer extends Component {
     }
 
     render() {
-        console.log();
         const { bookable, bookableEvents }  = this.state;
         if (!bookable) {
             return <NotFoundPage/>;

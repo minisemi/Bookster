@@ -10,10 +10,7 @@ import {
     SET_EVENTS_ERROR,
 } from './bookablesActions';
 
-const INITIAL_STATE = {
-};
-
-export default (state = INITIAL_STATE, action) => {
+export default (state = {}, action) => {
     switch (action.type) {
         case SET_CURRENT_BOOKINGS:
             return {

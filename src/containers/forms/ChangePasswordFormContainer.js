@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Form, Button, Alert, ProgressBar } from 'react-bootstrap';
+import { Row, Col, Form, Button, Alert, ProgressBar } from 'react-bootstrap';
 import '../../static/ProfilePage.css'
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
@@ -18,18 +18,8 @@ class ChangePasswordFormContainer extends Component {
 
     constructor (props) {
         super(props);
-        this.state = {
-            showSuccessAlert: false,
-        }
     }
 
-    componentWillReceiveProps(nextProps){
-        if(nextProps.userInfoMessage !== this.props.userInfoMessage && nextProps.userInfoMessage){
-            this.setState({
-                showSuccessAlert: true,
-            });
-        }
-    }
 
     render() {
         const { error, handleSubmit, reset, pristine, submitting, changePassword, submitSucceeded } = this.props;
@@ -46,6 +36,7 @@ class ChangePasswordFormContainer extends Component {
                     />
                 </Col>
                 <PasswordFields />
+                <Row>
                 {submitting ?
                     <ProgressBar active now={50} />
                     :
@@ -56,7 +47,6 @@ class ChangePasswordFormContainer extends Component {
                             type="submit"
                             bsStyle="success"
                             disabled={submitting}
-                            onClick={()=>{this.setState({ showSuccessAlert: false })}}
                         >
                             Update
                         </Button>
@@ -70,6 +60,8 @@ class ChangePasswordFormContainer extends Component {
                         </Button>
                     </div>
                 }
+                </Row>
+                <Row>
                 {error ? <Alert bsStyle="danger" style={{ marginTop: "10px" }}> {error}</Alert> : null}
                 {submitSucceeded ?
                     <Alert bsStyle="success" style={{ marginTop: "10px" }}>
@@ -78,6 +70,7 @@ class ChangePasswordFormContainer extends Component {
                     :
                     null
                 }
+                </Row>
             </Form>
         );
     }

@@ -5,9 +5,11 @@ export const LOG_OUT_USER = 'LOG_OUT_USER';
 export const SET_USER = 'SET_USER';
 export const SET_USER_INFO_MESSAGE = 'SET_USER_INFO_MESSAGE';
 import Auth from '../../Auth'
-import {updateToken} from '../../utils/bookster-api'
 import {loginValidate} from '../../utils/Validation';
 import _isEmpty from 'lodash/isEmpty';
+// Sets token as axios default header 
+axios.defaults.headers.common['Authorization'] = `Bearer ${Auth.getToken()}`;
+
 
 export function signUpUser(formValues) {
     return (dispatch, getState) => {
@@ -65,8 +67,12 @@ export function logOutUser(){
     }
 }
 
+function updateToken(){
+    axios.defaults.headers.common['Authorization'] = `Bearer ${Auth.getToken()}`;
+}
+
 function finalizeLogin(dispatch, user) {
-    Auth.authenticateUser(user.token, user.data.email, user.data.id)
+    Auth.authenticateUser(user.token, user.data.email, user.data.id);
     updateToken();
     return dispatch({
         type: SET_USER,

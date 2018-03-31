@@ -19,18 +19,13 @@ class Auth {
     }
 
     static checkIfAuthenticated() {
-        console.log("token");
-        console.log(cookie.get('token'));
-        console.log(cookie.get('token') != null);
         return cookie.get('token') != null;
     }
 
     static deauthenticateUser() {
-        console.log("deautenticate1");
         cookie.remove("token");
         cookie.remove('userId');
         cookie.remove('email');
-        console.log("deautenticate2");
     }
 
     static getToken() {

@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import '../../static/BookingsSearch.css';
+import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 //import match from 'autosuggest-highlight/match';
 //import parse from 'autosuggest-highlight/parse';
-import { getServerSuggestions } from '../../utils/bookster-api';
-import { browserHistory } from 'react-router';
-
 
 // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
 function escapeRegexCharacters(str) {
@@ -23,14 +21,16 @@ function getSuggestions(value) {
 }
 
 //Decides what to do when selecting a suggestion (which is to go to the page for that bookable/company)
-function onSuggestionSelected(event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }){
+function onSuggestionSelected(event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }, changeRoute){
 
     switch (suggestion.type){
         case 'bookable':
-            browserHistory.push(`/${suggestion.companyAlias}/${suggestion.bookableAlias}`);
+           // browserHistory.push(`/${suggestion.companyAlias}/${suggestion.bookableAlias}`);
+            changeRoute(`/${suggestion.companyAlias}/${suggestion.bookableAlias}`);
             break;
         case 'company':
-            browserHistory.push(`/${suggestion.companyAlias}`);
+            changeRoute(`/${suggestion.companyAlias}`);
+           // browserHistory.push(`/${suggestion.companyAlias}`);
             break;
         default:
             break;
@@ -98,16 +98,25 @@ function shouldRenderSuggestions(value) {
 
 export default class BookingsSearch extends Component {
 
-    constructor() {
-        super();
+    static propTypes = {
+        getSearchResults: PropTypes.func.isRequired,
+        changeRoute: PropTypes.func.isRequired,
+        cleared: PropTypes.bool.isRequired,
+        suggestions: PropTypes.array,
+    };
+
+    constructor(props) {
+        super(props);
         this.state = {
             value: '',
-            suggestions: []
+            suggestions: props.suggestions || [],
         };
     }
 
     componentWillReceiveProps(nextProps){
-        if (nextProps.cleared !== this.props.cleared) {
+        if (nextProps.suggestions !== this.props.suggestions) {
+            this.setState({ suggestions: nextProps.suggestions });
+        } else if (nextProps.cleared !== this.props.cleared) {
             this.setState({ value:'' });
         }
     }
@@ -116,15 +125,10 @@ export default class BookingsSearch extends Component {
         this.setState({
             value: newValue
         });
-
     };
 
     onSuggestionsFetchRequested = ({ value }) => {
-        getServerSuggestions(getSuggestions(value)).then((results)=>{
-            this.setState({
-                suggestions: results
-            });});
-
+        this.props.getSearchResults(getSuggestions(value));
     };
 
     onSuggestionsClearRequested = () => {
@@ -157,12 +161,13 @@ export default class BookingsSearch extends Component {
                 renderSuggestion={renderSuggestion}
                 inputProps={inputProps}
                 ref={this.storeInputReference}
-                onSuggestionSelected={onSuggestionSelected}
+                onSuggestionSelected={(events, {suggestion}) => onSuggestionSelected(event, {suggestion}, this.props.changeRoute)}
                 multiSection={true}
                 renderSectionTitle={renderSectionTitle}
                 getSectionSuggestions={getSectionSuggestions}
                 highlightFirstSuggestion={true}
-                shouldRenderSuggestions={shouldRenderSuggestions}/>
+                shouldRenderSuggestions={shouldRenderSuggestions}
+            />
 
         );
     }
