@@ -132,6 +132,7 @@ export function getBookable(compId, bookId) {
                 payload: response.data
             })
         )).catch(function (error) {
+            console.log("error get bookable");
             console.log(error);
         });
     };
@@ -143,6 +144,7 @@ export function getBookableEvents(bookId) {
         return axios.get(url).then(response => {
             return setBookableEvents(dispatch, response.data);
         }).catch(function (error) {
+            console.log("error get bookable");
             console.log(error);
         });
     };

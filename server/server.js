@@ -62,7 +62,8 @@ app.get(`/api/companies/:companyAlias`,authenticate, (req,res)=> {
 app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/:user`,authenticate, (req,res)=> {
     connection.query('select A.bookableAlias, A.name, A.info, A.type, B.companyAlias from bookables as A inner join companies as B on A.company = B.id and A.bookableAlias=? and B.companyAlias=?', [req.params.bookableAlias, req.params.companyAlias], function (err, rows){
         if(err){
-            return res.json({success:false, message: "error in database"})
+            //return res.json({success:false, message: "error in database"})
+            return next(err);
         }
         else {
             var booking = JSON.parse(JSON.stringify(rows))[0];
@@ -73,13 +74,15 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/:user`,authentica
                 //Check if user had bookable as favourite already
                 connection.query('select * from favourites inner join bookables on bookables.bookableAlias=? and bookables.id=favourites.bookable and favourites.user=?;', [req.params.bookableAlias, req.params.user], function(err, rows2){
                     if(err) {
-                        return res.json({success: false, message: "error in database favourites"})
+                        return next(err);
+                        //return res.json({success: false, message: "error in database favourites"})
                     }
 
                     else if(rows2.length>0){
                         booking["favourite"]= true;
                         //res.json(booking)
                     }
+                console.log("Return booking");
                     res.json(booking);
                 })
             }else{
@@ -155,8 +158,10 @@ app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/
 app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events`,authenticate, (req,res)=> {
     connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from facilitybookings as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err, rows){
         if (err) {
-            return res.json("error in database")
+            return next(err);
+            //return res.json("error in database")
         }
+        console.log("return events");
         let events = JSON.parse(JSON.stringify(rows));
         res.json(events);
     })
@@ -167,7 +172,7 @@ app.get('/api/users/:email/current',authenticate, (req, res) => {
 
     connection.query('select A.bookableAlias, A.name, A.info, A.type, D.companyAlias, B.start, B.end from bookables as A inner join facilityBookings as B on A.id = B.bookable and B.bookedBy=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
         if (err)
-            return res.json("error in database")
+            return next(err);
         let currentBookings = JSON.parse(JSON.stringify(rows));
         for (let key in currentBookings){
             currentBookings[key]["image"] = `http://localhost:3333/bookables/profile/${currentBookings[key].bookableAlias}.png`
@@ -180,7 +185,7 @@ app.get('/api/users/:email/current',authenticate, (req, res) => {
 app.get('/api/users/:email/favourites',authenticate, (req, res) => {
     connection.query('select A.bookableAlias, A.name, A.info, A.type, D.companyAlias from bookables as A inner join favourites as B on A.id = B.bookable and B.user=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
         if (err)
-            return res.json("error in database")
+            return next(err);
         let current = JSON.parse(JSON.stringify(rows));
         for (let key in current){
             current[key]["image"] = `http://localhost:3333/bookables/profile/${current[key].bookableAlias}.png`
@@ -224,7 +229,7 @@ TODO: "ADD TABLE OR SOMETHING WITH RECOMMENDATIONS. CURRENTLY FETCHING FROM FAOU
 app.get('/api/users/:email/recommendations',authenticate, (req, res) => {
     connection.query('select A.bookableAlias, A.name, A.info, A.type, D.companyAlias from bookables as A inner join favourites as B on A.id = B.bookable and B.user=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
         if (err)
-            return res.json("error in database")
+            return next(err);
         let current = JSON.parse(JSON.stringify(rows));
         for (let key in current){
             current[key]["image"] = `http://localhost:3333/bookables/profile/${current[key].bookableAlias}.png`
@@ -373,7 +378,8 @@ app.post('/auth/signup', function(req, res, next) {
 app.post('/auth/signin', function(req, res, next) {
     passport.authenticate('local-login', function(err, user, info) {
         if (err) {
-            return next(err); }
+            return next(err);
+        }
         else if (!user) {
             let err = new Error('Incorrect email or password');
             err.status = 403;

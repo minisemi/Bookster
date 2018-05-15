@@ -6,6 +6,7 @@ import {Button, Glyphicon} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { bookablesActions } from '../data/bookables';
 import { connect } from 'react-redux';
+import Perf from 'react-addons-perf'
 
 class BookablePageContainer extends Component {
 
@@ -28,12 +29,24 @@ class BookablePageContainer extends Component {
         }
     }
 
+    componentDidUpdate() {
+        console.log("update");
+        console.log(this.state.bookableEvents);
+    Perf.stop()
+    Perf.printInclusive()
+    Perf.printWasted()
+  }
+
+
     componentWillReceiveProps(nextProps){
         if (nextProps.bookable !== this.props.bookable) {
+            Perf.start()
             this.setState({
                bookable: nextProps.bookable,
             });
         } else if (nextProps.bookableEvents !== this.props.bookableEvents) {
+            console.log("new");
+           // Perf.start()
             this.setState({
                bookableEvents: nextProps.bookableEvents,
             });
