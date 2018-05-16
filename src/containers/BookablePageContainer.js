@@ -40,12 +40,11 @@ class BookablePageContainer extends Component {
 
     componentWillReceiveProps(nextProps){
         if (nextProps.bookable !== this.props.bookable) {
-            Perf.start()
+
             this.setState({
                bookable: nextProps.bookable,
             });
         } else if (nextProps.bookableEvents !== this.props.bookableEvents) {
-            console.log("new");
            // Perf.start()
             this.setState({
                bookableEvents: nextProps.bookableEvents,

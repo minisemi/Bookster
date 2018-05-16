@@ -9,6 +9,7 @@ export const DELETE_FAVOURITE = 'DELETE_FAVOURITE';
 export const SET_COMPANY_BOOKABLES = 'SET_COMPANY_BOOKABLES';
 export const SET_BOOKABLE_EVENTS = 'SET_BOOKABLE_EVENTS';
 export const SET_EVENTS_ERROR = 'SET_EVENTS_ERROR';
+import Perf from 'react-addons-perf'
 import Auth from '../../Auth'
 
 export function getCurrentBookings() {
@@ -56,6 +57,7 @@ export function addFavourite(bookableID, companyID){
                     }
                 }
                 newBookable.favourite = true;
+                Perf.start()
                 return dispatch({
                     type: ADD_FAVOURITE,
                     payload: newBookable
