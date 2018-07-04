@@ -7,10 +7,6 @@
     margin-right: 12px;
 }
 
-.hiddenAlert{
-    display: none;
-}
-
-.signUpButton {
-    float:right;
+.datePicker div:first-child{
+    border-color: #a94442;
 }

@@ -1,7 +1,9 @@
 //KAN BEHÖVA KOLLA PÅ JUDOATHLETES EXEMPEL FÖR SERVER-SIDE ROUTING OM 404 FÅS VID REFRESH AV SIDA
 
 'use strict';
-
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').load();
+}
 const express = require('express');
 const app = express();
 const jwt = require('express-jwt');
@@ -15,6 +17,8 @@ const path = require('path');
 var flash = require('connect-flash');
 var moment = require('moment');
 
+// IMPLEMENT A CHECK THAT THE TOKEN SENT WITH EVERY REQUEST BELONGS TO THE USER
+
 moment().format();
 
 var conf = require('../config/jwt')
@@ -24,7 +28,6 @@ app.use(express.static(path.join(__dirname, 'assets')));
 //JWT function tat decodes tokens of format "Bearer [token]" with specified key
 const authenticate = jwt({secret : conf.jwtSecret});
 
-
 require('./../config/passport')(passport);
 
 var connection = mysql.createConnection(require('./../config/database').connection)
@@ -32,6 +35,11 @@ var connection = mysql.createConnection(require('./../config/database').connecti
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+
+app.use(session({ secret: 'alexluktar' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash());
 
 
 app.get(`/api/companies/:companyAlias`,authenticate, (req,res)=> {
@@ -54,7 +62,8 @@ app.get(`/api/companies/:companyAlias`,authenticate, (req,res)=> {
 app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/:user`,authenticate, (req,res)=> {
     connection.query('select A.bookableAlias, A.name, A.info, A.type, B.companyAlias from bookables as A inner join companies as B on A.company = B.id and A.bookableAlias=? and B.companyAlias=?', [req.params.bookableAlias, req.params.companyAlias], function (err, rows){
         if(err){
-            return res.json({success:false, message: "error in database"})
+            //return res.json({success:false, message: "error in database"})
+            return next(err);
         }
         else {
             var booking = JSON.parse(JSON.stringify(rows))[0];
@@ -65,7 +74,8 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/:user`,authentica
                 //Check if user had bookable as favourite already
                 connection.query('select * from favourites inner join bookables on bookables.bookableAlias=? and bookables.id=favourites.bookable and favourites.user=?;', [req.params.bookableAlias, req.params.user], function(err, rows2){
                     if(err) {
-                        return res.json({success: false, message: "error in database favourites"})
+                        return next(err);
+                        //return res.json({success: false, message: "error in database favourites"})
                     }
 
                     else if(rows2.length>0){
@@ -83,39 +93,63 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/:user`,authentica
 
 })
 
-app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/book`,authenticate, (req,res)=> {
-    connection.query('select bookedBy from facilitybookings where bookable=(select id from bookables where bookableAlias=?) and start=?', [req.body.bookableAlias, req.body.start], function (err, rows) {
+app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/book`,authenticate, (req,res,next)=> {
+        connection.query('select bookedBy from facilitybookings where bookable=(select id from bookables where bookableAlias=?) and start=?', [req.body.bookableAlias, req.body.start], function (err, rows) {
 
-        if (err) {
-            return res.json({success: false, message: "error in database"})
-        }
-        else{
-            let bookedBy = JSON.parse(JSON.stringify(rows));
-            if (bookedBy[0].bookedBy === null) {
-
-                connection.query('update facilitybookings set bookedBy=(select id from users where email=?) where bookable=(select id from bookables where bookableAlias=?) and start=?', [req.body.user, req.body.bookableAlias, req.body.start], function (err, rows) {
-
-                    if (err) {
-                        return res.json({success: false, message: "error in database"})
-                    }
-                    else
-                        return res.json({success: true})
-                })
-            }else {
-                return res.json({success: false, message: "Bookable already booked"})
+            if (err) {
+                next(err);
             }
-        }
-    })
+            else{
+                let bookedBy = JSON.parse(JSON.stringify(rows));
+                if (bookedBy[0].bookedBy === null) {
+
+                    connection.query('update facilitybookings set bookedBy=(select id from users where email=?) where bookable=(select id from bookables where bookableAlias=?) and start=?', [req.body.user, req.body.bookableAlias, req.body.start], function (err1, rows) {
+
+                        if (err1) {
+                            next(err1);
+                        }
+                        else {
+                            //GÖR OM TILL FUNKTION EFTERSOM KALLAS PÅ AV SÅ MÅNGA STÄLLEN
+                            connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from facilitybookings as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err2, rows2) {
+                                if (err2) {
+                                    next(err2);
+                                }
+                                let events = JSON.parse(JSON.stringify(rows2));
+                                return res.json({events});
+                            })
+                        }
+                    })
+
+                }else {
+                    connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from facilitybookings as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err2, rows2) {
+                                if (err2) {
+                                    next(err2);
+                                }
+                                let events = JSON.parse(JSON.stringify(rows2));
+                                return res.json({events, errorMessage: 'Sorry, this time slot just got booked!'});
+                            })
+                }
+            }
+        })
+
 
 
 })
 
-app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/unBook`,authenticate, (req,res)=> {
+app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/unBook`,authenticate, (req,res,next)=> {
     connection.query('update facilitybookings set bookedBy=? where bookable=(select id from bookables where bookableAlias=?) and start=? and bookedBy=(select id from users where email=?)', [null, req.body.bookableAlias, req.body.start, req.body.user], function (err, rows){
         if(err){
-            return res.json({success:false, message: "error in database"})
+            next(err);
+        } else {
+            // GÖR EN FUNKTION AV DETTA EFTERSOM DET ÄVEN KALLAS PÅ AV UNBOOK OCH GET EVENTS
+            connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from facilitybookings as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err2, rows2){
+                if(err2){
+                    next(err2);
+                }
+                let events = JSON.parse(JSON.stringify(rows2));
+                return res.json(events);
+            })
         }
-        return res.json({success:true})
     })
 
 })
@@ -123,7 +157,8 @@ app.post(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events/
 app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events`,authenticate, (req,res)=> {
     connection.query('select A.title,A.allDay,A.start,A.end,A.descr,B.bookableAlias,A.bookedBy from facilitybookings as A inner join bookables as B on A.bookable = B.id and B.bookableAlias=?', [req.params.bookableAlias], function (err, rows){
         if (err) {
-            return res.json("error in database")
+            return next(err);
+            //return res.json("error in database")
         }
         let events = JSON.parse(JSON.stringify(rows));
         res.json(events);
@@ -135,7 +170,7 @@ app.get('/api/users/:email/current',authenticate, (req, res) => {
 
     connection.query('select A.bookableAlias, A.name, A.info, A.type, D.companyAlias, B.start, B.end from bookables as A inner join facilityBookings as B on A.id = B.bookable and B.bookedBy=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
         if (err)
-            return res.json("error in database")
+            return next(err);
         let currentBookings = JSON.parse(JSON.stringify(rows));
         for (let key in currentBookings){
             currentBookings[key]["image"] = `http://localhost:3333/bookables/profile/${currentBookings[key].bookableAlias}.png`
@@ -148,7 +183,7 @@ app.get('/api/users/:email/current',authenticate, (req, res) => {
 app.get('/api/users/:email/favourites',authenticate, (req, res) => {
     connection.query('select A.bookableAlias, A.name, A.info, A.type, D.companyAlias from bookables as A inner join favourites as B on A.id = B.bookable and B.user=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
         if (err)
-            return res.json("error in database")
+            return next(err);
         let current = JSON.parse(JSON.stringify(rows));
         for (let key in current){
             current[key]["image"] = `http://localhost:3333/bookables/profile/${current[key].bookableAlias}.png`
@@ -192,7 +227,7 @@ TODO: "ADD TABLE OR SOMETHING WITH RECOMMENDATIONS. CURRENTLY FETCHING FROM FAOU
 app.get('/api/users/:email/recommendations',authenticate, (req, res) => {
     connection.query('select A.bookableAlias, A.name, A.info, A.type, D.companyAlias from bookables as A inner join favourites as B on A.id = B.bookable and B.user=(select C.id from users as C where C.email=?) inner join companies as D on D.id=A.company', [req.params.email],function(err, rows){
         if (err)
-            return res.json("error in database")
+            return next(err);
         let current = JSON.parse(JSON.stringify(rows));
         for (let key in current){
             current[key]["image"] = `http://localhost:3333/bookables/profile/${current[key].bookableAlias}.png`
@@ -269,12 +304,11 @@ app.get('/api/get_user',
         let response = res.req.user;
         let user = {email: response.email, firstName:response.firstName, familyName:response.familyName,
             birth: response.birth, address: response.address}
-
-        res.json(user)
+        return res.json(user)
     }
 )
 
-app.post('/api/update_user', authenticate, function(req, res) {
+app.post('/api/update_user', authenticate, function(req, res, next) {
     var sqlQuery ='UPDATE users SET firstName=?, familyName=?, birth=?, address=?, email=? WHERE email=?',
         parameters = [req.body.firstName, req.body.familyName,
             req.body.birth, req.body.address, req.body.email, req.user.email];
@@ -283,20 +317,18 @@ app.post('/api/update_user', authenticate, function(req, res) {
         parameters, function(err, rows){
             if(err){
                 if(err.errno==1062){
-                    res.json({message: "Email already taken", token: null})
+                    let err = new Error('Email already taken');
+                    err.status = 422;
+                    next(err);
                 }else
-                    res.json({message:"error in database", token:null})
+                    return next(err);
             }
             else {
-
                 TODO: "BYT UT EMAIL MOT USER ID"
                 var token = jwtGen.sign({email: req.body.email}, conf.jwtSecret)
-                return res.json({message: "success", token: token})
-
+                return res.json({ token: token, data: req.body })
             }
         }
-
-
     );
 });
 
@@ -305,28 +337,24 @@ app.get('/image/:type/:company', authenticate, function(req, res){
 
 })
 
-app.post('/auth/change_pw', authenticate, function(req, res) {
+app.post('/auth/change_pw', authenticate, function(req, res, next) {
 
     connection.query('UPDATE users SET password=? WHERE email=? AND password=?',
         [req.body.newPassword, req.user.email, req.body.oldPassword], function(err, rows){
-            if(err){
-                return res.json("error in database")
+            if (err) {
+                return next(err); }
+            else if (rows.affectedRows == 0) {
+                let err = new Error('Wrong password');
+                err.status = 403;
+                next(err);
+            } else {
+                return res.json("Password successfully changed")
             }
-
-            if (rows.affectedRows == 0)
-                return res.json("Wrong password")
-            res.json("Password successfully changed")
-
         }
-
     );
 });
 
 
-app.use(session({ secret: 'alexluktar' })); // session secret
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash());
 
 
 TODO: "HASH PASSWORD"
@@ -334,18 +362,29 @@ app.post('/auth/signup', function(req, res, next) {
     passport.authenticate('local-signup', function(err, user, info) {
         if (err) {
             return next(err); }
-        if (!user) {
-            return res.json(info)};
-        return res.json(info);
+        else if (!user) {
+            let err = new Error('A user with that email already exists');
+            err.status = 422;
+            next(err);
+        } else {
+            return res.json(info)
+        }
     })(req, res, next);
 });
+
 
 app.post('/auth/signin', function(req, res, next) {
     passport.authenticate('local-login', function(err, user, info) {
         if (err) {
             return next(err);
         }
-        return res.json(info);
+        else if (!user) {
+            let err = new Error('Incorrect email or password');
+            err.status = 403;
+            next(err);
+        } else {
+            return res.json(info)
+        }
     })(req, res, next);
 });
 
@@ -355,6 +394,12 @@ app.get('/auth/auth',passport.authenticate('jwt', { session: false}),
         res.json({message: "Success! You can not see this without a token"});
     }
 );
+
+app.use(function(err, req, res, next) {
+    console.error(err.message); // Log error message in our server's console
+    if (!err.status) err.status = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'
+    res.status(err.status).send(err.message); // All HTTP requests must have a response, so let's send back an error with its status code and message
+});
 
 app.listen(3333);
 console.log('Listening on localhost:3333');

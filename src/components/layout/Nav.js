@@ -1,58 +1,39 @@
 import React, { Component } from 'react';
-import {Row, Col} from 'react-bootstrap';
-import { Link } from 'react-router';
+import {Row, Col, Button} from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import '../../static/Nav.css';
-import LogInForm from '../loginPage/LogInForm';
-import BookingsSearch from '../BookingsSearch';
-import Auth from '../../Auth'
-import {browserHistory} from 'react-router';
-import {updateToken} from '../../utils/bookster-api'
+import LogInForm from '../../containers/forms/LogInFormContainer';
+import BookingsSearch from '../bookables/BookingsSearch';
+import PropTypes from 'prop-types';
+
 export default class Nav extends Component {
 
-    constructor() {
-        super()
-        if (Auth.getToken() == null){
-            this.state = { loggedIn: false};
-        } else {
-            this.state = { loggedIn: true};
+    static propTypes = {
+        logOutUser: PropTypes.func.isRequired,
+        getSearchResults: PropTypes.func.isRequired,
+        changeRoute: PropTypes.func.isRequired,
+        loggedIn: PropTypes.bool.isRequired,
+        searchResults: PropTypes.array,
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+          loggedIn: props.loggedIn
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.loggedIn !== this.props.loggedIn) {
+            this.setState({
+                loggedIn: nextProps.loggedIn
+            });
         }
-        this.handleLogin = this.handleLogin.bind(this);
-        this.handleLogout = this.handleLogout.bind(this);
-    }
-
-    /*
-     Authenticates user, updates token in bookster-api and pushes to index page
-     */
-
-    handleLogin(token, email, userId){
-        Auth.authenticateUser(token, email, userId)
-        updateToken();
-        browserHistory.push('/');
-        this.setState({loggedIn:true});
-    }
-
-    /*
-     deauthenticates user and redirects to /sign_in page.
-     */
-    handleLogout(){
-        Auth.deauthenticateUser()
-        browserHistory.push('/sign_in');
-        this.setState({loggedIn:false});
     }
 
     render() {
-        let bookingsSearchClass, loginFormClass;
-        // Shows the login form if not logged in, and searchbar/profilebutton/logoutbutton if logged in
-        if (!this.state.loggedIn){
-            bookingsSearchClass="noDisplay"
-            loginFormClass="formDisplay"
-        }else {
-            bookingsSearchClass="searchDisplay"
-            loginFormClass="noDisplay"
-        }
-
+        const { loggedIn } = this.state;
         return (
-
             <div>
                 <header >
                     <Row>
@@ -63,25 +44,32 @@ export default class Nav extends Component {
                                 </div>
                             </Link>
                         </Col>
-                        <Col xs={12} smOffset={1} sm={6} mdOffset={1} md={6} lg={6} className={bookingsSearchClass}>
-                            <BookingsSearch cleared={this.state.loggedIn} />
-                        </Col>
-                        <Col xs={12} sm={3}  md={3} lg={3} className={`${bookingsSearchClass} buttons`}>
-                            <Link onClick={this.handleLogout} className="btn btn-danger floatRight marginRight" role="button" to={"/"} > Log out
-                            </Link>
-                            <Link className="btn btn-info floatRight" role="button" to={"/profile"} > Profile
-                            </Link>
-                        </Col>
-                        <Col xs={12} sm={10} md={10} lg={10} className={loginFormClass}>
-                            <ul className={`nav navbar-nav navbar-right ${loginFormClass}`}>
-                                <LogInForm handleLogin={this.handleLogin} className="booksterHeaderDisplay"/>
-                            </ul>
-                        </Col>
+                        { loggedIn ?
+                            <div>
+                                <Col xs={12} smOffset={1} sm={6} mdOffset={1} md={6} lg={6} className="searchDisplay">
+                                    <BookingsSearch
+                                        cleared={loggedIn}
+                                        getSearchResults={this.props.getSearchResults}
+                                        suggestions={this.props.searchResults}
+                                        changeRoute={this.props.changeRoute}
+                                    />
+                                </Col>
+                                <Col xs={12} sm={3} md={3} lg={3} className={"searchDisplay buttons"}>
+                                    <Button onClick={this.props.logOutUser} className="btn btn-danger floatRight marginRight">
+                                        Log out
+                                    </Button>
+                                    <Link className="btn btn-info floatRight" role="button" to={"/profile"}> Profile
+                                    </Link>
+                                </Col>
+                            </div>
+                            :
+                            <Col xs={12} sm={10} md={10} lg={10}>
+                                <LogInForm className="navbar-right"/>
+                            </Col>
+                        }
                     </Row>
                 </header>
             </div>
-
         );
     }
 }
-

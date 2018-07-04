@@ -1,4 +1,4 @@
-    var passport = require('passport')
+var passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 var mysql = require('mysql');
 var connection = mysql.createConnection(require('./database').connection);
@@ -26,7 +26,7 @@ module.exports = function (passport){
 
     passport.use('local-signup', new LocalStrategy({
             usernameField: 'email',
-            passwordField: 'passw',
+            passwordField: 'password',
             passReqToCallback: true
         },
         function(req, email, password, done) {
@@ -35,26 +35,29 @@ module.exports = function (passport){
             connection.query("select * from users where email = ?",[email], function(err,rows){
                 if (err)
                     return done(err);
-                if (rows.length) {
-                    return done(null, false, { message: 'User already exists'});
+                else if (rows.length) {
+                    return done(null, false, null);
                 } else {
-                    var firstName = req.body.firstName,
-                        surName = req.body.surName,
+                    const firstName = req.body.firstName,
+                        familyName = req.body.familyName,
                         birth = req.body.birth;
-
-                    //If user does not exist, create new
-
-                    var insertQuery = "INSERT INTO users (email, firstName, familyName, password, birth) values (?,?,?,?,?)";
-
-                    connection.query(insertQuery, [email, firstName, surName, password, birth],function(err,rows){
-
-
-                        return done(null, email, { message: 'Signed up!' });
+                    const insertQuery = "INSERT INTO users (email, firstName, familyName, password, birth) values (?,?,?,?,?)";
+                    connection.query(insertQuery, [email, firstName, familyName, password, birth],function(err1,rows1){
+                        if (err1)
+                            return done(err1);
+                        const idQuery = "SELECT * FROM users WHERE email = ?";
+                        connection.query(idQuery, [email], function (err2,rows2) {
+                            if (err2)
+                                return done(err2);
+                            let payload = { email };
+                            let token = jwt.sign(payload, parameters.secretOrKey);
+                            return done(null, email, { token: token, user: rows2[0] });
+                        })
                     });
                 }
             });
         }
-    ))
+    ));
 
     passport.use('local-login', new LocalStrategy({
             usernameField: 'email',
@@ -62,19 +65,18 @@ module.exports = function (passport){
             passReqToCallback: true
         },
         function(req, email, password, done){
-
             connection.query('select * from users where email = ?', [email], function (err,  rows){
                 if (err)
                     return done(err);
                 if (!rows.length || rows[0].password != password)
-                    return done (null, false, {message: 'notSignedIn'});
+                    return done (null, false, null);
                 let payload = {email: rows[0].email};
                 let token = jwt.sign(payload, parameters.secretOrKey)
-                return done(null, rows[0], {message: 'signedIn', token: token, id: rows[0].id});
+                return done(null, rows[0], { token: token, user: rows[0]});
             })
         }
         )
-    )
+    );
 
     //Function to check if token is valid, only used during development
     passport.use(new JWTStrategy (parameters, function(payload, done) {
@@ -94,4 +96,4 @@ module.exports = function (passport){
         }
     ))
 
-}
+};
