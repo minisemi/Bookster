@@ -57,7 +57,6 @@ export function addFavourite(bookableID, companyID){
                     }
                 }
                 newBookable.favourite = true;
-                Perf.start()
                 return dispatch({
                     type: ADD_FAVOURITE,
                     payload: newBookable
@@ -114,12 +113,12 @@ export function getRecommendations() {
 export function getCompanyBookables(id){
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/companies/${id}/bookables`;
-        return axios.get(url).then(response => (
-            dispatch({
+        return axios.get(url).then(response => {
+            return dispatch({
                 type: SET_COMPANY_BOOKABLES,
                 payload: response.data
             })
-        )).catch(function (error) {
+    }).catch(function (error) {
             console.log(error);
         });
     };
@@ -128,12 +127,12 @@ export function getCompanyBookables(id){
 export function getBookable(compId, bookId) {
     return (dispatch, getState) => {
         const url = `${BASE_URL}/api/companies/${compId}/bookables/${bookId}/${Auth.getUserId()}`;
-        return axios.get(url).then(response => (
-            dispatch({
+        return axios.get(url).then(response => {
+            return dispatch({
                 type: SET_BOOKABLE,
                 payload: response.data
             })
-        )).catch(function (error) {
+        }).catch(function (error) {
             console.log("error get bookable");
             console.log(error);
         });

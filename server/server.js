@@ -82,7 +82,6 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/:user`,authentica
                         booking["favourite"]= true;
                         //res.json(booking)
                     }
-                console.log("Return booking");
                     res.json(booking);
                 })
             }else{
@@ -161,7 +160,6 @@ app.get(`/api/companies/:companyAlias/bookables/:bookableAlias/calender/events`,
             return next(err);
             //return res.json("error in database")
         }
-        console.log("return events");
         let events = JSON.parse(JSON.stringify(rows));
         res.json(events);
     })

@@ -2,6 +2,7 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:3333';
 import { push } from 'react-router-redux';
 export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
+import Perf from 'react-addons-perf'
 
 export function getSearchResults (query) {
     return (dispatch, getState) => {
@@ -10,6 +11,7 @@ export function getSearchResults (query) {
         params: {
             query: query
         }}).then(response => {
+            Perf.start();
             return dispatch({
                 type: SET_SEARCH_RESULTS,
                 payload: response.data

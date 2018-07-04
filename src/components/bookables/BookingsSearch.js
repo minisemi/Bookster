@@ -113,6 +113,7 @@ export default class BookingsSearch extends Component {
         };
     }
 
+
     componentWillReceiveProps(nextProps){
         if (nextProps.suggestions !== this.props.suggestions) {
             this.setState({ suggestions: nextProps.suggestions });

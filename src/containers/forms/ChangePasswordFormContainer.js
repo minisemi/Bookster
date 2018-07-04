@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import { userActions } from '../../data/user';
 import { changePasswordValidate } from '../../utils/Validation';
 
-
 class ChangePasswordFormContainer extends Component {
 
     static propTypes = {
@@ -19,7 +18,6 @@ class ChangePasswordFormContainer extends Component {
     constructor (props) {
         super(props);
     }
-
 
     render() {
         const { error, handleSubmit, reset, pristine, submitting, changePassword, submitSucceeded } = this.props;

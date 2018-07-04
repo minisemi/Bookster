@@ -17,6 +17,7 @@ import PropTypes from 'prop-types';
 // to the correct localizer.
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 //const DragAndDropCalendar = withDragAndDrop(BigCalendar);
+import Perf from 'react-addons-perf'
 
 
 class BookingCalender extends Component {

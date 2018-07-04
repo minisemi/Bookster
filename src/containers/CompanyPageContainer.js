@@ -48,7 +48,6 @@ class CompanyPageContainer extends Component {
             return <NotFoundPage/>;
         }
         const headerStyle = { backgroundImage: `url(${company.cover})` };
-
         return (
             <div className="booking-full">
                 <div className="booking">

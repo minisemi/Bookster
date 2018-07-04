@@ -9,6 +9,7 @@ import {loginValidate} from '../../utils/Validation';
 import _isEmpty from 'lodash/isEmpty';
 // Sets token as axios default header 
 axios.defaults.headers.common['Authorization'] = `Bearer ${Auth.getToken()}`;
+import Perf from 'react-addons-perf'
 
 
 export function signUpUser(formValues) {
@@ -137,6 +138,7 @@ export function getUserInfo (){
             {headers:{
                 Authorization: `JWT ${token}`
             }}).then(response => {
+
             return dispatch({
                 type: SET_USER,
                 payload: {token, data: response.data}

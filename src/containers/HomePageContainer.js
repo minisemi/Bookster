@@ -17,6 +17,7 @@ class HomePageContainer extends Component {
         getRecommendations: PropTypes.func.isRequired,
     };
 
+
     componentDidMount() {
         this.props.getCurrentBookings();
         this.props.getFavourites();

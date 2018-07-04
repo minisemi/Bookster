@@ -39,6 +39,12 @@ class LayoutContainer extends Component {
         }
     }
 
+
+
+    // HELA DENNA CONTAINER RENDERAS OM NÄR SÖKRESULTATET ÄNDRAS
+    // GÖR DÄRFÖR NAV TILL EN CONTAINER OCH UPPDATERA BARA DEN?
+    // LÄGG TILL I SHOULDCOMPONENT UPDATE HÄR ATT INDRE RENDERA OM VID UPDATE AV SEARCHFIELD
+
     render() {
         const { loggedIn } = this.state;
         return (
